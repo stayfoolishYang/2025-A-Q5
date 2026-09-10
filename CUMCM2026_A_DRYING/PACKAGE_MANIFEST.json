@@ -1,7 +1,10 @@
 {
-  "scope": "SERVER_GPU_PACKAGE_STATIC_CHECK_ONLY",
-  "implementation_revision": "A26-06-GPU-v1",
+  "scope": "SERVER_FULL_GPU_PACKAGE_STATIC_CHECK_ONLY",
+  "implementation_revision": "A26-06-FULL-v1",
+  "model_version": "A26-04-v2",
   "gpu_tests": "NOT_RUN",
+  "campaign_execution": "NOT_RUN",
+  "file_count": 102,
   "files": [
     {
       "path": ".gitattributes",
@@ -12,16 +15,6 @@
       "path": ".gitignore",
       "bytes": 85,
       "sha256": "4111a00e9926876b835621b1b26e24f5943a6f0a1c3302bfc3611ac86cb6a3e2"
-    },
-    {
-      "path": "PROJECT_SUMMARY.md",
-      "bytes": 16858,
-      "sha256": "7af1dd3b74d7b60e96a2dc84888302c8669836917d6cbb3ea3f1da11c44c1444"
-    },
-    {
-      "path": "README_RUN.md",
-      "bytes": 12287,
-      "sha256": "f877dc1e2a5e0a826c3159f287438a90ccad6cfe36e2233d0b80ec654827f481"
     },
     {
       "path": "configs/B_Q1.json",
@@ -79,6 +72,11 @@
       "sha256": "024a16fef347f4cb0ec49a42cd12998f651650cc010fbcf2fea127ff52d2e575"
     },
     {
+      "path": "configs/server_full.json",
+      "bytes": 854,
+      "sha256": "fee40fc52480e046444036b240460299c6d84967558e584334f40f5de3a47d02"
+    },
+    {
       "path": "configs/smoke.json",
       "bytes": 816,
       "sha256": "665979e5fbe6b5cb2547ff00758e706604a62f764799a9a1d29067801e121e6e"
@@ -124,9 +122,24 @@
       "sha256": "86e9300ffa3d30c43de895ea6723da943e85b8740b137bcae5af7107f076eeac"
     },
     {
+      "path": "FULL_RUN.md",
+      "bytes": 8516,
+      "sha256": "5499ee345604215923b26bfea13d914c1961c55d9a2cdae0ca8966f43b35f95c"
+    },
+    {
+      "path": "PROJECT_SUMMARY.md",
+      "bytes": 17859,
+      "sha256": "c45986110f4613dbe871c3ac9e20882f4617106d1437f81b7d5fe1d48260af90"
+    },
+    {
       "path": "pyproject.toml",
       "bytes": 631,
-      "sha256": "1ad43ae233fbce2a5760b1cee9a1eef29a7370d475f9bae31acdedf94e61170a"
+      "sha256": "366bd3add30aaa9ddb3ccb7482a32e8833062a5fcd87b0d209cab07ce7dedb97"
+    },
+    {
+      "path": "README_RUN.md",
+      "bytes": 13040,
+      "sha256": "9e3885e77d52e54e25bc3944633cb525bb8f1a8d40d1602e235bf6535b24742e"
     },
     {
       "path": "requirements.txt",
@@ -144,9 +157,29 @@
       "sha256": "307299fda7b77d22c64cb51430ec75e5f59d78e9c948786afb3b2544fe45e4b7"
     },
     {
+      "path": "src/drying/campaign.py",
+      "bytes": 28650,
+      "sha256": "fe0e6d36d1dca516a8866cac4cdf1929598ebb982a471dad199a908df0020205"
+    },
+    {
+      "path": "src/drying/campaign_analysis.py",
+      "bytes": 27364,
+      "sha256": "4696421f1bb0f5cc13d9a85c1fc6c01547ac53e3188cb342cfc6803ecf51c16f"
+    },
+    {
+      "path": "src/drying/campaign_comparison.py",
+      "bytes": 20989,
+      "sha256": "a916cddcbbf68802c062e0939df9627ecbc0c7fd036c2305b2f3d2c7258fd7ad"
+    },
+    {
+      "path": "src/drying/campaign_plan.py",
+      "bytes": 15794,
+      "sha256": "d3834c986aa6fd0fcfd4355230e097bbf77fc19075626072310fa2b83614e36e"
+    },
+    {
       "path": "src/drying/cli.py",
-      "bytes": 10564,
-      "sha256": "9c5b85ee97c23d7cba37d72eb1388d99ec8d91188ca39e9d2f9d73d11025bbd6"
+      "bytes": 11341,
+      "sha256": "20ef79be755b2d2c53686635aa30886617675b706d32f2ed4958e4397def9c4a"
     },
     {
       "path": "src/drying/config.py",
@@ -200,8 +233,8 @@
     },
     {
       "path": "src/drying/preflight.py",
-      "bytes": 17862,
-      "sha256": "461a481de4dd695d90d998f04816687aafb0b549a84da6ed244afff6e0c5c458"
+      "bytes": 19589,
+      "sha256": "f22e87b38b04c1d294c6fc1eb85759b67fd9cb72216557c484b2e6db32327223"
     },
     {
       "path": "src/drying/reconstruction.py",
@@ -210,13 +243,13 @@
     },
     {
       "path": "src/drying/refinement.py",
-      "bytes": 60132,
-      "sha256": "ca1fe4230ce54f7e74f9400053aa58eb41d8cfbb7787a8efd6f30f9524cb5142"
+      "bytes": 70035,
+      "sha256": "18f316e19616a85b25abfc26cc06dc6789c41307344069633c3df301a3600ed7"
     },
     {
       "path": "src/drying/reporting.py",
-      "bytes": 5263,
-      "sha256": "777fd637b20a36f4762d35c61c87cd14716a87e706fea0daad1d09b9383f68c6"
+      "bytes": 5291,
+      "sha256": "8556ecb83f4e7975f99d0ec463b4e0e43b90ac810adcd7e29d349fc10f630747"
     },
     {
       "path": "src/drying/resources.py",
@@ -237,6 +270,26 @@
       "path": "tests/conftest.py",
       "bytes": 1920,
       "sha256": "40c89a334cca241b56495de520b7944c89a688e248a4387e8ae43abb6544942d"
+    },
+    {
+      "path": "tests/test_campaign.py",
+      "bytes": 20854,
+      "sha256": "e967c9cf838c86a1da93f4d1cc22c002eef9675ebda5ad4be30f875b50e6ea8c"
+    },
+    {
+      "path": "tests/test_campaign_analysis.py",
+      "bytes": 16166,
+      "sha256": "bb0d872ca201f1d258b0fe9fe545c3394b72b838fbbd0e1ccfb9f1808b3134be"
+    },
+    {
+      "path": "tests/test_campaign_comparison.py",
+      "bytes": 11181,
+      "sha256": "81c970f68cde06f421039cf135159e09ca85118d8159045a235a92f5eec62682"
+    },
+    {
+      "path": "tests/test_campaign_plan.py",
+      "bytes": 10811,
+      "sha256": "8e65b9f8e8af19e2321cb96045f4afce459a5ecb76ef03e936041e0a8b65f568"
     },
     {
       "path": "tests/test_cuda_backend.py",
@@ -285,13 +338,18 @@
     },
     {
       "path": "tests/test_preflight.py",
-      "bytes": 6242,
-      "sha256": "cb1dd7349754aafee012feedbf7ea6ce86e63ea8b8e3952562eb149ae4da5251"
+      "bytes": 8148,
+      "sha256": "7b654f93590ce807fd9d0b158e38219dea0b9be781034a705a6da86a559806cc"
     },
     {
       "path": "tests/test_refinement.py",
       "bytes": 15098,
       "sha256": "d05e9f125e11980e2af1bc3d2e112ad413b5ccd6bd9fb4b683ab0fb77c45a530"
+    },
+    {
+      "path": "tests/test_refinement_campaign_bridge.py",
+      "bytes": 10516,
+      "sha256": "e772e2e58964d09af995ee9076a3a2f835fe83525ad050b1d0c7653075e2a2a1"
     },
     {
       "path": "tests/test_spatial.py",
@@ -325,13 +383,13 @@
     },
     {
       "path": "workspace/06_implementation.md",
-      "bytes": 13383,
-      "sha256": "9799640c4f010329091a2d67727dab4c528c9acd90170091eaec1813849d8b23"
+      "bytes": 15128,
+      "sha256": "f97852ba418c2c8865efd77ba2f7babfcce369cd1d00c1e02268c8b7f377d06f"
     },
     {
       "path": "workspace/06_validation_return_requirements.md",
-      "bytes": 3771,
-      "sha256": "571dec6ddf6357a421b9e42a2791e3040b0e83f518cc7511d2a7f014d7d6c634"
+      "bytes": 4691,
+      "sha256": "5b82515b9b6e174f0b58603b8de1b9b95053dd55878f7e6ec56126ea23bcfea0"
     },
     {
       "path": "workspace/data_inventory.md",
@@ -372,6 +430,21 @@
       "path": "workspace/evidence/stage06_final_core_regression.xml",
       "bytes": 2868,
       "sha256": "69b9eae82983f3b02761c691b3aeea9e7fd6d504358f811b009b57b9459c09bd"
+    },
+    {
+      "path": "workspace/evidence/stage06_full_static_check.py",
+      "bytes": 4275,
+      "sha256": "e1bdbdf80312a73c8a5337c50caa4894dd7ad462c6cecff2822423805c506a10"
+    },
+    {
+      "path": "workspace/evidence/stage06_full_static_checks.json",
+      "bytes": 7664,
+      "sha256": "eb998c54917b06b930b8f678231d2983a751c228e477c988c2e16e5c1bc48742"
+    },
+    {
+      "path": "workspace/evidence/stage06_full_static_review.md",
+      "bytes": 3564,
+      "sha256": "210b8df2a8b825d8e5aca7e9a7f96529ed377369077c3c648dd55b3369b9989d"
     },
     {
       "path": "workspace/evidence/stage06_gpu_static_review.json",
@@ -420,8 +493,8 @@
     },
     {
       "path": "workspace/modeling_state.json",
-      "bytes": 6566,
-      "sha256": "5ff70cf656fcd12a036352f5d59283eb6fc99846c812403a1d5fac00fba857c4"
+      "bytes": 7140,
+      "sha256": "095cbf7cfed994802409e8631f49b79599f7c042987359b573c1cc8bf2395ea2"
     },
     {
       "path": "workspace/stale/06_implementation_rev001.md",
@@ -429,9 +502,19 @@
       "sha256": "8907d23b9c3c14353bf20946d2dbc01e35b33e5bd4aaa032ab9f8a54ed368d9f"
     },
     {
+      "path": "workspace/stale/06_implementation_rev002.md",
+      "bytes": 13383,
+      "sha256": "9799640c4f010329091a2d67727dab4c528c9acd90170091eaec1813849d8b23"
+    },
+    {
       "path": "workspace/stale/06_validation_return_requirements_rev001.md",
       "bytes": 3412,
       "sha256": "acf354aab7737079289ee6e747a2bb6c85e90ea572bd00524f14430713440774"
+    },
+    {
+      "path": "workspace/stale/06_validation_return_requirements_rev002.md",
+      "bytes": 3771,
+      "sha256": "571dec6ddf6357a421b9e42a2791e3040b0e83f518cc7511d2a7f014d7d6c634"
     }
   ]
 }

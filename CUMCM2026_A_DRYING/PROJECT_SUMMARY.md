@@ -1,12 +1,14 @@
 # 2026 国赛 A 题《药材的烘干问题》项目总结与服务器交接
 
-文档版本：A26-SUMMARY-v1 ｜ 更新日期：2026-09-10
+文档版本：A26-SUMMARY-v2 ｜ 更新日期：2026-09-11
 
-数学基线：**A26-04-v2** ｜ GPU 实现：**A26-06-GPU-v1**
+数学基线：**A26-04-v2** ｜ GPU 全量实现：**A26-06-FULL-v1 / 0.6.2**
 
-代码基线提交：[8b309d6c243f8e92d7ec612e95c601cd8dba9302](https://github.com/zhuoshou111/2025-A-Q5/commit/8b309d6c243f8e92d7ec612e95c601cd8dba9302)
+历史 GPU 基线提交：[8b309d6c243f8e92d7ec612e95c601cd8dba9302](https://github.com/zhuoshou111/2025-A-Q5/commit/8b309d6c243f8e92d7ec612e95c601cd8dba9302)；当前全量入口见本版本源码及 PACKAGE_MANIFEST.json。
 
-仓库目录：[2025-A-Q5 / CUMCM2026_A_DRYING](https://github.com/zhuoshou111/2025-A-Q5/tree/main/CUMCM2026_A_DRYING)。本文件是交接摘要，详细公式以 Stage04 为准，阶段状态以 `workspace/modeling_state.json` 为准；本次文档整理不改变模型、代码或阶段结论。
+仓库目录：[2025-A-Q5 / CUMCM2026_A_DRYING](https://github.com/zhuoshou111/2025-A-Q5/tree/main/CUMCM2026_A_DRYING)。详细公式以 Stage04 为准，阶段状态以 `workspace/modeling_state.json` 为准；本轮增加服务器全量调度与必要的证据链工程修复，未改变数学模型或推进 Stage07/08。
+
+**全量一条命令：** `python -u -m drying full-run --plan configs/server_full.json --out results/full/A26_FULL_001`。它自动衔接 CUDA 预检/测试、基础与二维参考、三级误差、8 个单因素变体、严格事件证据、条件导出和打包；默认预期67个去重主求解配置、14组比较。数量来自静态设计，服务器测试尚未执行。恢复在相同命令末尾加 `--resume`；每次调用计算预算48h、打包最多另300s，可能保留 PARTIAL/UNRESOLVED。详见 [全量运行指南](FULL_RUN.md)。以下首轮说明继续适用于旧 `pipeline`。
 
 ## 1. 当前已经做到哪里
 
@@ -213,7 +215,7 @@ python -m drying pack-return --runs results/runs --out results/stage06_return_mi
 python -m drying pack-return --runs results/runs --out results/stage06_return_full.zip --full
 ```
 
-收到结果后优先检查：GPU 实际求解与 CPU 参考一致性、Q1 早期表面层的空间收敛、Q2/Q3 和 Q4 的覆盖及严格事件证据、累计水分/有效热余额、Q23 同源输出、Q4 域外空白与表面列。之后再按授权开展全程 B/C 比较、S0/S1 与半径重建敏感性及物理解释。
+全量入口会自动尝试最小回传 ZIP，准确路径见其 `campaign_summary.json`。上述手动回传命令适用于旧首轮输出；全量任务请将 `--runs` 指向 `results/full/A26_FULL_001`，并使用新的 ZIP 文件名。收到结果后优先独立审查 GPU 一致性、Q1 早期层、严格事件与余额、Q23 同源输出和 Q4 域掩码，再解释自动产生的 B/C 差与敏感性。计算得到差值不代表一维假设已经验证。
 
 Stage07 仍须人工授权后执行；不能因服务器进程退出成功就自动标记验证通过或冻结模型。
 
@@ -229,6 +231,7 @@ Stage07 仍须人工授权后执行；不能因服务器进程退出成功就自
 | [workspace/modeling_state.json](workspace/modeling_state.json) | 阶段 Gate、活动产物、未解决事项 |
 | [workspace/data_inventory.md](workspace/data_inventory.md) | 原始附件结构、单位、覆盖与假设来源 |
 | [configs/server_first_round.json](configs/server_first_round.json) | 首轮四任务计划 |
+| [FULL_RUN.md](FULL_RUN.md)、[configs/server_full.json](configs/server_full.json) | 全量自动入口、预算、恢复与完整任务范围 |
 | [src/drying/cuda_backend.py](src/drying/cuda_backend.py) | CUDA 稀疏求解、后向误差及设备遥测 |
 | `src/drying/`、`tests/` | 求解与后处理源码，以及供服务器运行的测试 |
 | `data/raw/`、`workspace/evidence/` | 便携原件与带证据范围的历史/静态记录 |

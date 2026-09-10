@@ -140,7 +140,7 @@ def _stage05_isolated(root,manifest):
                 "formal_PDE":"NOT_RUN_BY_PREFLIGHT","stage07":"NOT_RUN"}
 
 
-def run_preflight(output=None,include_stage05=True,require_cuda=True):
+def run_preflight(output=None,include_stage05=True,require_cuda=True,cuda_requests_override=None):
     """Return JSON-serializable PASS/FAIL report; caller must honor FAIL.
 
     ``output`` optionally receives a new atomic JSON report. Missing packages,
@@ -203,6 +203,13 @@ def run_preflight(output=None,include_stage05=True,require_cuda=True):
                 if path.name=="server_first_round.json":
                     config_records.append(_pipeline_config(root,path,value))
                     continue
+                if isinstance(value,dict) and value.get("kind")=="CAMPAIGN_PLAN":
+                    from .campaign_plan import expand_campaign
+                    expanded=expand_campaign(value,root=root)
+                    config_records.append({"path":path.relative_to(root).as_posix(),
+                        "kind":"CAMPAIGN_PLAN","status":"PASS","file_sha256":_sha(path),
+                        "plan_fingerprint":expanded["plan_fingerprint"],"run_count":expanded["run_count"]})
+                    continue
                 if not isinstance(value,dict) or not {"route","question"}.issubset(value):
                     raise ValueError("Unexpected config JSON shape; expected explicit route/question RunConfig")
                 cfg=RunConfig.from_json(path)
@@ -220,6 +227,24 @@ def run_preflight(output=None,include_stage05=True,require_cuda=True):
                 config_records.append({"path":path.relative_to(root).as_posix(),"status":"FAIL","error":str(exc)})
                 report["failures"].append(f"Configuration {path.name}: {exc}")
         report["configs"]={"status":"PASS" if all(x["status"]=="PASS" for x in config_records) else "FAIL","files":config_records}
+    if cuda_requests_override is not None:
+        try:
+            if not isinstance(cuda_requests_override,list) or not cuda_requests_override:
+                raise ValueError("CUDA override must be a nonempty list")
+            selected=set()
+            for item in cuda_requests_override:
+                if not isinstance(item,dict) or set(item)!={"cuda_device","gpu_memory_mb"}:
+                    raise ValueError("CUDA override requires cuda_device/gpu_memory_mb only")
+                device,memory=item["cuda_device"],item["gpu_memory_mb"]
+                if (isinstance(device,bool) or not isinstance(device,int) or device<0 or
+                        isinstance(memory,bool) or not isinstance(memory,int) or memory<1):
+                    raise ValueError("CUDA override requires a nonnegative device and positive MiB")
+                selected.add((device,memory))
+            cuda_requests=selected
+            report["gpu"]["request_source"]="EXPLICIT_CAMPAIGN_HARDWARE"
+        except ValueError as exc:
+            report["failures"].append(str(exc))
+    report["gpu"]["requested_devices"]=[{"cuda_device":d,"gpu_memory_mb":m} for d,m in sorted(cuda_requests)]
     if require_cuda and not report["failures"]:
         if not cuda_requests:
             report["gpu"].update(status="FAIL",reason="No CUDA RunConfig found for CUDA-required server preflight")

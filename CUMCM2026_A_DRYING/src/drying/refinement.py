@@ -7,7 +7,7 @@ comparison categories, coverage, conditioning, or provenance are missing.
 """
 from __future__ import annotations
 from copy import deepcopy
-from dataclasses import replace
+from dataclasses import asdict, replace
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -150,30 +150,138 @@ def select_checkpoint(run_dir, trajectory, system, config, identity, before):
         "kind": "VERIFIED_INITIAL_STATE", "time": 0., "state_sha256": fingerprint(solver.y.tolist())}
 
 
+def _advance_checkpoint_bridge(solver, source_settings, local_settings, *, before, until,
+                               forced_nodes=(), wall_seconds, started, callback,
+                               persist_bridge, clock=None):
+    """Advance real accepted history in two phases under one finite budget.
+
+    The bridge uses the source configuration's approved time control. Only the
+    suffix after ``before`` uses the local event hmax. No state is copied from
+    an interpolant and the solver's accepted BDF history is never reset.
+    ``persist_bridge`` must save/verify the actual accepted endpoint before
+    the local phase can begin. Phase diagnostics are solver telemetry, not a
+    substitute for independently recomputed whole-trajectory balances.
+    """
+    clock = time.perf_counter if clock is None else clock
+    origin_accepted = int(solver.stats["accepted"])
+    max_steps = int(local_settings.max_steps)
+    phases = []
+
+    def failure(status, message=None):
+        return {"status": status, "t": solver.t, "failure": message,
+                "stats": solver.stats, "algorithm": solver.algorithm}
+
+    def phase(name, endpoint, settings, nodes):
+        phase_start = float(solver.t)
+        accepted_before = int(solver.stats["accepted"])
+        remaining_steps = max_steps - (accepted_before - origin_accepted)
+        remaining_wall = wall_seconds - (clock() - started)
+        record = {"phase": name, "start": phase_start, "end_target": float(endpoint),
+                  "hmax": settings.hmax, "requested_settings": asdict(settings),
+                  "wall_seconds_available": max(0., remaining_wall),
+                  "accepted_steps_available": max(0, remaining_steps),
+                  "accepted_steps": 0, "min_h": None, "max_h": 0.,
+                  "max_E": 0., "max_newton_residual": 0., "max_linear_residual": 0.,
+                  "balances": "NOT_RECOMPUTED_FROM_PHASE_TELEMETRY"}
+        phases.append(record)
+        phase_started = clock()
+
+        def accepted(t0, y0, t1, y1, info, residual):
+            h = float(t1 - t0)
+            record["accepted_steps"] += 1
+            record["min_h"] = h if record["min_h"] is None else min(record["min_h"], h)
+            record["max_h"] = max(record["max_h"], h)
+            for target, field in (("max_E", "E"), ("max_newton_residual", "residual"),
+                                  ("max_linear_residual", "linear")):
+                record[target] = max(record[target], float(info[field]))
+            callback(t0, y0, t1, y1, info, residual, phase=name)
+
+        if endpoint == solver.t:
+            result = failure("COMPLETED_INTERVAL")
+        elif remaining_steps <= 0:
+            result = failure("STEP_BUDGET_REACHED")
+        elif remaining_wall <= 0:
+            result = failure("WALL_BUDGET_REACHED")
+        else:
+            # Integrator.run counts its own call's accepted steps. Passing the
+            # remaining shared count prevents a second full budget at the phase
+            # boundary. Tolerances, backend/device and BDF history stay intact.
+            solver.cfg = replace(settings, max_steps=remaining_steps, wall_seconds=remaining_wall)
+            solver.h_next = min(solver.h_next, settings.hmax)
+            record["actual_settings"] = asdict(solver.cfg)
+            try:
+                result = solver.run(float(endpoint), callback=accepted, forced_nodes=nodes,
+                                    wall_seconds=remaining_wall)
+            except CudaBackendError as exc:
+                result = failure("GPU_BACKEND_FAILURE", str(exc))
+            except Exception as exc:
+                result = failure("EXECUTION_EXCEPTION", repr(exc))
+            finally:
+                # A checkpoint at the phase boundary records the configured
+                # strategy, not the temporary remaining-call resource caps.
+                # The phase record above retains the actual enforced caps.
+                solver.cfg = settings
+        record.update(status=result["status"], end=float(solver.t),
+                      elapsed_seconds=max(0., clock() - phase_started),
+                      accepted_steps_committed=int(solver.stats["accepted"]) - accepted_before,
+                      failure=result.get("failure"))
+        return result
+
+    result = phase("CHECKPOINT_BRIDGE", float(before), source_settings, [float(before)])
+    if result["status"] == "COMPLETED_INTERVAL":
+        if solver.t != before:
+            result = failure("EXECUTION_EXCEPTION", "BRIDGE_ENDPOINT_UNRESOLVED: no exact accepted endpoint")
+        else:
+            try:
+                phases[-1]["accepted_checkpoint"] = persist_bridge()
+            except Exception as exc:
+                result = failure("EXECUTION_EXCEPTION", "BRIDGE_CHECKPOINT_FAILED: " + repr(exc))
+                phases[-1]["checkpoint_failure"] = result["failure"]
+    if result["status"] == "COMPLETED_INTERVAL":
+        nodes = [float(t) for t in forced_nodes if before < t <= until]
+        result = phase("LOCAL_REINTEGRATION", float(until), local_settings, nodes)
+    else:
+        phases.append({"phase": "LOCAL_REINTEGRATION", "status": "NOT_RUN",
+                       "start": None, "end_target": float(until), "hmax": local_settings.hmax,
+                       "accepted_steps": 0, "accepted_steps_committed": 0,
+                       "reason": "bridge solve/checkpoint did not complete"})
+    result = dict(result)
+    result.update(phase_diagnostics=phases,
+                  accepted_this_call=int(solver.stats["accepted"]) - origin_accepted,
+                  wall_seconds=max(0., clock() - started),
+                  shared_budget={"wall_seconds": wall_seconds, "max_steps": max_steps,
+                                 "scope": "ONE_BRIDGE_AND_LOCAL_SUFFIX_INVOCATION"})
+    return result
+
+
 def _reintegrate_suffix(run_dir, out_dir, *, before, until, forced_nodes=(), hmax=None,
                         width=None, threshold=None, data_dir=None, system_factory=None,
                         wall_seconds=300.):
-    """Private transactional run creation from actual accepted checkpoint history."""
+    """Bridge from a real checkpoint, then solve the requested local suffix."""
+    run_started = time.perf_counter()
     from .execution import code_identity, system_identity, _factory_hash, environment
     src, config, manifest, system, old = _load_run(run_dir, data_dir, system_factory, check_live_core=True)
     out = Path(out_dir).resolve()
     if out.exists():
         raise FileExistsError(out)
-    if not np.isfinite(until) or until <= before or before < old.start_time or until > config.tmax:
+    if (not np.isfinite(before) or not np.isfinite(until) or until <= before or
+            before < old.start_time or until > config.tmax or
+            not np.isfinite(wall_seconds) or wall_seconds <= 0):
         raise RefinementError("REPORT_TIME_UNRESOLVED: reintegration outside finite authorized horizon")
     obj, cp_source = select_checkpoint(src, old, system, config, manifest["identity"], before)
     snapshot = obj["integrator"]
-    # Restore the settings actually present at the checkpoint. Only after the
-    # accepted history is restored apply the explicitly recorded event control.
+    # Restore the actual accepted history. The approved source time strategy
+    # first reaches the local interval; a distant checkpoint must not force
+    # every preceding step to use a submillisecond event step size.
     solver = Integrator(system, Settings(**snapshot["settings"]))
     solver.restore(snapshot)
+    if hmax is not None and (not np.isfinite(hmax) or hmax <= 0):
+        raise RefinementError("REPORT_TIME_UNRESOLVED: local hmax must be positive and finite")
     local_hmax = min(config.hmax, float(hmax)) if hmax is not None else config.hmax
     new_config = replace(config, hmax=local_hmax, h0=min(config.h0, local_hmax),
                          case_end_time=float(until), wall_seconds=float(wall_seconds))
-    solver.cfg = Settings.from_config(new_config)
-    solver.h_next = min(solver.h_next, local_hmax)
-    # Integrator.scale closes over self.cfg, so the unchanged state/error
-    # tolerances and the deliberately reduced local maximum are authoritative.
+    source_settings = Settings.from_config(config)
+    local_settings = Settings.from_config(new_config)
     code = code_identity()
     identity = {"config": new_config.fingerprint, "input": system.inputs.fingerprint,
                 "code": code["sha256"], "model_version": config.model_version, "dtype": "float64",
@@ -199,7 +307,13 @@ def _reintegrate_suffix(run_dir, out_dir, *, before, until, forced_nodes=(), hma
         "inherited_prefix": {"start": old.start_time, "end": start,
                              "source_config_fingerprint": config.fingerprint,
                              "checkpoint_hmax": snapshot["settings"]["hmax"]},
-        "reintegrated_suffix": {"start": start, "end_target": float(until), "hmax": local_hmax}}
+        "checkpoint_bridge": {"start": start, "end_target": float(before),
+                              "hmax": source_settings.hmax,
+                              "source_config_fingerprint": config.fingerprint,
+                              "strategy": "SOURCE_SETTINGS_REAL_ACCEPTED_REINTEGRATION"},
+        "reintegrated_suffix": {"start": float(before), "end_target": float(until), "hmax": local_hmax},
+        "budget": {"wall_seconds": float(wall_seconds), "max_steps": new_config.max_steps,
+                   "scope": "SHARED_BRIDGE_AND_LOCAL_SUFFIX_NOT_PER_PHASE"}}
     new_manifest = deepcopy(manifest)
     new_manifest.update(identity=identity, source=dict(code, snapshot_directory="source_snapshot"),
                         refinement=lineage)
@@ -222,7 +336,8 @@ def _reintegrate_suffix(run_dir, out_dir, *, before, until, forced_nodes=(), hma
     atomic_json(out/'environment.json',env)
     new_manifest["outputs"] = {"trajectory": "trajectory/index.json", "checkpoint": "checkpoint.json",
                                "metrics_file": "metrics.json", "event_file": "event.json", "result_files": [],
-                               "diagnostics_file": "diagnostics.json"}
+                               "diagnostics_file": "diagnostics.json",
+                               "phase_diagnostics_file": "phase_diagnostics.json"}
     new_manifest["summary"] = {"notes": "Checkpoint-reintegrated trajectory; inherited run balances are not current evidence.",
                                "diagnostics_status": "DIAGNOSTICS_UNRESOLVED"}
     atomic_json(out / "manifest.json", new_manifest)
@@ -236,17 +351,36 @@ def _reintegrate_suffix(run_dir, out_dir, *, before, until, forced_nodes=(), hma
                     {"inherited_accepted_history": cp_source, "source_identity": manifest["identity"]})
     accepted_count = 0
     step_log = (out / "steps.jsonl").open("w", encoding="utf-8")
-    def accept(t0, y0, t1, y1, info, residual):
+    def accept(t0, y0, t1, y1, info, residual, *, phase):
         nonlocal accepted_count
         writer.append(t1, y1)
-        step_log.write(json.dumps({k: v for k, v in info.items() if k != "absolute_history"}, allow_nan=False) + "\n")
+        logged = {k: v for k, v in info.items() if k != "absolute_history"}
+        logged["reintegration_phase"] = phase
+        step_log.write(json.dumps(logged, allow_nan=False) + "\n")
         accepted_count += 1
         # Event suffixes need a restart before each possible candidate substep.
         # Stream states in bounded chunks; checkpoint files are accepted history.
         save_checkpoint(out / "checkpoints" / f"accepted_{solver.stats['accepted']:09d}.json", solver, identity)
-    run_started=time.perf_counter()
+    def persist_bridge():
+        writer.flush()
+        checkpoint = out / "checkpoints" / "bridge_endpoint.json"
+        current_trajectory = Trajectory(out / "trajectory", verify=True)
+        if not np.array_equal(_accepted_state(current_trajectory, float(before)), solver.y):
+            raise RefinementError("BRIDGE_CHECKPOINT_INVALID: endpoint is not a persisted accepted state")
+        save_checkpoint(checkpoint, solver, identity,
+                        {"kind": "ACTUAL_ACCEPTED_BRIDGE_ENDPOINT", "source_identity": manifest["identity"],
+                         "source_checkpoint": cp_source, "source_settings": asdict(source_settings),
+                         "local_settings": asdict(local_settings)})
+        return {"kind": "ACTUAL_ACCEPTED_BRIDGE_ENDPOINT", "path": str(checkpoint),
+                "sha256": _file_hash(checkpoint), "time": float(solver.t),
+                "state_fingerprint": fingerprint(solver.y.tolist()),
+                "trajectory_fingerprint": fingerprint(current_trajectory.index)}
+
     try:
-        result = solver.run(float(until), callback=accept, forced_nodes=forced_nodes, wall_seconds=wall_seconds)
+        result = _advance_checkpoint_bridge(solver, source_settings, local_settings,
+            before=float(before), until=float(until), forced_nodes=forced_nodes,
+            wall_seconds=float(wall_seconds), started=run_started,
+            callback=accept, persist_bridge=persist_bridge)
     except CudaBackendError as exc:
         result = {"status": "GPU_BACKEND_FAILURE", "failure": str(exc), "t": solver.t, "stats": solver.stats}
     except Exception as exc:
@@ -259,6 +393,12 @@ def _reintegrate_suffix(run_dir, out_dir, *, before, until, forced_nodes=(), hma
                   linear_backend=solver.linear_backend_metadata(),
                   source_run=str(src), stage07="NOT_RUN")
     atomic_json(out / "metrics.json", result)
+    phase_diagnostics = result.get("phase_diagnostics", [])
+    atomic_json(out / "phase_diagnostics.json", {
+        "status": result["status"], "phases": phase_diagnostics,
+        "shared_budget": result.get("shared_budget"),
+        "scope": "ACCEPTED_STEP_SOLVER_TELEMETRY_NOT_WHOLE_PATH_BALANCE_VALIDATION",
+        "stage07": "NOT_RUN"})
     new_manifest["solver"]["status"] = result["status"]
     new_manifest['execution']['runtime_seconds']=time.perf_counter()-run_started
     new_manifest['execution']['linear_backend']=solver.linear_backend_metadata()
@@ -266,6 +406,13 @@ def _reintegrate_suffix(run_dir, out_dir, *, before, until, forced_nodes=(), hma
                                             0 if result['status']=='COMPLETED_INTERVAL' else 2)
     new_manifest["experiment"].update(status=result["status"], completed_at=datetime.now(timezone.utc).isoformat())
     new_manifest["refinement"]["new_accepted_steps"] = accepted_count
+    new_manifest["refinement"]["bridge_accepted_steps"] = sum(
+        p.get("accepted_steps_committed", 0) for p in phase_diagnostics if p["phase"] == "CHECKPOINT_BRIDGE")
+    new_manifest["refinement"]["local_accepted_steps"] = sum(
+        p.get("accepted_steps_committed", 0) for p in phase_diagnostics if p["phase"] == "LOCAL_REINTEGRATION")
+    new_manifest["refinement"]["phase_diagnostics"] = phase_diagnostics
+    new_manifest["refinement"]["bridge_checkpoint"] = next(
+        (p["accepted_checkpoint"] for p in phase_diagnostics if "accepted_checkpoint" in p), None)
     new_manifest["refinement"]["actual_restart_settings"] = snapshot["settings"]
     new_manifest["refinement"]["trajectory_fingerprint"] = fingerprint(Trajectory(out / "trajectory").index)
     atomic_json(out / "diagnostics.json", {"status": "DIAGNOSTICS_UNRESOLVED",
@@ -322,7 +469,7 @@ def refine_event(run_dir, out_dir, threshold=.15, width=.01, max_levels=8,
         prior = manifest.get("refinement", {})
         if (event["tR"] - event["tL"] <= width and
                 prior.get("method") == "ACCEPTED_CHECKPOINT_REINTEGRATION" and
-                prior.get("new_accepted_steps", 0) > 0 and
+                prior.get("local_accepted_steps", prior.get("new_accepted_steps", 0)) > 0 and
                 prior.get("target_width") is not None and prior["target_width"] <= width):
             break
         left, right = event["candidate_segment"]
@@ -628,10 +775,24 @@ def _validate_category(category, configs, manifests):
                 raise RefinementError(f"CATEGORY_INVALID: {category} requires prescribed ratio for {name}")
     if category == "event":
         widths = []
-        for m in manifests:
+        for cfg, m in zip(configs, manifests):
             r = m.get("refinement", {})
             if r.get("method") != "ACCEPTED_CHECKPOINT_REINTEGRATION" or r.get("new_accepted_steps", 0) < 1:
                 raise RefinementError("CATEGORY_INVALID: event evidence requires real reintegration")
+            if "phase_diagnostics" in r:
+                local = [p for p in r["phase_diagnostics"] if p.get("phase") == "LOCAL_REINTEGRATION"]
+                if (len(local) != 1 or local[0].get("status") != "COMPLETED_INTERVAL" or
+                        r.get("local_accepted_steps", 0) < 1 or
+                        local[0].get("accepted_steps_committed", 0) != r["local_accepted_steps"]):
+                    raise RefinementError("CATEGORY_INVALID: bridge alone is not local event reintegration")
+                hmax = r.get("local_hmax")
+                actual_hmax = local[0].get("max_h")
+                end = local[0].get("end")
+                if (any(not isinstance(v, (int, float)) or not np.isfinite(v) for v in (hmax, actual_hmax, end)) or
+                        hmax <= 0 or actual_hmax <= 0 or
+                        hmax != cfg.hmax or local[0].get("hmax") != cfg.hmax or
+                        actual_hmax > hmax + 64*abs(np.spacing(max(1., abs(end))))):
+                    raise RefinementError("CATEGORY_INVALID: local phase exceeds its recorded event hmax")
             widths.append(r.get("target_width"))
         if any(w is None or w <= 0 or w > .01 for w in widths) or any(not np.isclose(b, a/2) for a, b in zip(widths[:-1], widths[1:])):
             raise RefinementError("CATEGORY_INVALID: event widths must halve through at least three levels")

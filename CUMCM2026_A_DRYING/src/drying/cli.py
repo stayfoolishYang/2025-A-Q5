@@ -42,6 +42,10 @@ def main(argv=None):
     s=commands.add_parser('preflight'); s.add_argument('--tests',action='store_true'); s.add_argument('--output',default='results/preflight.json')
     s=commands.add_parser('run'); s.add_argument('--config',required=True); s.add_argument('--out',required=True); s.add_argument('--resume',action='store_true')
     s=commands.add_parser('pipeline'); s.add_argument('--plan',default='configs/server_first_round.json')
+    s=commands.add_parser('full-run',help='bounded full server campaign with restartable evidence collection')
+    s.add_argument('--plan',default='configs/server_full.json'); s.add_argument('--out',required=True)
+    s.add_argument('--resume',action='store_true'); s.add_argument('--plan-only',action='store_true')
+    s=commands.add_parser('_campaign-worker',help=argparse.SUPPRESS); s.add_argument('--request',required=True)
     s=commands.add_parser('summarize'); s.add_argument('run_dir')
     s=commands.add_parser('compare-q1'); s.add_argument('run_a'); s.add_argument('run_b'); s.add_argument('--out',required=True)
     s=commands.add_parser('refine-event'); s.add_argument('run_dir'); s.add_argument('--out',required=True); s.add_argument('--threshold',type=float,default=.15); s.add_argument('--width',type=float,default=.01); s.add_argument('--wall-seconds',type=float,default=3600)
@@ -56,7 +60,14 @@ def main(argv=None):
     args=p.parse_args(argv)
     try:
         result={}; code=0
-        if args.command=='preflight':
+        if args.command=='_campaign-worker':
+            from .campaign import _worker
+            return _worker(args.request)
+        elif args.command=='full-run':
+            from .campaign import run_campaign
+            result=run_campaign(args.plan,args.out,resume=args.resume,plan_only=args.plan_only)
+            code=result['exit_code']
+        elif args.command=='preflight':
             from .preflight import run_preflight
             result=run_preflight(output=args.output)
             if result.get('status')!='PASS': code=1

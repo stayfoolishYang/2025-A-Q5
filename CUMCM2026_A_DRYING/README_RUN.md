@@ -2,6 +2,8 @@
 
 项目全貌、阶段进度和证据边界见 [项目总结与服务器交接](PROJECT_SUMMARY.md)。
 
+**新增全量自动入口：** `python -u -m drying full-run --plan configs/server_full.json --out results/full/A26_FULL_001`。需要 NVIDIA GPU；自动预检/测试、主线与二维参考、三级误差加严、8 个敏感性变体、条件导出与打包。完整范围、恢复、预算和状态见 [FULL_RUN.md](FULL_RUN.md)。原 `pipeline` 继续只执行四个首轮任务。当前实现修订为 A26-06-FULL-v1，新增测试及全量数值运行尚未执行。
+
 
 这是 **A26-04-v2 / Stage06 / CUDA_REQUIRED** 的求解代码。当前GPU修订尚未执行数值测试，须在服务器先通过GPU预检和对照测试。B 为径向主线兼基准，C 为真正的轴对称二维参考；P 保留，H 未启用。Stage07、Stage08 尚未执行，所有本地计算均为开发证据。代码的可运行性、开发测试通过、某个物理时间窗口完成、严格达标以及模型独立验证是不同状态。
 
@@ -52,7 +54,7 @@ python -m drying run --config configs/C0_moving_short.json --out results/runs/EX
 python -m drying run --config configs/C1_short.json --out results/runs/EXP108_C1_short__cuda001
 ```
 
-`smoke`和 C 短时配置保留开发用途，不能因为在服务器运行就升级证据。完整 C1 的 Q23/Q4 配置也已提供：`configs/C1_Q23.json`、`configs/C1_Q4.json`；本轮不要求自动运行这两项长算。
+`smoke`和 C 短时配置保留开发用途，不能因为在服务器运行就升级证据。完整 C1 的 Q23/Q4 配置也已提供：`configs/C1_Q23.json`、`configs/C1_Q4.json`；新 `full-run` 会自动纳入这两项及其加严任务，旧首轮 `pipeline` 不包含它们。
 
 若已经执行流水线，不能再用上面相同输出路径从头运行。每次新运行使用新的 `__cuda002` 等后缀。恢复原运行必须使用原配置、原源码和原始输入：
 
@@ -100,7 +102,7 @@ certify FINAL_RUN --evidence REFRESHED_EVIDENCE_JSON --candidate CANDIDATE_JSON 
 
 ## 5. 候选导出及回读
 
-Q1仅在完成开发误差审阅后才能使用 `--q1-reviewed`。本轮20/40网格早期表面含水率差明显，**没有给予这一批准，也没有生成候选result1**。
+手动 Q1 导出仅在完成开发误差审阅后才能使用 `--q1-reviewed`。历史20/40网格早期表面含水率差明显，**没有给予这一批准，也没有生成候选result1**。新全量入口只在实际三级场误差和独立累计余额均合格后自动记录 Stage06 数值验收并导出候选，仍不代表 Stage07 独立验证。
 
 Q23/Q4须先得到当前轨迹对应的合格事件JSON，再调用：
 
@@ -120,7 +122,7 @@ python -m drying pack-return --runs results/runs --out results/stage06_return_fu
 
 先回传minimum包、`results/preflight.json`、`results/server_tests.xml`、`results/pipeline_summary.json`和`server_pipeline.log`。GPU硬件未核验/测试未通过时应先回传失败预检，不运行生产任务。minimum包含各运行manifest、配置、实际环境、指标、余额、事件和结果/回读记录；full另含接受轨迹、检查点、逐步日志及源码快照。失败和预算终止也须回传，不用删去失败记录来形成全成功列表。
 
-本仓库不包含大量本地轨迹、检查点或缓存；本地首轮摘要和真实测试记录在`workspace/evidence`，完整本地轨迹保留在原项目的`results/runs`。更细误差分析、B/C全程结构比较及物理解释的独立审查留给经人工授权的Stage07。
+本仓库不包含大量本地轨迹、检查点或缓存；本地首轮摘要和真实测试记录在`workspace/evidence`，完整本地轨迹保留在原项目的`results/runs`。全量入口自动收集更细误差、B/C差与敏感性记录；这些证据的独立审查、结构判断及物理解释留给经人工授权的Stage07。
 
 ## 7. 当前GPU修订的验收边界
 

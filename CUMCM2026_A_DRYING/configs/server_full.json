@@ -1,0 +1,35 @@
+{
+  "kind": "CAMPAIGN_PLAN",
+  "name": "A26_FULL",
+  "version": "A26-FULL-v1",
+  "budget": {
+    "session_wall_seconds": 172800,
+    "tests_timeout_seconds": 3600,
+    "postprocess_wall_seconds": 1200,
+    "event_wall_seconds": 3600,
+    "max_run_attempts": 3,
+    "event_max_levels": 8,
+    "report_rounds": 3,
+    "comparison_max_points": 200000,
+    "comparison_time_levels": 6
+  },
+  "hardware": {
+    "linear_backend": "CUDA",
+    "cuda_device": 0,
+    "gpu_memory_mb": 2048,
+    "memory_mb": 2048
+  },
+  "base_configs": [
+    "configs/smoke.json",
+    "configs/B_Q1.json",
+    "configs/B_Q1_nr40.json",
+    "configs/B_Q1_nr80.json",
+    "configs/B_Q23_S0.json",
+    "configs/B_Q4_S0.json",
+    "configs/C0_fixed_short.json",
+    "configs/C0_moving_short.json",
+    "configs/C1_short.json",
+    "configs/C1_Q23.json",
+    "configs/C1_Q4.json"
+  ]
+}

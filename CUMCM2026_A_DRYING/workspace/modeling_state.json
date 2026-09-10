@@ -62,7 +62,7 @@
   "open_issues": {
     "blocking": [],
     "important": [
-      "A26-06-GPU-v1 implements the user-required CUDA backend on unchanged A26-04-v2. Gate06 CONDITIONAL_PASS pending server GPU preflight/tests. No local numeric run, pytest, device probe or installation for this revision; server execution remains user-controlled.",
+      "A26-06-FULL-v1 adds the bounded CUDA full-run campaign on A26-04-v2: 67 statically expected unique main configs, refinement, 14 comparisons, 8 OAT variants, conditional exports and return pack. Current GPU/full-run tests and numerical execution NOT_RUN; Gate06 CONDITIONAL_PASS pending server acceptance. See FULL_RUN.md.",
       "B作为条件主线兼基准，题面rho仅通过a=rho*cp用于有效热方程；有效气固映射可算，真实平衡、完整能量和独立场验证仍未完成。",
       "P严格湿密度组合不相容：固定静止干骨架约束冲突；Q4积分必要下界R>=1.2112029565383968cm，首次违反观测为70200s/19.5h，不是干燥事件。",
       "P方向KEEP_IN_RESERVE，不进入当前主求解链；primary_candidate与baseline同为B_EMPIRICAL_RADIAL，不复制B或伪造第三条路线。",
@@ -128,6 +128,16 @@
       "mathematics": "A26-04-v2_UNCHANGED",
       "execution": "STATIC_ONLY_GPU_TESTS_NOT_RUN",
       "user_instruction": "Require GPU; numerical work on server only"
+    },
+    {
+      "time": "2026-09-10T17:07:36.218396+00:00",
+      "event": "STAGE_06_FULL_ENTRYPOINT_REVISION",
+      "gate": "CONDITIONAL_PASS",
+      "implementation_revision": "A26-06-FULL-v1",
+      "mathematics": "A26-04-v2_UNCHANGED",
+      "execution": "STATIC_ONLY_TESTS_AND_NUMERICS_NOT_RUN",
+      "user_instruction": "Add a full automatic server entrypoint and update the authorized GitHub repository; no local numerical runs",
+      "downstream_validation": "07_08_NOT_RUN_AND_UNFROZEN"
     }
   ]
 }

@@ -2,11 +2,9 @@
 
 ## 1. Implementation Scope
 
-实施基线：A26-04-v2；实现修订：A26-06-FULL-v1 / 0.6.2，继承 GPU-v1。当前用户要求“增加一个全量自动运行的入口然后再更新仓库”。新增 full-run 调度、误差/事件自动链、比较和回传；数学及数值验收阈值不变。所有新GPU探测、数值测试、项目运行均NOT_RUN，本机只做静态检查。用户在服务器运行，历史本地证据不能改称服务器证据。原GPU-v1阶段文档已按字节存档到stale/*_rev002.md。
+实施基线：A26-04-v2；实现修订：A26-06-GPU-v1。当前用户新增要求“改成需要gpu的”。采用NVIDIA CUDA12稀疏线性求解；本轮所有GPU探测、数值测试与求解均NOT_RUN。已实现可移植Python求解包、单元/数值开发测试、运行与恢复、重建事件及条件导出。用户最新明确“交给服务器跑”，因此停止新增本地数值执行；交付源码和命令，由用户在服务器运行。历史本地试跑保留，不能改称服务器证据。
 
 ### Execution / Reasoning Metadata
-
-当前全量修订复用3个现有有界工作代理：计划/配置、分析与数值证据、结构比较与编排测试，父代理负责CLI/预检/编排/官方文档与发布。各文件独占写入，跨模块静态审查发现并处理缓存依赖、子进程退出、初始化断点、事件覆盖和检查点桥接问题；详见evidence/stage06_full_static_review.md。以下GPU-v1元数据保留原先范围，不能当作本轮模型后端身份或数值测试证明。
 
 - Operating Mode: PERFORMANCE；Budget Mode: PERFORMANCE。
 - Primary Model: 当前父任务后端身份未独立核验；不宣称已切换父任务模型。
@@ -22,8 +20,6 @@
 用户明确确认“以Stage05修订后的A26-04-v2作为Stage06实施基线”。Stage04 SHA-256为`29ea5f37f9e50dae9f5d7f7515276394d2215fdc8f0d0b79c6d0c91eccd437d4`；权威规格未改。Gate05为CONDITIONAL_PASS；人工确认独立记录在Stage05交接末尾。B_EMPIRICAL_RADIAL兼基准及主线；C_AXISYMMETRIC_REFERENCE保留；P为KEEP_IN_RESERVE，H不启用。
 
 ## 3. Code Architecture
-
-本轮新增 campaign_plan（纯配置展开/去重）、campaign（有界子进程、锁、检查点/证据缓存）、campaign_analysis（实测误差/事件/余额/条件导出）、campaign_comparison（共同实际半径上的B/C及敏感性度量）。cli 接入 full-run 与内部worker，preflight识别独立CAMPAIGN_PLAN及选定设备；reporting回传排除锁文件。严格事件重积分桥接修复只改变实现中的步长作用区间，仍从真实接受检查点出发，不使用插值历史。所有新增/变动测试留服务器执行。
 
 `src/drying`包含config、inputs、physics、spatial、manufactured、integrator、trajectory、diagnostics、reconstruction、events、refinement、export、execution、resources、preflight、reporting、cli。`python -m drying`为统一入口。父代理独占集成、时间推进和官方状态；工作代理分别独占空间核心/制造解/加严模块，以及输入/输出/预检模块，详见协调合同。新增cuda_backend与GPU服务器测试，未新增调度平台。CPU_REFERENCE为数值对照用途，生产禁用。
 
@@ -82,7 +78,7 @@ float64；自定义变步BDF2/BE；稀疏解析Jacobian；GPU版B/C均调用CuPy
 
 ## 14. Uncertainty and Scenario Implementation
 
-S0/S1、S0平台窗口2.5/3/3.5h、线性/PCHIP和显式HOLD均为实际开关。全量计划包含8个有限单因素变体，未建立全因子组合或自动HOLD外延。尚未执行这些变体。未杜撰测量误差分布、独立内部场观测或统计置信区间。
+S0/S1、S0平台窗口2.5/3/3.5h、线性/PCHIP和显式HOLD均为实际开关。未自动跑完整敏感性矩阵。未杜撰测量误差分布、独立内部场观测或统计置信区间。
 
 ## 15. Fixed-Policy and Recourse Implementation
 
@@ -114,8 +110,6 @@ S0/S1、S0平台窗口2.5/3/3.5h、线性/PCHIP和显式HOLD均为实际开关�
 
 ## 20. Server Execution Guide
 
-新增完整入口为 `python -u -m drying full-run --plan configs/server_full.json --out results/full/A26_FULL_001`，恢复加 `--resume`；展开计划可加 `--plan-only`。详见根目录FULL_RUN.md。默认静态预期67个去重主求解配置、14组比较；事件与后处理另计。计算会话48h、每运行每次调用最多3次尝试，另有最多300s回传收尾。原单次RunConfig预算保留。源码/输入/计划变动拒绝续接；缓存检查实际字节及前序依赖，C参考时间变动也使相关B分析重做。任一事件/误差/覆盖未解决时不制造候选表。结构度量不是Stage07结论。
-
 完整可复制命令见项目根`README_RUN.md`。在服务器Python3.11虚拟环境安装requirements及editable包，执行`python -u -m drying pipeline --plan configs/server_first_round.json`。先前置检查，再顺序计算；不能覆盖已有运行目录。恢复用原run下config.json和`--resume`。NVIDIA CUDA12 GPU必需、默认可见设备0；主存和CuPy池各2GiB预算，各任务有限上限；不虚构远程连接/队列提交。
 
 ## 21. Validation Return Package
@@ -142,4 +136,4 @@ GATE 06: CONDITIONAL PASS
 
 条件：服务器CUDA/FP64预检、GPU测试和短时运行通过。未核实的依赖/运行错误需先处理；本轮不在本地执行。
 
-STATUS: READY_FOR_SERVER_FULL_RUN
+STATUS: READY_FOR_SERVER_GPU_PREFLIGHT

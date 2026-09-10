@@ -84,7 +84,7 @@ def pack_return(root,out,full=False):
     out.parent.mkdir(parents=True,exist_ok=True)
     files=[]
     for p in sorted(root.rglob('*')):
-        if not p.is_file() or p.resolve()==out or p.name.endswith('.tmp'): continue
+        if not p.is_file() or p.resolve()==out or p.name.endswith('.tmp') or p.name=='.campaign.lock': continue
         rel=p.relative_to(root)
         if not full and any(x in rel.parts for x in ['trajectory','checkpoints','source_snapshot','__pycache__']): continue
         if not full and p.name in ['checkpoint.json','steps.jsonl']: continue

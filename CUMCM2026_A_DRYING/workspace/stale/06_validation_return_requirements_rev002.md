@@ -2,8 +2,6 @@
 
 ## 1. Minimum Return Package
 
-当前实现A26-06-FULL-v1，全量调用合同见根目录FULL_RUN.md。自动最小包位于campaign目录同级，例如results/full/A26_FULL_001_return_001.zip；同时回传最新campaign_summary.json与外部全量/恢复日志。包内含expanded_plan、campaign_state、每调用测试XML/日志、主运行身份/指标/观察、analysis动作结果及实际候选。它是打包开始时快照，包内打包动作可仍为RUNNING；最终打包结果看包外最新汇总。自动包失败时保留RETURN_PACKAGE_UNRESOLVED，不把交付标为全成功。
-
 GPU修订验收仍NOT_RUN。交回服务器CUDA预检、results/server_tests.xml，以及每次真实运行manifest.json、config.json、environment.json及所有environment_attempt_NNN.json、metrics.json、diagnostics.json、run.log；加上前置检查/测试结果、pipeline_summary、事件扫描、误差分类比较、候选/回读清单。未产生的内容明确写NOT_RUN/UNRESOLVED及原因。
 
 ### Execution / Reasoning Metadata
@@ -31,8 +29,6 @@ Q1需1800s全覆盖、题面指定点、轴心/真实表面早期层及至少20/
 记录GPU型号/可见编号、驱动/runtime/CuPy、float64、成功GPU线性求解次数、传输字节和同步计时；GPU_BACKEND_FAILURE禁止CPU自动后备。记录退出码、精确状态、最后接受物理时刻、实际墙钟、拒步/失败原因、最后有效检查点和源身份。WALL_BUDGET_REACHED/STEP_BUDGET_REACHED、INPUT_HORIZON_REACHED、NO_EVENT、EVENT_UNRESOLVED和NUMERICAL_FAILURE分开。不得把终端等待结束当求解失败，也不得把预算停止写成完整干燥。
 
 ## 7. Expected File Locations
-
-全量运行使用results/full/<campaign>/runs、run_configs、logs/invocation_NNN、operations、analysis；候选位置从campaign_summary.case_results读取。全量任务不会覆盖旧results/runs或原模板。resume复用合法完成证据、保留每次尝试和未解析原因；缺检查点的初始化遗留目录保留后另开新尝试。
 
 运行在`results/runs/<run_id>/`；预检为`results/preflight.json`；流水线汇总`results/pipeline_summary.json`；候选在该run下独立候选目录（只有合格时创建）；细化目录由--out指定且不得已存在。minimum/full压缩包由`python -m drying pack-return`生成，详见README_RUN。
 

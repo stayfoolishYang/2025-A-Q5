@@ -119,3 +119,40 @@ def test_cuda_probe_incomplete_or_nonpass_metadata_cannot_be_promoted(tmp_path,m
     monkeypatch.setattr(module,"_probe_cuda",lambda *args,**kwargs:metadata)
     report=module.run_preflight(include_stage05=False)
     assert report["status"]=="FAIL" and report["gpu"]["status"]=="FAIL"
+
+
+def test_campaign_manifest_is_not_parsed_as_runconfig(tmp_path,monkeypatch):
+    root=portable_copy(tmp_path);monkeypatch.setattr(module,"ROOT",root)
+    for path in (REAL_ROOT/"configs").glob("*.json"):
+        shutil.copy2(path,root/"configs"/path.name)
+    report=module.run_preflight(include_stage05=False,require_cuda=False)
+    assert report["status"]=="PASS",report["failures"]
+    plan=next(r for r in report["configs"]["files"] if r.get("kind")=="CAMPAIGN_PLAN")
+    assert plan["run_count"]==67
+    assert plan["path"]=="configs/server_full.json"
+
+
+def test_campaign_gpu_override_probes_selected_device_not_unused_source_device(tmp_path,monkeypatch):
+    root=portable_copy(tmp_path);monkeypatch.setattr(module,"ROOT",root)
+    calls=[]
+    def fail_probe(device_id,memory_mb):
+        calls.append((device_id,memory_mb))
+        raise RuntimeError("TEST_ONLY selected-device failure")
+    monkeypatch.setattr(module,"_probe_cuda",fail_probe)
+    report=module.run_preflight(include_stage05=False,
+        cuda_requests_override=[{"cuda_device":1,"gpu_memory_mb":4096}])
+    assert calls==[(1,4096)]
+    assert report["status"]=="FAIL"
+    assert report["gpu"]["request_source"]=="EXPLICIT_CAMPAIGN_HARDWARE"
+
+
+@pytest.mark.parametrize("override",[[],{},[{"cuda_device":True,"gpu_memory_mb":2048}],
+    [{"cuda_device":0,"gpu_memory_mb":0}],[{"cuda_device":0,"gpu_memory_mb":2048,"extra":1}]])
+def test_campaign_gpu_override_invalid_shape_blocks_probe(tmp_path,monkeypatch,override):
+    root=portable_copy(tmp_path);monkeypatch.setattr(module,"ROOT",root)
+    def forbidden(*args,**kwargs):
+        raise AssertionError("Invalid override must not reach device probe")
+    monkeypatch.setattr(module,"_probe_cuda",forbidden)
+    report=module.run_preflight(include_stage05=False,cuda_requests_override=override)
+    assert report["status"]=="FAIL"
+    assert report["gpu"]["status"]=="NOT_RUN"
