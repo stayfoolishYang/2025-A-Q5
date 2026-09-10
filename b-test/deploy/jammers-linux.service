@@ -1,0 +1,19 @@
+[Unit]
+Description=Jammers offline simulation service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/.local/share/jammers-linux
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 %h/.local/share/jammers-linux/start.py --host 127.0.0.1 --data-dir %h/.local/state/jammers-linux
+Restart=on-failure
+RestartSec=2
+TimeoutStopSec=20
+KillSignal=SIGTERM
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target
