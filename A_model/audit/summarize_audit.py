@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from solver.fvm_cpu import solve, geometry
 from physics.boundary import Boundary
+from physics.material import MODEL_Q4
 
 dest=Path(__file__).resolve().parent
 m=json.loads((dest/'results.json').read_text(encoding='utf-8'))
@@ -21,7 +22,7 @@ stats=dict(last_hour_samples=len(late),last_hour_mean=late.mean(0).tolist(),
 _,v=geometry(81)
 stats['independent_budget_output1s']={}
 for name,ale in [('moving_material',False),('moving_eulerian',True)]:
-    data,meta=solve(model=3,moving=True,ale=ale,n=81,dt=.5,interval=1.,end=60*3600.)
+    data,meta=solve(model=MODEL_Q4,moving=True,ale=ale,tail='last',n=81,dt=.5,interval=1.,end=60*3600.)
     C=data[:,83:]; avg=2*(C@v)
     flux=-2*8e-7/data[:,1]*(C[:,-1]-b.ambient(data[:,0])[:,1])
     mismatch=(avg[-1]-2.55-np.trapz(flux,data[:,0]))/2.55

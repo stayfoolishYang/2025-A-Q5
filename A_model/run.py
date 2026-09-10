@@ -5,6 +5,7 @@ import json
 import time
 import numpy as np
 from solver.fvm_cpu import solve
+from physics.material import MODEL_Q1, MODEL_Q23, MODEL_Q4
 
 ROOT = Path(__file__).resolve().parent
 
@@ -17,7 +18,7 @@ def main():
     outdir=ROOT/'results'; outdir.mkdir(exist_ok=True)
     for q in args.questions:
         start=time.perf_counter()
-        out,meta=solve(model=1 if q==1 else 4 if q==4 else 2, moving=q==4,n=args.n,dt=args.dt,
+        out,meta=solve(model=MODEL_Q1 if q==1 else MODEL_Q4 if q==4 else MODEL_Q23, moving=q==4,n=args.n,dt=args.dt,
                        end=1800 if q==1 else 10800 if q==2 else 432000,interval=1 if q<=2 else 60,event=q>=3,
                        ale=q!=4, tail='mean' if q==4 else 'last')
         meta['wall_seconds']=time.perf_counter()-start

@@ -1,8 +1,11 @@
 """Write a release manifest once, or verify it without modifying frozen files."""
 from pathlib import Path
 import argparse,hashlib,json
+import sys
 import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT))
+from validation.q4_contract import load_current_q4
 MANIFEST=ROOT/'results/q4_freeze_manifest.json'
 
 def digest(path):
@@ -13,9 +16,11 @@ def digest(path):
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--write',action='store_true');args=parser.parse_args()
-    meta=json.loads((ROOT/'results/q4.json').read_text());d=np.load(ROOT/'results/q4.npz')['data']
+    d,meta=load_current_q4()
     assert meta['ale'] is False and meta['moving'] is True and meta['tail']=='mean'
     assert meta['n']==81 and meta['dt']==.5 and meta['model']==4
+    assert meta['scheme']=='be' and meta['interpolation']=='pchip'
+    assert meta['mode']==0 and meta['scales']==[1.,1.,1.,1.]
     assert meta['balance_quantity']=='material_integral_uniform_dry_density'
     assert meta['max_cumulative_balance_relative']<1e-8
     assert d[-1,0]==meta['event_s'] and np.max(d[-1,83:])<.15
@@ -23,21 +28,35 @@ def main():
     for name in ('material_last','material_nominal'):
         other=np.load(ROOT/f'results/q4_scenarios/{name}.npz')['data']
         assert np.array_equal(d[d[:,0]<=14400],other[other[:,0]<=14400])
-    if args.write:
-        paths=['run.py','report.py','Q4_FREEZE.md','STATUS.md','README.md','physics/material.py',
+    paths=['run.py','report.py','Q4_FREEZE.md','STATUS.md','README.md','physics/material.py',
             'physics/boundary.py','solver/fvm_cpu.py','experiments/q4_release.py','export/prepare_outputs.py',
             'export/workbooks.mjs','validation/validate_exports.py','validation/freeze_q4.py',
+            'validation/q4_contract.py','tests/test_solver.py','results/tests.json','requirements.txt',
+            'experiments/q4_validation.py','experiments/run_experiments.py',
+            'results/q4_validation.json','results/q4_validation_provenance.json',
+            'results/q4_sensitivity.csv','results/q4_convergence.csv',
+            'validation/endface_benchmark.py','validation/端面验证.md','results/endface_summary.json',
             'data/boundary.csv','data/radius.csv','data/manifest.json','data/templates/result4.xlsx',
             'results/q4.npz','results/q4.json','results/result4.xlsx','results/table6.csv',
             'results/q4_radius_output.csv','results/q4_ablation.csv','results/q4_release_experiments.json',
             'results/export_validation.json','results/求解报告.md','results/index.html']
-        paths += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'results/q4_scenarios').glob('*')) if p.is_file()]
-        paths += [f'results/figures/{name}.{ext}' for name in ('q4_drying','q4_scenarios','q4_boundary','ablation') for ext in ('png','svg')]
-        obj=dict(version='q4-material-mean-v1',date='2026-09-10',event_h=meta['event_h'],
+    paths += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'results/q4_scenarios').glob('*')) if p.is_file()]
+    paths += [f'results/figures/{name}.{ext}' for name in ('q4_drying','q4_scenarios','q4_boundary','ablation','convergence','q4_sensitivity') for ext in ('png','svg')]
+    records=json.loads((ROOT/'results/q4_validation.json').read_text())
+    paths += [f'results/q4_validation_states/{r["name"]}.npz' for r in records]
+    paths += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'results').glob('endface_*')) if p.suffix in ('.json','.csv','.npz','.png','.svg')]
+    paths=sorted(set(paths))
+    proof=json.loads((ROOT/'results/q4_validation_provenance.json').read_text())
+    for p,sha in proof['code_sha256'].items():assert digest(ROOT/p)['sha256']==sha,p
+    assert len(records)==24
+    if args.write:
+        obj=dict(version='q4-material-mean-v2',date='2026-09-10',event_h=meta['event_h'],
             assumptions='Uniform material shrinkage; mean tail; appendix rho is effective thermal density',
             files={p:digest(ROOT/p) for p in paths})
         MANIFEST.write_text(json.dumps(obj,ensure_ascii=False,indent=2),encoding='utf-8')
     obj=json.loads(MANIFEST.read_text(encoding='utf-8'))
+    assert obj['version']=='q4-material-mean-v2'
+    assert set(paths).issubset(obj['files']), 'Required v2 evidence missing from manifest'
     for p,expected in obj['files'].items():assert digest(ROOT/p)==expected,p
     print(json.dumps(dict(version=obj['version'],files_verified=len(obj['files']),
         event_h=meta['event_h'],scenario_prefix_identity=True,status='passed'),indent=2))

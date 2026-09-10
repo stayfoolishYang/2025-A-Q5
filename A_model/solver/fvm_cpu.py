@@ -1,7 +1,7 @@
 """Nodal cylindrical FVM, conservative ALE, implicit Picard and BE/BDF2."""
 import numpy as np
 from numba import njit
-from physics.material import properties, moisture_faces
+from physics.material import properties, moisture_faces, validate_model, MODEL_Q23, MODEL_Q4
 from physics.boundary import Boundary
 
 @njit(cache=True)
@@ -123,8 +123,13 @@ def integrate(n, dt, ambient, radius, model, mode, scales, omega, bdf2, ale, str
             count += 1
     return output[:count], nsteps, T, C, T, C, maxit, residual, balance
 
-def solve(model=2, moving=False, n=81, dt=1., end=432000., interval=60., event=True,
-          scheme='be', interpolation='pchip', tail='last', mode=0, scales=None, omega=1., ale=True):
+def solve(model=MODEL_Q23, moving=False, n=81, dt=1., end=432000., interval=60., event=True,
+          scheme='be', interpolation='pchip', tail=None, mode=0, scales=None, omega=1., ale=None):
+    validate_model(model)
+    # Q4 defaults follow the current material/mean formulation; historical
+    # Eulerian runs must explicitly request ale=True and their boundary tail.
+    ale = model != MODEL_Q4 if ale is None else ale
+    tail = ('mean' if model == MODEL_Q4 else 'last') if tail is None else tail
     if n < 3 or dt <= 0 or abs(interval/dt-round(interval/dt)) > 1e-9:
         raise ValueError('Invalid grid or sampling interval')
     scales = np.ones(4) if scales is None else np.asarray(scales, dtype=float)

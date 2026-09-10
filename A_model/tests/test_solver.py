@@ -8,7 +8,8 @@ from scipy.optimize import brentq
 from scipy.special import j0, j1
 from scipy.integrate import quad
 from solver.fvm_cpu import assemble, thomas, solve
-from physics.material import moisture_faces
+from physics.material import moisture_faces, properties, MODEL_Q4
+from validation.q4_contract import require_current_q4
 
 def main():
     n = 41
@@ -45,11 +46,31 @@ def main():
     # Previously this path silently returned an unchecked zero.
     material_checks = {}
     for scheme in ('be', 'bdf2'):
-        _, check = solve(model=3, moving=True, ale=False, n=41, dt=2.,
+        _, check = solve(model=MODEL_Q4, moving=True, ale=False, n=41, dt=2.,
                          end=14400., interval=60., event=False, scheme=scheme)
         assert check['balance_quantity'] == 'material_integral_uniform_dry_density'
         assert check['max_cumulative_balance_relative'] < 1e-8
         material_checks[scheme] = check['max_cumulative_balance_relative']
+    # Invalid identifiers must never silently select the Q4 formula.
+    for bad in (0, 3, 5, 999):
+        for function in (properties, moisture_faces):
+            try:
+                function(np.full(3,28.),np.full(3,2.55),bad,0,np.ones(4))
+            except ValueError:
+                pass
+            else:
+                raise AssertionError(f'{function} accepted invalid model {bad}')
+    _, default_q4 = solve(model=MODEL_Q4,moving=True,n=21,dt=2.,end=1800.,event=False)
+    assert default_q4['ale'] is False and default_q4['tail']=='mean'
+    # A stale Eulerian JSON must be rejected by the export/report contract.
+    for patch in ({'ale':True},{'tail':'last'},{'model':3},{'moving':False},{'mode':1},{'scales':[1.2,1.,1.,1.]}):
+        stale=dict(default_q4);stale.update(patch)
+        try:
+            require_current_q4(stale)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f'Stale primary metadata accepted: {patch}')
     # Independent adaptive quadrature validates nonlinear face transmissibility.
     quadrature_error = 0.
     for c1,c2 in ((.05,.1),(.1,.4),(2.,2.55)):

@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {FileBlob,SpreadsheetFile} from '@oai/artifact-tool';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
@@ -16,6 +17,16 @@ if(mode==='templates'){
 }else{
   const books=JSON.parse(await fs.readFile(path.join(out,'workbooks.json'),'utf8'));
   for(const book of books.filter(b=>!process.argv[3] || b.q===Number(process.argv[3]))){
+    if(book.q===4){
+      if(!book.source_sha256) throw new Error('Regenerate the Q4 payload with current model checks.');
+      for(const [name,expected] of Object.entries(book.source_sha256)){
+        const actual=createHash('sha256').update(await fs.readFile(path.join(out,name))).digest('hex');
+        if(actual!==expected) throw new Error(`Stale Q4 payload: ${name} changed after preparation.`);
+      }
+      const meta=JSON.parse(await fs.readFile(path.join(out,'q4.json'),'utf8'));
+      if(meta.model!==4 || meta.ale!==false || meta.moving!==true || meta.tail!=='mean')
+        throw new Error('Q4 primary must use material coordinates and mean tail.');
+    }
     const wb=await SpreadsheetFile.importXlsx(await FileBlob.load(path.join(root,'data','templates',`result${book.q}.xlsx`)));
     for(const spec of book.sheets){
       const sheet=wb.worksheets.getItem(spec.name),rows=spec.rows,cols=rows[0].length;

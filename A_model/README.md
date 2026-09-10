@@ -1,6 +1,6 @@
 # 2026 A题：药材烘干
 
-**Q4已冻结：材料坐标＋末小时均值平台，51.0913 h。** 末值50.8235 h、名义平台51.0899 h保留为情景。新版result4.xlsx、主图、表6与Q4消融表已同步。见[冻结说明](Q4_FREEZE.md)和[当前阶段](STATUS.md)。Q1—Q3保留原结果，暂不上8卡UQ。
+**Q4工程条件模型v2：随体归一化坐标＋末小时均值平台，51.0913 h。** 末值50.8235 h、名义平台51.0899 h保留为情景。主流水线、24条新版收敛/敏感性实验、端面对照及防回退检查均已同步。见[版本说明](Q4_FREEZE.md)和[当前阶段](STATUS.md)。Q1—Q3保留原结果，暂不上8卡UQ。
 
 四问完整求解、有限体积误差验证和CUDA批量对照。入口结果见 [求解报告](results/求解报告.md)、[图表导航](results/index.html)。原仓库2025题保持原状。
 
@@ -22,7 +22,7 @@
 
 `run.py --questions 4 --n 81 --dt 0.5`仅重算Q4，默认材料坐标、均值平台。完整冻结版对照用`experiments/q4_release.py`生成；随后运行prepare_outputs.py、`workbooks.mjs export 4`及report.py。Q1/Q2每1 s输出，Q3/Q4每60 s及最后事件时刻输出。数组保留全精度；Excel四位小数。Q4超出当时表面的物理半径列留空，独立末列表面值随R(t)移动，实际半径见q4_radius_output.csv。
 
-`experiments/run_experiments.py`及experiments.json保留为旧Eulerian基线的96组实验。当前Q4对照单独保存在q4_release_experiments.json，避免混用版本。旧收敛/灵敏度图仅为历史证据，当前报告不引用它们验证新模型。
+`experiments/run_experiments.py`默认实算当前Q4的收敛、BDF2、插值与敏感性，保存q4_validation.json/csv及轨迹；加`--legacy`才调用旧96组。旧experiments.json明确保留为历史。当前消融保存在q4_release_experiments.json，convergence/q4_sensitivity图已更新为本版。统一ID在physics/material.py，非法编号报错。
 
 ## 文件职责
 
@@ -31,7 +31,9 @@
 - `solver/fvm_cpu.py`：FVM、三对角、Picard、BE/BDF2、ALE、事件定位、几何积分审计。
 - `solver/gpu_batch.py`：FP64 PyTorch多样本批量Q3、与CPU同离散全轨迹终态比较。
 - `tests/test_solver.py`：SciPy线性求解对照、圆柱解析特征模态、几何常数场、Q1物理与守恒检查。
-- `experiments/run_experiments.py`：网格、步长、插值、松弛系数、消融、±20%单参数、24样本LHS。
+- `experiments/run_experiments.py`：默认当前Q4的网格、步长、插值、BDF2与±20%单参数；`--legacy`为旧96组。
+- `validation/q4_contract.py`：主结果模型与NPZ一致性要求，供报告/导出共同检查。
+- `validation/endface_benchmark.py`：二维轴对称端面对照，不覆盖一维主结果。
 - `export/`：采样、四位小数、按模板输出四个工作簿。
 - `report.py`：题目表1—6、数值报告、SVG/PNG和HTML。
 
@@ -45,7 +47,7 @@ Linux服务器每卡运行一个独立进程，例如卡0：
 CUDA_VISIBLE_DEVICES=0 python A_model/solver/gpu_batch.py --batch 256 --worker 0 --workers 8
 ```
 
-其余卡分别将两个0替换为1—7。每个worker按样本索引切片，不使用DataParallel；每个结果写入独立gpu_worker_i.json。此实现的GPU路径目前针对Q3固定域，Q4仍使用已验证的CPU ALE求解器。小网格的稠密batched solve便于验证，但不保证GPU比CPU快；本次8样本实测CPU更快。4090/V100与8卡性能未在本地硬件上伪造。
+其余卡分别将两个0替换为1—7。每个worker按样本索引切片，不使用DataParallel；每个结果写入独立gpu_worker_i.json。此实现的GPU路径目前针对Q3固定域，Q4使用CPU材料坐标求解器。小网格的稠密batched solve便于验证，但不保证GPU比CPU快；本次8样本实测CPU更快。4090/V100与8卡性能未在本地硬件上伪造。
 
 ## 模型解释
 
