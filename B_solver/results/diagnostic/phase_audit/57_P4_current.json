@@ -1,0 +1,142 @@
+{
+  "case": "57",
+  "variant": "P4_current",
+  "total_sources": 10,
+  "exact_replay": true,
+  "virtual_time_s": 13459.214858835534,
+  "mean_time_per_source": 1345.9214858835535,
+  "stages": {
+    "discovery": {
+      "travel_m": 30321.66020496605,
+      "travel_s": 6064.3320409932085,
+      "switch_s": 608.0,
+      "measure_s": 3230.0,
+      "clear_s": 0.0,
+      "total_s": 9902.33204099321,
+      "actions": 646
+    },
+    "active_localization": {
+      "travel_m": 3308.2691462353173,
+      "travel_s": 661.6538292470634,
+      "switch_s": 6.0,
+      "measure_s": 40.0,
+      "clear_s": 0.0,
+      "total_s": 707.6538292470634,
+      "actions": 8
+    },
+    "certified_clear": {
+      "travel_m": 2211.553625224363,
+      "travel_s": 442.3107250448726,
+      "switch_s": 0.0,
+      "measure_s": 0.0,
+      "clear_s": 45.0,
+      "total_s": 487.31072504487264,
+      "actions": 9
+    },
+    "optical_fallback": {
+      "travel_m": 8634.591317751878,
+      "travel_s": 1726.9182635503773,
+      "switch_s": 0.0,
+      "measure_s": 0.0,
+      "clear_s": 635.0,
+      "total_s": 2361.918263550376,
+      "actions": 211
+    }
+  },
+  "by_target": {
+    "1": {
+      "discovery": 1177.397384693181
+    },
+    "2": {
+      "discovery": 270.0
+    },
+    "3": {
+      "discovery": 270.0
+    },
+    "4": {
+      "discovery": 270.0
+    },
+    "5": {
+      "discovery": 270.0
+    },
+    "6": {
+      "discovery": 108.0,
+      "certified_clear": 93.53110824145998
+    },
+    "7": {
+      "discovery": 270.0
+    },
+    "8": {
+      "discovery": 48.0,
+      "active_localization": 259.5030766700527,
+      "certified_clear": 16.380614578627636
+    },
+    "9": {
+      "discovery": 270.0
+    },
+    "10": {
+      "discovery": 270.0
+    },
+    "11": {
+      "discovery": 253.94286094123825,
+      "active_localization": 96.52608141705133,
+      "certified_clear": 94.42016968779171
+    },
+    "12": {
+      "discovery": 605.9898987322333
+    },
+    "13": {
+      "discovery": 1578.9898987322333
+    },
+    "14": {
+      "discovery": 90.0,
+      "active_localization": 164.70002967103392,
+      "certified_clear": 14.52924045772522
+    },
+    "15": {
+      "discovery": 96.0,
+      "active_localization": 92.24850112367572,
+      "certified_clear": 12.204840597016632
+    },
+    "16": {
+      "discovery": 78.0,
+      "active_localization": 77.27373125438731,
+      "certified_clear": 42.39571462262569
+    },
+    "17": {
+      "discovery": 505.0346414368598,
+      "certified_clear": 94.7230352854037
+    },
+    "18": {
+      "discovery": 1773.9773564574643,
+      "optical_fallback": 2361.918263550376
+    },
+    "19": {
+      "discovery": 628.0,
+      "certified_clear": 107.44746253596429
+    },
+    "20": {
+      "discovery": 1069.0,
+      "active_localization": 17.402409110862525,
+      "certified_clear": 11.67853903825774
+    }
+  },
+  "optical_runs": [
+    {
+      "channel": 18,
+      "attempts": 211,
+      "distance_m": 8634.591317751878,
+      "time_s": 2361.918263550376,
+      "unique_positions": 211,
+      "longest_hop_m": 82.46211251235333
+    }
+  ],
+  "repeated_action_signatures": 0,
+  "max_signature_repeats": 1,
+  "repeated_clear_signatures": 0,
+  "fallback_reasons": {
+    "18": [
+      "consecutive_no_signal"
+    ]
+  }
+}

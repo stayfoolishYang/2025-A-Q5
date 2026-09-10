@@ -1,0 +1,179 @@
+{
+  "case": "17",
+  "variant": "P4_diagnostic_v2",
+  "total_sources": 15,
+  "exact_replay": true,
+  "virtual_time_s": 13745.937121300127,
+  "mean_time_per_source": 916.3958080866752,
+  "stages": {
+    "discovery": {
+      "travel_m": 31774.32851183074,
+      "travel_s": 6354.865702366148,
+      "switch_s": 529.0,
+      "measure_s": 2830.0,
+      "clear_s": 0.0,
+      "total_s": 9713.865702366149,
+      "actions": 566
+    },
+    "active_localization": {
+      "travel_m": 6705.5741480580755,
+      "travel_s": 1341.1148296116148,
+      "switch_s": 11.0,
+      "measure_s": 105.0,
+      "clear_s": 0.0,
+      "total_s": 1457.1148296116148,
+      "actions": 21
+    },
+    "certified_clear": {
+      "travel_m": 3054.9974583724243,
+      "travel_s": 610.9994916744848,
+      "switch_s": 0.0,
+      "measure_s": 0.0,
+      "clear_s": 70.0,
+      "total_s": 680.9994916744847,
+      "actions": 14
+    },
+    "diagnostic": {
+      "travel_m": 4099.514544201723,
+      "travel_s": 819.9029088403446,
+      "switch_s": 1.0,
+      "measure_s": 50.0,
+      "clear_s": 0.0,
+      "total_s": 870.9029088403444,
+      "actions": 10
+    },
+    "optical_fallback": {
+      "travel_m": 3185.270944037634,
+      "travel_s": 637.0541888075267,
+      "switch_s": 0.0,
+      "measure_s": 0.0,
+      "clear_s": 386.0,
+      "total_s": 1023.0541888075267,
+      "actions": 128
+    }
+  },
+  "by_target": {
+    "1": {
+      "discovery": 1433.7088390051251
+    },
+    "2": {
+      "discovery": 270.0
+    },
+    "3": {
+      "discovery": 114.0,
+      "active_localization": 156.7160793694145,
+      "certified_clear": 9.724654294249195
+    },
+    "4": {
+      "discovery": 234.0,
+      "active_localization": 43.652521701326854,
+      "certified_clear": 33.732553413998986
+    },
+    "5": {
+      "discovery": 270.0
+    },
+    "6": {
+      "discovery": 78.0,
+      "active_localization": 120.38271241571564,
+      "certified_clear": 11.019229001505632
+    },
+    "7": {
+      "discovery": 78.0,
+      "active_localization": 147.64944054043545,
+      "certified_clear": 11.292952538308473
+    },
+    "8": {
+      "discovery": 234.0,
+      "active_localization": 8.189888034591641,
+      "diagnostic": 135.1844442749036,
+      "certified_clear": 25.483462552704037
+    },
+    "9": {
+      "discovery": 114.0,
+      "active_localization": 91.86434101190008,
+      "certified_clear": 12.047941525183886
+    },
+    "10": {
+      "discovery": 180.0,
+      "diagnostic": 125.95787460376411,
+      "certified_clear": 73.49357370062087
+    },
+    "11": {
+      "discovery": 258.0,
+      "certified_clear": 154.35082626705156
+    },
+    "12": {
+      "discovery": 524.1871671643231
+    },
+    "13": {
+      "discovery": 150.0,
+      "active_localization": 120.49497158307219,
+      "diagnostic": 191.50230932082408,
+      "certified_clear": 45.780168862607646
+    },
+    "14": {
+      "discovery": 651.0,
+      "certified_clear": 113.04785523929884
+    },
+    "15": {
+      "discovery": 1914.9797974644666
+    },
+    "16": {
+      "discovery": 30.0,
+      "active_localization": 191.53185652617657,
+      "diagnostic": 310.1806400004112,
+      "optical_fallback": 1023.0541888075267
+    },
+    "17": {
+      "discovery": 30.0,
+      "active_localization": 177.44984024881325,
+      "certified_clear": 21.429597516536365
+    },
+    "18": {
+      "discovery": 507.0,
+      "active_localization": 160.78191901943143,
+      "certified_clear": 10.2651050844984
+    },
+    "19": {
+      "discovery": 308.0,
+      "active_localization": 116.45852169279128,
+      "diagnostic": 108.07764064044152,
+      "certified_clear": 146.70587878082588
+    },
+    "20": {
+      "discovery": 2334.989898732233,
+      "active_localization": 121.94273746794632,
+      "certified_clear": 12.625692897095076
+    }
+  },
+  "optical_runs": [
+    {
+      "channel": 16,
+      "attempts": 128,
+      "distance_m": 3185.270944037634,
+      "time_s": 1023.0541888075267,
+      "unique_positions": 128,
+      "longest_hop_m": 645.2709440376326
+    }
+  ],
+  "repeated_action_signatures": 0,
+  "max_signature_repeats": 1,
+  "repeated_clear_signatures": 0,
+  "fallback_reasons": {
+    "8": [
+      "consecutive_no_signal"
+    ],
+    "10": [
+      "consecutive_no_signal"
+    ],
+    "13": [
+      "consecutive_no_signal"
+    ],
+    "16": [
+      "consecutive_no_signal"
+    ],
+    "19": [
+      "consecutive_no_signal"
+    ]
+  }
+}

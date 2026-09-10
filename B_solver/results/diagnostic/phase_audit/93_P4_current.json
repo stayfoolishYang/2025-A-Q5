@@ -1,0 +1,186 @@
+{
+  "case": "93",
+  "variant": "P4_current",
+  "total_sources": 16,
+  "exact_replay": true,
+  "virtual_time_s": 54820.38966097963,
+  "mean_time_per_source": 3426.274353811227,
+  "stages": {
+    "discovery": {
+      "travel_m": 31064.08899499577,
+      "travel_s": 6212.817798999154,
+      "switch_s": 539.0,
+      "measure_s": 2880.0,
+      "clear_s": 0.0,
+      "total_s": 9631.817798999155,
+      "actions": 576
+    },
+    "active_localization": {
+      "travel_m": 6640.304729026558,
+      "travel_s": 1328.0609458053113,
+      "switch_s": 10.0,
+      "measure_s": 110.0,
+      "clear_s": 0.0,
+      "total_s": 1448.0609458053113,
+      "actions": 22
+    },
+    "certified_clear": {
+      "travel_m": 2820.381571940994,
+      "travel_s": 564.0763143881989,
+      "switch_s": 0.0,
+      "measure_s": 0.0,
+      "clear_s": 60.0,
+      "total_s": 624.0763143881989,
+      "actions": 12
+    },
+    "optical_fallback": {
+      "travel_m": 207412.17300893468,
+      "travel_s": 41482.43460178696,
+      "switch_s": 0.0,
+      "measure_s": 0.0,
+      "clear_s": 1634.0,
+      "total_s": 43116.43460178698,
+      "actions": 542
+    }
+  },
+  "by_target": {
+    "1": {
+      "discovery": 1186.4567542994805
+    },
+    "2": {
+      "discovery": 36.0,
+      "active_localization": 174.2862717507258,
+      "certified_clear": 11.948092059822404
+    },
+    "3": {
+      "discovery": 264.0,
+      "certified_clear": 90.86527924817071
+    },
+    "4": {
+      "discovery": 72.0,
+      "certified_clear": 118.6738284775143
+    },
+    "5": {
+      "discovery": 204.0,
+      "certified_clear": 69.36044387465093
+    },
+    "6": {
+      "discovery": 72.0,
+      "active_localization": 62.69810280271539,
+      "certified_clear": 10.615678950865117
+    },
+    "7": {
+      "discovery": 270.0
+    },
+    "8": {
+      "discovery": 222.0,
+      "active_localization": 140.08634667374463,
+      "certified_clear": 19.66680915848902
+    },
+    "9": {
+      "discovery": 409.0
+    },
+    "10": {
+      "discovery": 60.0,
+      "active_localization": 110.37414173213796,
+      "optical_fallback": 44.82859911833694
+    },
+    "11": {
+      "discovery": 234.0,
+      "active_localization": 135.89097705244157,
+      "certified_clear": 12.30091484288249
+    },
+    "12": {
+      "discovery": 234.0,
+      "active_localization": 200.55438787619727,
+      "certified_clear": 11.540889967060753
+    },
+    "13": {
+      "discovery": 132.0,
+      "optical_fallback": 375.757679818668
+    },
+    "14": {
+      "discovery": 234.0,
+      "active_localization": 42.233384062367165,
+      "optical_fallback": 14299.0978671985
+    },
+    "15": {
+      "discovery": 42.0,
+      "active_localization": 233.61954944337555,
+      "optical_fallback": 28396.750455651476
+    },
+    "16": {
+      "discovery": 42.0,
+      "active_localization": 190.9267863403506,
+      "certified_clear": 12.70880957260334
+    },
+    "17": {
+      "discovery": 78.0,
+      "active_localization": 79.3441820578827,
+      "certified_clear": 62.68783532522925
+    },
+    "18": {
+      "discovery": 442.9898987322333,
+      "active_localization": 78.0468160133728,
+      "certified_clear": 13.21510912675623
+    },
+    "19": {
+      "discovery": 2011.0,
+      "certified_clear": 190.4926237841543
+    },
+    "20": {
+      "discovery": 3386.371145967441
+    }
+  },
+  "optical_runs": [
+    {
+      "channel": 15,
+      "attempts": 322,
+      "distance_m": 137143.7522782574,
+      "time_s": 28396.750455651476,
+      "unique_positions": 322,
+      "longest_hop_m": 1081.6653826391969
+    },
+    {
+      "channel": 10,
+      "attempts": 4,
+      "distance_m": 154.14299559168467,
+      "time_s": 44.82859911833694,
+      "unique_positions": 4,
+      "longest_hop_m": 59.99999999999996
+    },
+    {
+      "channel": 13,
+      "attempts": 21,
+      "distance_m": 1553.7883990933403,
+      "time_s": 375.757679818668,
+      "unique_positions": 21,
+      "longest_hop_m": 373.0764332372701
+    },
+    {
+      "channel": 14,
+      "attempts": 195,
+      "distance_m": 68560.48933599253,
+      "time_s": 14299.0978671985,
+      "unique_positions": 195,
+      "longest_hop_m": 960.832971957145
+    }
+  ],
+  "repeated_action_signatures": 0,
+  "max_signature_repeats": 1,
+  "repeated_clear_signatures": 0,
+  "fallback_reasons": {
+    "10": [
+      "consecutive_no_signal"
+    ],
+    "13": [
+      "consecutive_no_signal"
+    ],
+    "14": [
+      "consecutive_no_signal"
+    ],
+    "15": [
+      "consecutive_no_signal"
+    ]
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "case": "29",
+  "variant": "P4_current",
+  "total_sources": 16,
+  "exact_replay": true,
+  "virtual_time_s": 35451.088656677,
+  "mean_time_per_source": 2215.6930410423124,
+  "stages": {
+    "discovery": {
+      "travel_m": 30314.0113820981,
+      "travel_s": 6062.80227641962,
+      "switch_s": 516.0,
+      "measure_s": 2775.0,
+      "clear_s": 0.0,
+      "total_s": 9353.802276419621,
+      "actions": 555
+    },
+    "active_localization": {
+      "travel_m": 1865.583852889063,
+      "travel_s": 373.11677057781264,
+      "switch_s": 6.0,
+      "measure_s": 40.0,
+      "clear_s": 0.0,
+      "total_s": 419.11677057781264,
+      "actions": 8
+    },
+    "certified_clear": {
+      "travel_m": 3634.2458783735833,
+      "travel_s": 726.8491756747165,
+      "switch_s": 0.0,
+      "measure_s": 0.0,
+      "clear_s": 65.0,
+      "total_s": 791.8491756747167,
+      "actions": 13
+    },
+    "optical_fallback": {
+      "travel_m": 117636.60217002442,
+      "travel_s": 23527.320434004858,
+      "switch_s": 0.0,
+      "measure_s": 0.0,
+      "clear_s": 1359.0,
+      "total_s": 24886.320434004854,
+      "actions": 451
+    }
+  },
+  "by_target": {
+    "1": {
+      "discovery": 482.31425052274363,
+      "certified_clear": 116.89953339337092
+    },
+    "2": {
+      "discovery": 692.8460062140954
+    },
+    "3": {
+      "discovery": 132.0,
+      "optical_fallback": 6380.273849357486
+    },
+    "4": {
+      "discovery": 66.0,
+      "certified_clear": 33.73450646469114
+    },
+    "5": {
+      "discovery": 270.0
+    },
+    "6": {
+      "discovery": 18.0,
+      "active_localization": 163.31482623302236,
+      "certified_clear": 25.868735535421344
+    },
+    "7": {
+      "discovery": 204.0,
+      "active_localization": 49.07547697843842,
+      "certified_clear": 10.013375173014781
+    },
+    "8": {
+      "discovery": 90.0,
+      "active_localization": 13.975550940970374,
+      "certified_clear": 27.965963738299642
+    },
+    "9": {
+      "discovery": 270.0
+    },
+    "10": {
+      "discovery": 234.0,
+      "certified_clear": 95.05281744322656
+    },
+    "11": {
+      "discovery": 234.0,
+      "active_localization": 31.4631108940575,
+      "certified_clear": 26.988409598171536
+    },
+    "12": {
+      "discovery": 138.0,
+      "certified_clear": 74.67871300318134
+    },
+    "13": {
+      "discovery": 180.0,
+      "optical_fallback": 285.00679054181603
+    },
+    "14": {
+      "discovery": 36.0,
+      "active_localization": 48.51551269488728,
+      "optical_fallback": 18221.039794105578
+    },
+    "15": {
+      "discovery": 90.0,
+      "certified_clear": 166.19951370675716
+    },
+    "16": {
+      "discovery": 150.0,
+      "active_localization": 112.77229283643669,
+      "certified_clear": 11.73704060326391
+    },
+    "17": {
+      "discovery": 826.0,
+      "certified_clear": 78.06450334861725
+    },
+    "18": {
+      "discovery": 2419.192017007429
+    },
+    "19": {
+      "discovery": 679.9898987322333,
+      "certified_clear": 68.2217596603751
+    },
+    "20": {
+      "discovery": 2141.460103943119,
+      "certified_clear": 56.424304006325976
+    }
+  },
+  "optical_runs": [
+    {
+      "channel": 14,
+      "attempts": 277,
+      "distance_m": 86940.19897052804,
+      "time_s": 18221.039794105578,
+      "unique_positions": 277,
+      "longest_hop_m": 1120.1785571952357
+    },
+    {
+      "channel": 3,
+      "attempts": 159,
+      "distance_m": 29506.369246787424,
+      "time_s": 6380.273849357486,
+      "unique_positions": 159,
+      "longest_hop_m": 680.294054067798
+    },
+    {
+      "channel": 13,
+      "attempts": 15,
+      "distance_m": 1190.0339527090798,
+      "time_s": 285.00679054181603,
+      "unique_positions": 15,
+      "longest_hop_m": 484.2182252931073
+    }
+  ],
+  "repeated_action_signatures": 0,
+  "max_signature_repeats": 1,
+  "repeated_clear_signatures": 0,
+  "fallback_reasons": {
+    "3": [
+      "consecutive_no_signal"
+    ],
+    "13": [
+      "consecutive_no_signal"
+    ],
+    "14": [
+      "consecutive_no_signal"
+    ]
+  }
+}
