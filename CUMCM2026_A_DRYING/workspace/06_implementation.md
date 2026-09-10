@@ -2,7 +2,7 @@
 
 ## 1. Implementation Scope
 
-实施基线：A26-04-v2。已实现可移植Python求解包、单元/数值开发测试、运行与恢复、重建事件及条件导出。用户最新明确“交给服务器跑”，因此停止新增本地数值执行；交付源码和命令，由用户在服务器运行。历史本地试跑保留，不能改称服务器证据。
+实施基线：A26-04-v2；实现修订：A26-06-GPU-v1。当前用户新增要求“改成需要gpu的”。采用NVIDIA CUDA12稀疏线性求解；本轮所有GPU探测、数值测试与求解均NOT_RUN。已实现可移植Python求解包、单元/数值开发测试、运行与恢复、重建事件及条件导出。用户最新明确“交给服务器跑”，因此停止新增本地数值执行；交付源码和命令，由用户在服务器运行。历史本地试跑保留，不能改称服务器证据。
 
 ### Execution / Reasoning Metadata
 
@@ -10,7 +10,7 @@
 - Primary Model: 当前父任务后端身份未独立核验；不宣称已切换父任务模型。
 - Reasoning Level: 核心子任务显式请求gpt-6-astra/ultra，工具接受；实际后端身份未独立暴露。
 - Reviewer Used: YES；Reviewer Role: 有界数值核心交叉审查及只读集成审查。
-- Review Status: 已接收发现并修复；数值测试与独立Stage07分开。
+- Review Status: 已接收并修正GPU硬失败分类、测试设备/预算绑定及CPU参考证据混入风险；复核仅限静态。记录见evidence/stage06_gpu_static_review.json；数值测试与独立Stage07分开。
 - Task Type: COMPLEX_ENGINEERING；Task Complexity: HIGH；Decision Risk: HIGH。
 - Routing Source: 本轮用户授权、现行AGENTS首部偏好及实际协作工具；未修改兼容框架、未做Best-of-N。
 - 输入/输出工作代理继承父任务设置；未把未核实设置写为Sol/High。额外第三worker因线程上限未创建，后续复用现有worker独占文件。
@@ -21,7 +21,7 @@
 
 ## 3. Code Architecture
 
-`src/drying`包含config、inputs、physics、spatial、manufactured、integrator、trajectory、diagnostics、reconstruction、events、refinement、export、execution、resources、preflight、reporting、cli。`python -m drying`为统一入口。父代理独占集成、时间推进和官方状态；工作代理分别独占空间核心/制造解/加严模块，以及输入/输出/预检模块，详见协调合同。无额外调度平台。
+`src/drying`包含config、inputs、physics、spatial、manufactured、integrator、trajectory、diagnostics、reconstruction、events、refinement、export、execution、resources、preflight、reporting、cli。`python -m drying`为统一入口。父代理独占集成、时间推进和官方状态；工作代理分别独占空间核心/制造解/加严模块，以及输入/输出/预检模块，详见协调合同。新增cuda_backend与GPU服务器测试，未新增调度平台。CPU_REFERENCE为数值对照用途，生产禁用。
 
 ## 4. Math-to-Code Traceability
 
@@ -46,7 +46,7 @@
 
 ## 6. Configuration System
 
-RunConfig为严格冻结数据类，未知字段拒绝；配置控制路线、分问、网格、输入情景、半径插值及尾部、时间/Newton容差、有限物理/墙钟/步数/内存/输出预算、检查点频率和证据用途。正式移动几何使用question=4；TEST_CASE只在TEST_ONLY配置中允许。JSON无需修改源码即可切换。服务器first_round计划及全部引用先验证。
+RunConfig为严格冻结数据类，未知字段拒绝；配置控制路线、分问、网格、输入情景、半径插值及尾部、时间/Newton容差、有限物理/墙钟/步数/内存/输出预算、检查点频率和证据用途。正式移动几何使用question=4；TEST_CASE只在TEST_ONLY配置中允许。新增linear_backend、cuda_device、gpu_memory_mb；CUDA默认且为PRODUCTION必需，GPU错误不会触发CPU后备。JSON无需修改源码即可切换。服务器first_round计划及全部引用先验证。
 
 ## 7. Shared Mathematical Components
 
@@ -54,7 +54,7 @@ RunConfig为严格冻结数据类，未知字段拒绝；配置控制路线、�
 
 ## 8. Route B Implementation
 
-径向单元平均FVM，结构化交错[T,C]带状系统；Q1、Q23固定与Q4移动均有真实开发轨迹。Q2原始初值独立于Q1，Q3读取同一Q23轨迹。主线不是将另一题结果复制进来。
+径向单元平均FVM，结构化交错[T,C]稀疏系统；GPU版用CUDA CSR求解，CPU_REFERENCE保留带状参照；先前CPU修订的Q1、Q23固定与Q4移动均有真实开发轨迹，当前GPU修订尚未运行。Q2原始初值独立于Q1，Q3读取同一Q23轨迹。主线不是将另一题结果复制进来。
 
 ## 9. Route P Implementation
 
@@ -62,7 +62,7 @@ KEEP_IN_RESERVE。没有启用P，也没有伪造第三个求解器。严格湿�
 
 ## 10. Route C Implementation
 
-真正二维径向/轴向算子、侧面和端面通量、二维稀疏Jacobian。固定/移动C0退化测试以及C1轴向非均匀与端面交换测试已执行；另有三个60s短时开发运行。完整Q23/Q4 C1配置可交服务器运行。短时成功不构成一维近似已验证。
+真正二维径向/轴向算子、侧面和端面通量、二维稀疏Jacobian。先前CPU修订的固定/移动C0退化测试以及C1轴向非均匀与端面交换测试已执行；另有三个60s短时开发运行。完整Q23/Q4 C1配置可交服务器运行。短时成功不构成一维近似已验证。
 
 ## 11. Other Route Implementation
 
@@ -70,7 +70,7 @@ NONE
 
 ## 12. Solver / Numerical Backend
 
-float64；自定义变步BDF2/BE；稀疏解析Jacobian；B使用solve_banded，C使用splu。未采用solve_ivp BDF替代。执行环境记录Python3.11.9、NumPy2.4.4、SciPy1.17.1、openpyxl3.1.5及实际BLAS信息；服务器重新记录自己的环境。不要求GPU。
+float64；自定义变步BDF2/BE；稀疏解析Jacobian；GPU版B/C均调用CuPy/cupyx的CUDA稀疏求解，后向误差在GPU计算；CPU_REFERENCE保留solve_banded/splu。未采用solve_ivp BDF替代。执行环境记录Python3.11.9、NumPy2.4.4、SciPy1.17.1、openpyxl3.1.5及实际BLAS信息；服务器记录自己的CuPy/驱动/runtime/设备/FP64和实际线性求解次数。本轮未验证GPU依赖或硬件。CPU组装/控制/导出仍保留；未宣称整套程序完全驻留GPU或已经更快。
 
 ## 13. Leakage and Information-Timing Guards
 
@@ -94,9 +94,11 @@ S0/S1、S0平台窗口2.5/3/3.5h、线性/PCHIP和显式HOLD均为实际开关�
 
 ## 18. Test Suite and Smoke-Test Results
 
-已完成且有记录的父任务批次：核心76项通过（79.31s）；打包/恢复/预检9项通过（12.03s）；端点修复后的时间/PDE/执行回归24项通过（65.66s）。批次有重叠，不相加冒充独立测试总数。工作代理另报告事件/误差模块13项通过（40.45s），包括真实短系统三级重积分和小型MMS后缀余额；它不代表真实问题严格证书已生成。原Stage05的48项孤立断言本轮实际重跑通过。
+以下均为先前CPU修订的历史记录，不证明当前GPU修订通过：已完成且有记录的父任务批次：核心76项通过（79.31s）；打包/恢复/预检9项通过（12.03s）；端点修复后的时间/PDE/执行回归24项通过（65.66s）。批次有重叠，不相加冒充独立测试总数。工作代理另报告事件/误差模块13项通过（40.45s），包括真实短系统三级重积分和小型MMS后缀余额；它不代表真实问题严格证书已生成。原Stage05的48项孤立断言在先前CPU实施轮实际重跑通过；GPU修订本轮未重跑。
 
 保留探索期失败：粗容差单一末时刻误差因BE启动/BDF积累抵消不单调；以固定足够小启动步隔离时间误差，并保留原始观测。刚性衰减默认启动在12次重试内未通过，保留预期失败测试，不放宽控制器。事件细化发现浮点微尾步，按实际Newton端点修复并回归。数值和集成审查发现的历史浅拷贝、差分消减、失败Newton计时、检查点落盘窗口、输出分问与环境覆盖问题已修复。
+
+当前GPU修订已编写CUDA线性系统/GPU-CPU对照、B固定/移动和C1端面交换小型PDE对照测试；全部留服务器运行，当前NOT_RUN。预检强制GPU存在、FP64成立；生产流水线测试设置DRYING_REQUIRE_CUDA=1，不允许无GPU跳过成为PASS。
 
 用户最新停止指示后未启动新的数值运行/测试；最后检查仅做文本/JSON/AST/哈希和Git发布核对。未执行服务器任务、Stage07或模型冻结。
 
@@ -104,11 +106,11 @@ S0/S1、S0平台窗口2.5/3/3.5h、线性/PCHIP和显式HOLD均为实际开关�
 
 历史本地EXP001–008保留原manifest/配置/轨迹；使用LOCAL_DEV和开发用途。EXP002/003完整覆盖Q1的1800s；EXP004 Q23覆盖72826.17820743435s；EXP005 Q4覆盖92111.16816711426s，后两者各约240s墙钟预算耗尽，全域扫描均NO_EVENT。EXP006–008为固定/移动C0、C1各60s。紧凑汇总见`evidence/stage06_development_summary.json`。
 
-服务器预留EXP100 smoke、EXP101 Q1、EXP102 Q23、EXP103 Q4、EXP104 Q1nr40、EXP105 Q1nr80、EXP106/107/108短C0/C1、EXP109/110长C1Q23/Q4；均为计划，未提交、未列为已完成。新配置必须使用新run_id。自动首轮只含101、104、102、103。
+服务器预留EXP100 smoke、EXP101 Q1、EXP102 Q23、EXP103 Q4、EXP104 Q1nr40、EXP105 Q1nr80、EXP106/107/108短C0/C1、EXP109/110长C1Q23/Q4；均为计划，未提交、未列为已完成。GPU配置使用新__cuda001运行身份，不能续接或覆盖原__srv001。新配置必须使用新run_id。自动首轮只含101、104、102、103。
 
 ## 20. Server Execution Guide
 
-完整可复制命令见项目根`README_RUN.md`。在服务器Python3.11虚拟环境安装requirements及editable包，执行`python -u -m drying pipeline --plan configs/server_first_round.json`。先前置检查，再顺序计算；不能覆盖已有运行目录。恢复用原run下config.json和`--resume`。默认CPU，2GiB预算，各任务有限上限；不虚构远程连接/队列提交。
+完整可复制命令见项目根`README_RUN.md`。在服务器Python3.11虚拟环境安装requirements及editable包，执行`python -u -m drying pipeline --plan configs/server_first_round.json`。先前置检查，再顺序计算；不能覆盖已有运行目录。恢复用原run下config.json和`--resume`。NVIDIA CUDA12 GPU必需、默认可见设备0；主存和CuPy池各2GiB预算，各任务有限上限；不虚构远程连接/队列提交。
 
 ## 21. Validation Return Package
 
@@ -124,12 +126,14 @@ Q1早期真实表面在20/40网格比较中dC最大约0.09001846kg/kg（t=.001s�
 
 ## 23. Implementation Issues
 
-BLOCKING实现缺陷：当前未发现。数值误差/最终输出状态：UNRESOLVED，留服务器实算后处理，不能称完整模型验证。最后新增CLI命令绑定已静态核对，用户停止本地执行后没有追加端到端数值试跑。
+GPU服务器依赖及运行验收尚未执行。当前只完成实现与静态检查，无已知数学改动；不能把旧CPU测试充作GPU测试。数值误差/最终输出状态：UNRESOLVED，留服务器实算后处理，不能称完整模型验证。最后新增CLI命令绑定已静态核对，用户停止本地执行后没有追加端到端数值试跑。
 
 ## 24. Handoff to Server Execution
 
 服务器所需源码、测试、配置、原件、规格与轻量证据上传到指定仓库独立`CUMCM2026_A_DRYING/`，保持既有目录不变。当前停止在Stage06人工审核点；recommended_next_stage为SERVER_EXECUTION，但上传不等于已运行。Stage07/08维持NOT_RUN、current_best_verified=null、model_frozen=false、PERFORMANCE。
 
-GATE 06: PASS
+GATE 06: CONDITIONAL PASS
 
-STATUS: READY_FOR_STAGE06_HUMAN_REVIEW
+条件：服务器CUDA/FP64预检、GPU测试和短时运行通过。未核实的依赖/运行错误需先处理；本轮不在本地执行。
+
+STATUS: READY_FOR_SERVER_GPU_PREFLIGHT

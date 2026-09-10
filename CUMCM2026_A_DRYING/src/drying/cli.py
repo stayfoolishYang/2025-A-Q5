@@ -4,13 +4,36 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import os
 from .config import RunConfig
 from .execution import ROOT,run_config,inspect_run
 from .trajectory import atomic_json
 
 
-def _tests():
-    return subprocess.run([sys.executable,'-m','pytest','-q'],cwd=ROOT).returncode
+def _cuda_test_requests(records):
+    """Bind server acceptance tests to each configured device/budget pair."""
+    requests=set()
+    for record in records:
+        if record.get('linear_backend')!='CUDA':
+            continue
+        device,memory=record['cuda_device'],record['gpu_memory_mb']
+        if (isinstance(device,bool) or not isinstance(device,int) or device<0 or
+                isinstance(memory,bool) or not isinstance(memory,int) or memory<1):
+            raise ValueError('CUDA_TEST_CONFIG_INVALID: expected nonnegative device and positive integer MiB')
+        requests.add((device,memory))
+    if not requests:
+        raise ValueError('CUDA_TEST_CONFIG_REQUIRED: no configured CUDA device/budget pair')
+    return [{'cuda_device':device,'gpu_memory_mb':memory} for device,memory in sorted(requests)]
+
+
+def _tests(cuda_requests):
+    # The shared pytest fixture prefers this complete set over ambient legacy
+    # single-device variables. Each GPU test runs for every requested pair.
+    env=dict(os.environ,DRYING_REQUIRE_CUDA='1',
+             DRYING_CUDA_TEST_REQUESTS=json.dumps(cuda_requests,allow_nan=False))
+    (ROOT/'results').mkdir(exist_ok=True)
+    return subprocess.run([sys.executable,'-m','pytest','-q',
+                           '--junitxml=results/server_tests.xml'],cwd=ROOT,env=env).returncode
 
 
 def main(argv=None):
@@ -37,11 +60,19 @@ def main(argv=None):
             from .preflight import run_preflight
             result=run_preflight(output=args.output)
             if result.get('status')!='PASS': code=1
-            if args.tests:
-                test_code=_tests(); code=max(code,test_code); result['pytest_exit_code']=test_code; atomic_json(args.output,result)
+            if args.tests and code==0:
+                requests=_cuda_test_requests(result['configs']['files'])
+                result['gpu_test_requests']=requests
+                result['preflight_checks_status']=result['status']
+                test_code=_tests(requests); result['pytest_exit_code']=test_code
+                code=(test_code if test_code>0 else 1) if test_code else 0
+                if test_code:
+                    result['status']='FAIL'
+                    result.setdefault('failures',[]).append('Required server tests failed; pytest exit code '+str(test_code))
+                atomic_json(args.output,result)
         elif args.command=='run':
             result=run_config(RunConfig.from_json(args.config),args.out,resume=args.resume)
-            if result['status'] in ['EXECUTION_EXCEPTION','NUMERICAL_FAILURE','MEMORY_BUDGET_REACHED']: code=1
+            if result['status'] in ['EXECUTION_EXCEPTION','NUMERICAL_FAILURE','MEMORY_BUDGET_REACHED','GPU_BACKEND_FAILURE']: code=1
             elif result['status'] in ['WALL_BUDGET_REACHED','STEP_BUDGET_REACHED']: code=2
         elif args.command=='pipeline':
             from .preflight import run_preflight,_pipeline_config
@@ -49,17 +80,22 @@ def main(argv=None):
             if run_preflight(output='results/preflight.json').get('status')!='PASS':
                 raise RuntimeError('PREFLIGHT_FAILED; no production job started')
             plan=json.loads(Path(args.plan).read_text(encoding='utf-8'))
-            _pipeline_config(ROOT,Path(args.plan).resolve(),plan)
-            if _tests(): raise RuntimeError('PREFLIGHT_TESTS_FAILED; no production job started')
+            checked_plan=_pipeline_config(ROOT,Path(args.plan).resolve(),plan)
+            requests=_cuda_test_requests(checked_plan['runs'])
+            if _tests(requests): raise RuntimeError('PREFLIGHT_TESTS_FAILED; no production job started')
             runs=[]
-            for job in plan['runs']:
-                result=run_config(RunConfig.from_json(ROOT/job['config']),ROOT/job['out'])
+            for job,checked in zip(plan['runs'],checked_plan['runs']):
+                config=RunConfig.from_json(ROOT/job['config'])
+                if config.fingerprint!=checked['config_fingerprint']:
+                    raise ValueError('CONFIG_CHANGED_AFTER_PREFLIGHT: '+job['config'])
+                result=run_config(config,ROOT/job['out'])
                 runs.append(result)
-                if result['status'] in ['EXECUTION_EXCEPTION','NUMERICAL_FAILURE','MEMORY_BUDGET_REACHED']:
+                if result['status'] in ['EXECUTION_EXCEPTION','NUMERICAL_FAILURE','MEMORY_BUDGET_REACHED','GPU_BACKEND_FAILURE']:
                     code=1; break
                 if result['status'] in ['WALL_BUDGET_REACHED','STEP_BUDGET_REACHED']: code=2
                 summarize_run(ROOT/job['out'])
-            result={'runs':runs,'status':'COMPLETE_INTERVALS' if code==0 else 'PARTIAL_OR_FAILED','stage07':'NOT_RUN'}
+            result={'runs':runs,'status':'COMPLETE_INTERVALS' if code==0 else 'PARTIAL_OR_FAILED',
+                    'gpu_test_requests':requests,'stage07':'NOT_RUN'}
             atomic_json('results/pipeline_summary.json',result)
         elif args.command=='summarize':
             from .reporting import summarize_run
@@ -70,7 +106,8 @@ def main(argv=None):
         elif args.command=='refine-event':
             from .refinement import refine_event
             result=refine_event(args.run_dir,args.out,threshold=args.threshold,width=args.width,wall_seconds=args.wall_seconds)
-            if result.get('status')!='EVENT_BRACKET_REFINED': code=2
+            if result.get('status') in ['GPU_BACKEND_FAILURE','NUMERICAL_FAILURE','EXECUTION_EXCEPTION','MEMORY_BUDGET_REACHED']: code=1
+            elif result.get('status')!='EVENT_BRACKET_REFINED': code=2
         elif args.command=='error-evidence':
             from .refinement import build_error_evidence
             result=build_error_evidence(args.reference_run,json.loads(Path(args.categories).read_text(encoding='utf-8')),out_path=args.out)
@@ -82,7 +119,8 @@ def main(argv=None):
         elif args.command=='prepare-report':
             from .refinement import prepare_strict_report
             result=prepare_strict_report(args.run_dir,json.loads(Path(args.evidence).read_text(encoding='utf-8')),args.out,wall_seconds=args.wall_seconds)
-            if result.get('status')!='PROVISIONAL_EVENT': code=2
+            if result.get('status') in ['GPU_BACKEND_FAILURE','NUMERICAL_FAILURE','EXECUTION_EXCEPTION','MEMORY_BUDGET_REACHED']: code=1
+            elif result.get('status')!='PROVISIONAL_EVENT': code=2
         elif args.command=='recompute-balances':
             from .refinement import recompute_balances
             result=recompute_balances(args.run_dir,out_path=args.out,wall_seconds=args.wall_seconds)

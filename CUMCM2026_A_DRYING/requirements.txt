@@ -1,6 +1,8 @@
-# Versions exercised locally; use an isolated environment without upgrading unrelated projects.
+# CPU dependencies were exercised in the prior revision. CUDA code/tests are
+# server-only and have NOT been executed locally. CUDA 12.x libraries required.
 numpy==2.4.4
 scipy==1.17.1
 openpyxl==3.1.5
 sympy>=1.11
 pytest>=7
+cupy-cuda12x>=13.6,<14

@@ -23,6 +23,7 @@ from .integrator import Integrator, Settings
 from .diagnostics import Diagnostics
 from .trajectory import Trajectory, TrajectoryWriter, atomic_json, fingerprint, save_checkpoint, load_checkpoint, recover_trajectory
 from .resources import process_memory_mb, MemoryBudgetReached
+from .cuda_backend import CudaBackendError
 
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -37,7 +38,8 @@ def system_identity(system,config):
     return {'route':system.grid.route,'nr':system.grid.nr,'nz':system.grid.nz,
             'question':system.question,'geometry':system.geometry,'end_condition':system.end_condition,
             'h':system.h,'hm':system.hm,'model_version':config.model_version,
-            'test_case':config.test_case,'dtype':'float64'}
+            'test_case':config.test_case,'dtype':'float64',
+            'linear_backend':config.linear_backend,'cuda_device':config.cuda_device}
 
 
 def verify_system_identity(manifest,system,config,run_dir=None):
@@ -71,10 +73,13 @@ def code_identity():
 def environment():
     buff=io.StringIO()
     with contextlib.redirect_stdout(buff): np.show_config()
-    return {'python':sys.version,'executable':sys.executable,'platform':platform.platform(),
+    result={'python':sys.version,'executable':sys.executable,'platform':platform.platform(),
             'machine':platform.machine(),'processor':platform.processor(),'dtype':'float64',
             'dependencies':{p:metadata.version(p) for p in ['numpy','scipy','openpyxl']},
             'linear_algebra':buff.getvalue()}
+    try: result['dependencies']['cupy-cuda12x']=metadata.version('cupy-cuda12x')
+    except metadata.PackageNotFoundError: result['dependencies']['cupy-cuda12x']='NOT_INSTALLED'
+    return result
 
 
 def make_system(config,data_dir=None):
@@ -103,6 +108,8 @@ def run_config(config,run_dir,*,data_dir=None,resume=False,diagnostic=True):
         raise MemoryBudgetReached(f'MEMORY_ADMISSION_FAILED: estimated {estimated_mb:.1f} MiB > {config.memory_mb}')
     run_dir=Path(run_dir); system=make_system(config,data_dir)
     if run_dir.exists() and not resume: raise FileExistsError(f'run already exists: {run_dir}')
+    # Enforce CUDA availability before creating a run directory or checkpoint.
+    solver=Integrator(system,Settings.from_config(config))
     run_dir.mkdir(parents=True,exist_ok=True)
     cfgdict=config.as_dict(); code=code_identity()
     if not resume:
@@ -112,7 +119,6 @@ def run_config(config,run_dir,*,data_dir=None,resume=False,diagnostic=True):
             shutil.copy2(ROOT/relative,target)
     identity={'config':config.fingerprint,'input':system.inputs.fingerprint,'code':code['sha256'],
               'model_version':config.model_version,'dtype':'float64','system':fingerprint(system_identity(system,config))}
-    solver=Integrator(system,Settings.from_config(config))
     checkpoint=run_dir/'checkpoint.json'
     extra={}
     if resume:
@@ -149,7 +155,7 @@ def run_config(config,run_dir,*,data_dir=None,resume=False,diagnostic=True):
         'data':{'input_files':system.inputs.manifest,'dataset_version':config.input_version,'split_strategy':'OFFLINE_OBSERVATION_RECONSTRUCTION'},
         'configuration':{'config_file':'config.json','random_seed':config.seed,'fingerprint':config.fingerprint},
         'execution':{'execution_backend':config.execution_backend,'execution_purpose':config.execution_purpose,
-        'production_eligible':config.production_eligible,'command':' '.join(sys.argv),'environment':'environment.json','device':'CPU'},
+        'production_eligible':config.production_eligible,'command':' '.join(sys.argv),'environment':'environment.json','device':config.linear_backend},
         'solver':{'name':solver.algorithm,'status':'RUNNING'},'source':dict(code,snapshot_directory='source_snapshot'),'identity':identity,
         'system_contract':system_identity(system,config),
         'factory_sha256':_factory_hash(Path(__file__).read_text(encoding='utf-8')),
@@ -158,6 +164,7 @@ def run_config(config,run_dir,*,data_dir=None,resume=False,diagnostic=True):
         'log_file':'run.log'},'summary':{'notes':'Stage06 evidence; Stage07 NOT_RUN; not approved for submission'}}
     manifest['execution'].setdefault('attempts',[]).append({'started_at':started,'resume':resume})
     current_environment=environment()
+    current_environment['linear_backend']=solver.linear_backend_metadata()
     env_name=f'environment_attempt_{len(manifest["execution"]["attempts"]):03d}.json'
     atomic_json(run_dir/env_name,current_environment)
     manifest['execution']['attempts'][-1]['environment']=env_name
@@ -203,6 +210,9 @@ def run_config(config,run_dir,*,data_dir=None,resume=False,diagnostic=True):
     try:
         endpoint=config.case_end_time or config.tmax
         result=solver.run(endpoint,callback=accept)
+    except CudaBackendError as exc:
+        result={'status':'GPU_BACKEND_FAILURE','t':solver.t,'failure':str(exc),'stats':solver.stats}
+        log.write(traceback.format_exc())
     except MemoryBudgetReached as exc:
         result={'status':'MEMORY_BUDGET_REACHED','t':solver.t,'failure':str(exc),'stats':solver.stats}
     except Exception as exc:
@@ -224,12 +234,14 @@ def run_config(config,run_dir,*,data_dir=None,resume=False,diagnostic=True):
                   'strict_report_status':'NOT_ASSESSED_NO_ERROR_EVIDENCE',
                   'stage07':'NOT_RUN','dtype':'float64'})
     result['process_memory_mb']=process_memory_mb()
+    result['linear_backend']=solver.linear_backend_metadata()
     result['memory_budget_kind']='COOPERATIVE_EVERY_100_ACCEPTED_STEPS_NOT_OS_HARD_LIMIT'
     atomic_json(run_dir/'metrics.json',result)
     manifest['experiment']['status']=status; manifest['experiment']['completed_at']=finished
     manifest['execution']['attempts'][-1].update({'finished_at':finished,'runtime_seconds':wall,'status':status})
+    manifest['execution']['attempts'][-1]['linear_backend']=solver.linear_backend_metadata()
     manifest['execution']['runtime_seconds']=sum(a.get('runtime_seconds',0) for a in manifest['execution']['attempts'])
-    manifest['execution']['exit_code']=(1 if status in ['EXECUTION_EXCEPTION','NUMERICAL_FAILURE','MEMORY_BUDGET_REACHED'] else
+    manifest['execution']['exit_code']=(1 if status in ['EXECUTION_EXCEPTION','NUMERICAL_FAILURE','MEMORY_BUDGET_REACHED','GPU_BACKEND_FAILURE'] else
                                         2 if status in ['WALL_BUDGET_REACHED','STEP_BUDGET_REACHED'] else 0)
     manifest['solver']['status']=status; manifest['summary']['key_metrics']={k:result[k] for k in ['covered_seconds','be_fraction','be_time_fraction','strict_report_status']}
     atomic_json(manifest_path,manifest)
@@ -247,7 +259,7 @@ def inspect_run(run_dir,data_dir=None):
     if manifest.get('identity')!=identity or identity.get('model_version')!=config.model_version:
         raise ValueError('run manifest/model identity mismatch')
     # Postprocessing code can evolve; the model/state interpretation must not.
-    for name in ['physics','spatial','integrator','inputs','config','reconstruction','manufactured']:
+    for name in ['physics','spatial','integrator','inputs','config','reconstruction','manufactured','cuda_backend']:
         relative=f'src/drying/{name}.py'
         actual=hashlib.sha256((ROOT/relative).read_bytes()).hexdigest()
         if manifest['source']['files'].get(relative)!=actual:

@@ -1,0 +1,96 @@
+{
+  "revision": "A26-06-GPU-v1",
+  "time": "2026-09-10T15:21:20.017985+00:00",
+  "scope": "STATIC_INSPECTION_ONLY_NOT_RUNTIME_OR_NUMERICAL_VALIDATION",
+  "checks": {
+    "python_ast": "PASS",
+    "python_file_count": 33,
+    "json_syntax": "PASS",
+    "run_configs_require_cuda": "PASS",
+    "authority_unchanged": "PASS",
+    "raw_input_hashes": "PASS",
+    "stage_state_reconciled": "PASS"
+  },
+  "review_findings": [
+    {
+      "finding": "GPU failures in checkpoint reintegration lost hard failure status",
+      "disposition": "Fixed explicit CUDA exception/status/exit code propagation; tests authored, NOT_RUN"
+    },
+    {
+      "finding": "Server tests used default GPU rather than configured device and memory",
+      "disposition": "Fixed shared parametrized requests from validated configs and fingerprint recheck; tests authored, NOT_RUN"
+    },
+    {
+      "finding": "CPU reference records could mix into formal CUDA error certification",
+      "disposition": "Backend/device identity and actual CUDA telemetry required for formal certification; tests authored, NOT_RUN"
+    },
+    {
+      "finding": "Standalone preflight report remained PASS after required tests failed",
+      "disposition": "Combined status is FAIL; separate preflight_checks_status retained; tests authored, NOT_RUN"
+    }
+  ],
+  "reviewers": [
+    {
+      "task": "stage06_spatial_core",
+      "scope": "CUDA backend implementation and bounded integration static review"
+    },
+    {
+      "task": "stage06_inputs",
+      "scope": "Preflight and device/test integration static review"
+    }
+  ],
+  "execution": {
+    "gpu_probe": "NOT_RUN",
+    "pytest": "NOT_RUN",
+    "numerical_solves": "NOT_RUN",
+    "dependency_installation": "NOT_RUN",
+    "server_submission": "NOT_RUN",
+    "speedup": "NOT_MEASURED"
+  },
+  "authority_sha256": "29ea5f37f9e50dae9f5d7f7515276394d2215fdc8f0d0b79c6d0c91eccd437d4",
+  "raw_file_count": 7,
+  "source_hashes": {
+    "src/drying/__init__.py": "87b30a782cc1c57b7456191fc5f32e2485485075c4e549fbd38c8876d0256362",
+    "src/drying/__main__.py": "307299fda7b77d22c64cb51430ec75e5f59d78e9c948786afb3b2544fe45e4b7",
+    "src/drying/cli.py": "9c5b85ee97c23d7cba37d72eb1388d99ec8d91188ca39e9d2f9d73d11025bbd6",
+    "src/drying/config.py": "771a7d0b59d092872b219849510cfdf9161e7e6e6b36d7c72c5220b504645cd5",
+    "src/drying/cuda_backend.py": "d2537295a57a0493bae2994822bd1ef5e1b3e27e99274b7b6e0b8d28b01f4792",
+    "src/drying/diagnostics.py": "dba2d95471d9a3de419aa412a8918f1685ec39738ca4fc3f7b4d41f2eb8a90c2",
+    "src/drying/events.py": "8fc583d34ccb955e909a84cb0cca23258c374603cc8418c90ab00656fe548e8d",
+    "src/drying/execution.py": "a9de1d2fe9c4ce56148f5e8462fff0d465cb62e22e396e2e905ff133174de268",
+    "src/drying/export.py": "21b986102e01e7955dbb5e4176bb24697e727ff0b00a56a692c1e95a9a1ac2b3",
+    "src/drying/inputs.py": "b2fe7b751196fc214b1e0fcdbba3eb88ffe0e48a3ee935ceee505546cdfc7cfb",
+    "src/drying/integrator.py": "35091bbd184ca5d693c6c5e6f822355c0666b11ecaf7c1affa5ead946cc5216b",
+    "src/drying/manufactured.py": "86454bbaaf90aca61a43c020d0a7f806e6b302b5fec1cef24018e1061b20d888",
+    "src/drying/physics.py": "b07becb392186917c3c87e06a8ed104a789e52cb4111decf7e51a6fe3c3af7cf",
+    "src/drying/preflight.py": "461a481de4dd695d90d998f04816687aafb0b549a84da6ed244afff6e0c5c458",
+    "src/drying/reconstruction.py": "76a657ced53f35330059d441f95809afa4e19fe631e6f0a1ad81ffad7ebb79c3",
+    "src/drying/refinement.py": "ca1fe4230ce54f7e74f9400053aa58eb41d8cfbb7787a8efd6f30f9524cb5142",
+    "src/drying/reporting.py": "777fd637b20a36f4762d35c61c87cd14716a87e706fea0daad1d09b9383f68c6",
+    "src/drying/resources.py": "2296e7f25310f02f3877f1dbae062ae97bca13c635bbad05b13fb05011937c7c",
+    "src/drying/spatial.py": "4f653546bc64f5ee650aa13f1b9a0e90cb3e7bcd9d425c50ba4d12b40f0a152c",
+    "src/drying/trajectory.py": "5a23456816cb09baa09d311433f9063cea87c96cbc709062aff070a1a6e16dd7",
+    "tests/conftest.py": "40c89a334cca241b56495de520b7944c89a688e248a4387e8ae43abb6544942d",
+    "tests/test_cuda_backend.py": "dce982be5d780e674e8aadc04d8bc0abf863a0641fb78218dd43a0d24c88e9eb",
+    "tests/test_cuda_cli_contract.py": "5678aea7870dab7a54c9fe5fe6ad6bb865bab72d08620abe3f55521f1832801c",
+    "tests/test_cuda_execution.py": "89f6e531b459ad4a0c5ce6912d0f4c4318badfe40503a945000a66546e523839",
+    "tests/test_execution.py": "8d27075ea774b67384a5abddf4ab31f8269ff195fb99feb6f798c7a817d2cb35",
+    "tests/test_gpu_evidence_policy.py": "ff59975685c929ed13e1155aaba96b381c079cce5bfca7e9324a2b097fde594f",
+    "tests/test_inputs.py": "1e7d231fc7933411c39c5ed3f9384b65409bb8e87e9ba1c92b0eb9eea7885e43",
+    "tests/test_integrator.py": "850a42b032a729be06d0f0eb1e86728a58e68e8245f7e07c8802aca2524aef91",
+    "tests/test_output.py": "7b0194b28f7920accb6c09728c9855b608bce6c9c1cb6821e161c2c83dcc147b",
+    "tests/test_pde.py": "c17d9b417bf68c873ea652a1f3645b3f1a606ec6b90c6bce3b5539dc12fafabf",
+    "tests/test_preflight.py": "cb1dd7349754aafee012feedbf7ea6ce86e63ea8b8e3952562eb149ae4da5251",
+    "tests/test_refinement.py": "d05e9f125e11980e2af1bc3d2e112ad413b5ccd6bd9fb4b683ab0fb77c45a530",
+    "tests/test_spatial.py": "be80dbea352192c94c8f52ea2454c5d38ffd993cece635edd994c51fec020a85"
+  },
+  "limitations": [
+    "AST/JSON/hash checks cannot establish installed CUDA API or numerical correctness.",
+    "GPU covers Newton sparse solves and backward residual; host handles physical assembly/time control/export.",
+    "Private CuPy pool cap does not hard-bound cuSOLVER internal workspace.",
+    "All old CPU run/test files are historical evidence, not validation of this revision."
+  ],
+  "gate06": "CONDITIONAL_PASS",
+  "stage07": "NOT_RUN",
+  "stage08": "NOT_RUN"
+}

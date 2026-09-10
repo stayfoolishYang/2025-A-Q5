@@ -18,6 +18,7 @@ import numpy as np
 from numpy.polynomial import Polynomial
 
 from .config import RunConfig
+from .cuda_backend import CudaBackendError
 from .integrator import Integrator, Settings
 from .trajectory import Trajectory, TrajectoryWriter, fingerprint, atomic_json, save_checkpoint
 from .reconstruction import reconstruct
@@ -25,10 +26,14 @@ from .events import scan_events, upward_report_time, verify_report
 
 
 CORE_MODULES = ("config.py", "inputs.py", "physics.py", "spatial.py", "integrator.py",
-                "reconstruction.py", "manufactured.py")
+                "reconstruction.py", "manufactured.py", "cuda_backend.py")
 METRICS = ("T", "C", "G")
 RESOURCE_FIELDS = {"wall_seconds", "max_steps", "checkpoint_steps", "max_output_rows",
-                   "memory_mb", "tmax", "case_end_time"}
+                   "memory_mb", "gpu_memory_mb", "tmax", "case_end_time"}
+HARD_FAILURES = {"GPU_BACKEND_FAILURE", "EXECUTION_EXCEPTION", "NUMERICAL_FAILURE", "MEMORY_BUDGET_REACHED"}
+REFERENCE_FIELDS = ("route", "question", "geometry", "end_condition", "scenario", "radius_method",
+                    "radius_tail", "window_start_h", "model_version", "input_version", "test_case",
+                    "linear_backend", "cuda_device")
 
 
 class RefinementError(ValueError):
@@ -54,6 +59,24 @@ def _core_hashes(manifest):
     return result
 
 
+def _require_cuda_evidence(config, manifest):
+    """A formal GPU certificate needs actual solves, not just a CUDA label/probe."""
+    if config.linear_backend != "CUDA":
+        raise RefinementError("CUDA_EVIDENCE_REQUIRED: CPU_REFERENCE cannot certify formal drying")
+    execution = manifest.get("execution", {})
+    records = [a.get("linear_backend", {}) for a in execution.get("attempts", [])]
+    if execution.get("linear_backend"):
+        records.append(execution["linear_backend"])
+    if not records:
+        raise RefinementError("CUDA_EVIDENCE_REQUIRED: missing executed backend telemetry")
+    for record in records:
+        if (record.get("backend") != "CUDA" or record.get("dtype") != "float64" or
+            record.get("device_id") != config.cuda_device or record.get("cpu_fallback_calls") != 0):
+            raise RefinementError("CUDA_EVIDENCE_REQUIRED: incompatible backend/device/float64 telemetry")
+    if not any(record.get("successful_solves", 0) > 0 for record in records):
+        raise RefinementError("CUDA_EVIDENCE_REQUIRED: no recorded successful GPU linear solve")
+
+
 def _load_run(run_dir, data_dir=None, system_factory=None, check_live_core=True):
     from .execution import make_system, verify_system_identity
     path = Path(run_dir).resolve()
@@ -74,7 +97,7 @@ def _load_run(run_dir, data_dir=None, system_factory=None, check_live_core=True)
     if system.inputs.fingerprint != identity.get("input"):
         raise RefinementError("PROVENANCE_UNRESOLVED: input fingerprint changed")
     status = manifest.get("solver", {}).get("status", "")
-    if status in {"EXECUTION_EXCEPTION", "NUMERICAL_FAILURE", "RUNNING"}:
+    if status in {"EXECUTION_EXCEPTION", "NUMERICAL_FAILURE", "GPU_BACKEND_FAILURE", "RUNNING"}:
         raise RefinementError("RUN_UNRESOLVED: source solver status " + status)
     return path, config, manifest, system, trajectory
 
@@ -131,7 +154,7 @@ def _reintegrate_suffix(run_dir, out_dir, *, before, until, forced_nodes=(), hma
                         width=None, threshold=None, data_dir=None, system_factory=None,
                         wall_seconds=300.):
     """Private transactional run creation from actual accepted checkpoint history."""
-    from .execution import code_identity, system_identity, _factory_hash
+    from .execution import code_identity, system_identity, _factory_hash, environment
     src, config, manifest, system, old = _load_run(run_dir, data_dir, system_factory, check_live_core=True)
     out = Path(out_dir).resolve()
     if out.exists():
@@ -187,10 +210,20 @@ def _reintegrate_suffix(run_dir, out_dir, *, before, until, forced_nodes=(), hma
     new_manifest["experiment"] = {"experiment_id": out.name, "name": out.name,
                                   "status": "RUNNING", "created_at": datetime.now(timezone.utc).isoformat()}
     new_manifest["solver"] = {"name": solver.algorithm, "status": "RUNNING"}
+    new_manifest['execution']={
+        'execution_backend':new_config.execution_backend,
+        'execution_purpose':new_config.execution_purpose,
+        'production_eligible':new_config.production_eligible,
+        'device':new_config.linear_backend,'command':'ACCEPTED_CHECKPOINT_REINTEGRATION',
+        'environment':'environment.json','runtime_seconds':None,
+        'inherited_prefix_execution_manifest':str(src/'manifest.json'),
+        'attempts':[]}
+    env=environment(); env['linear_backend']=solver.linear_backend_metadata()
+    atomic_json(out/'environment.json',env)
     new_manifest["outputs"] = {"trajectory": "trajectory/index.json", "checkpoint": "checkpoint.json",
                                "metrics_file": "metrics.json", "event_file": "event.json", "result_files": [],
                                "diagnostics_file": "diagnostics.json"}
-    new_manifest["summary"] = {"notes": "New locally reintegrated trajectory; inherited run balances are not current evidence.",
+    new_manifest["summary"] = {"notes": "Checkpoint-reintegrated trajectory; inherited run balances are not current evidence.",
                                "diagnostics_status": "DIAGNOSTICS_UNRESOLVED"}
     atomic_json(out / "manifest.json", new_manifest)
     writer = TrajectoryWriter(out / "trajectory", identity)
@@ -211,8 +244,11 @@ def _reintegrate_suffix(run_dir, out_dir, *, before, until, forced_nodes=(), hma
         # Event suffixes need a restart before each possible candidate substep.
         # Stream states in bounded chunks; checkpoint files are accepted history.
         save_checkpoint(out / "checkpoints" / f"accepted_{solver.stats['accepted']:09d}.json", solver, identity)
+    run_started=time.perf_counter()
     try:
         result = solver.run(float(until), callback=accept, forced_nodes=forced_nodes, wall_seconds=wall_seconds)
+    except CudaBackendError as exc:
+        result = {"status": "GPU_BACKEND_FAILURE", "failure": str(exc), "t": solver.t, "stats": solver.stats}
     except Exception as exc:
         result = {"status": "EXECUTION_EXCEPTION", "failure": repr(exc), "t": solver.t, "stats": solver.stats}
     finally:
@@ -220,9 +256,14 @@ def _reintegrate_suffix(run_dir, out_dir, *, before, until, forced_nodes=(), hma
     writer.flush()
     save_checkpoint(out / "checkpoint.json", solver, identity)
     result.update(run_id=out.name, event_reintegration=True, checkpoint_time=start,
+                  linear_backend=solver.linear_backend_metadata(),
                   source_run=str(src), stage07="NOT_RUN")
     atomic_json(out / "metrics.json", result)
     new_manifest["solver"]["status"] = result["status"]
+    new_manifest['execution']['runtime_seconds']=time.perf_counter()-run_started
+    new_manifest['execution']['linear_backend']=solver.linear_backend_metadata()
+    new_manifest['execution']['exit_code']=(1 if result['status'] in HARD_FAILURES else
+                                            0 if result['status']=='COMPLETED_INTERVAL' else 2)
     new_manifest["experiment"].update(status=result["status"], completed_at=datetime.now(timezone.utc).isoformat())
     new_manifest["refinement"]["new_accepted_steps"] = accepted_count
     new_manifest["refinement"]["actual_restart_settings"] = snapshot["settings"]
@@ -231,7 +272,8 @@ def _reintegrate_suffix(run_dir, out_dir, *, before, until, forced_nodes=(), hma
         "checks_passed": False, "trajectory_fingerprint": new_manifest["refinement"]["trajectory_fingerprint"],
         "reason": "Run recompute_balances on the complete current accepted trajectory; old run diagnostics are not reused."})
     atomic_json(out / "manifest.json", new_manifest)
-    return {"status": result["status"], "run_dir": str(out), "new_accepted_steps": accepted_count,
+    return {"status": result["status"], "exit_code": new_manifest['execution']['exit_code'],
+            "run_dir": str(out), "new_accepted_steps": accepted_count,
             "checkpoint_time": start, "result": result}
 
 
@@ -308,6 +350,14 @@ def refine_event(run_dir, out_dir, threshold=.15, width=.01, max_levels=8,
         event = scan_events(system, trajectory, threshold=threshold)
     if event is None:
         raise RefinementError("EVENT_UNRESOLVED: no event scan executed")
+    if rounds and rounds[-1]["status"] in HARD_FAILURES:
+        failed = rounds[-1]
+        result = {"status": failed["status"], "exit_code": 1, "run_dir": str(current),
+                  "rounds": rounds, "event": {"status": "EVENT_UNRESOLVED", "refinement_verified": False,
+                  "issues": ["reintegration failed: " + failed["status"]]}, "stage07": "NOT_RUN"}
+        atomic_json(root / "refinement.json", result)
+        atomic_json(current / "event.json", result["event"])
+        return result
     actual = bool(rounds) or _read(current / "manifest.json").get("refinement", {}).get("method") == "ACCEPTED_CHECKPOINT_REINTEGRATION"
     ready = (event["status"] == "PROVISIONAL_EVENT" and event["earliest_verified"] and
              event["retention_verified"] and event["tR"] - event["tL"] <= width and actual)
@@ -623,10 +673,8 @@ def build_error_evidence(reference_run, category_runs, out_path=None, *, coverag
             for p, c, m, s, tr in loaded:
                 if m["identity"]["input"] != manifest["identity"]["input"] or _core_hashes(m) != _core_hashes(manifest):
                     raise RefinementError("category/reference source or input mismatch")
-                physical = ("route", "question", "geometry", "end_condition", "scenario", "radius_method",
-                            "radius_tail", "window_start_h", "model_version", "input_version", "test_case")
-                if any(getattr(c, k) != getattr(config, k) for k in physical) or tr.start_time != 0 or tr.end_time < end:
-                    raise RefinementError("category/reference physical definition or coverage mismatch")
+                if any(getattr(c, k) != getattr(config, k) for k in REFERENCE_FIELDS) or tr.start_time != 0 or tr.end_time < end:
+                    raise RefinementError("category/reference physical/backend definition or coverage mismatch")
                 if category in {"time", "newton", "dense", "event"} and (c.nr, c.nz) != (config.nr, config.nz):
                     raise RefinementError("nonspatial comparison not performed on reference grid")
                 if c.test_case is not None or m.get("refinement", {}).get("injected_test_system"):
@@ -732,7 +780,8 @@ def prepare_strict_report(run_dir, error_evidence, out_dir, *, width=.0025,
                         until=original_end, data_dir=data_dir, system_factory=system_factory,
                         wall_seconds=max(.01, wall_seconds-(time.perf_counter()-started)))
             if continuation["status"] != "COMPLETED_INTERVAL":
-                result.update(status="REPORT_TIME_UNRESOLVED", run_dir=continuation["run_dir"])
+                result.update(status=continuation["status"] if continuation["status"] in HARD_FAILURES else "REPORT_TIME_UNRESOLVED",
+                              run_dir=continuation["run_dir"])
                 result["issues"].append("same-solution coverage continuation failed"); break
             current = Path(continuation["run_dir"])
         rr = refine_event(current, root / label, threshold=threshold, width=width,
@@ -741,7 +790,7 @@ def prepare_strict_report(run_dir, error_evidence, out_dir, *, width=.0025,
         records.append(rr)
         current = Path(rr["run_dir"])
         if rr["status"] != "EVENT_BRACKET_REFINED":
-            result.update(status="EVENT_UNRESOLVED", run_dir=str(current))
+            result.update(status=rr["status"] if rr["status"] in HARD_FAILURES else "EVENT_UNRESOLVED", run_dir=str(current))
             result["issues"].append(label + " threshold lacks a refined event"); break
     else:
         _, cc, mm, ss, tt = _load_run(current, data_dir, system_factory, True)
@@ -779,9 +828,10 @@ def prepare_strict_report(run_dir, error_evidence, out_dir, *, width=.0025,
                         result.update(status="REPORT_TIME_UNRESOLVED", run_dir=str(current))
                         result["issues"].append("report reintegration changed the candidate; repeat refinement/evidence loop")
                 else:
-                    result.update(status="REPORT_TIME_UNRESOLVED", run_dir=str(current))
+                    result.update(status=ready["status"] if ready["status"] in HARD_FAILURES else "REPORT_TIME_UNRESOLVED", run_dir=str(current))
                     result["issues"].append("report endpoint integration did not complete")
     result["refinements"] = records
+    result["exit_code"] = 1 if result["status"] in HARD_FAILURES else 0 if result["status"] == "PROVISIONAL_EVENT" else 2
     atomic_json(root / "candidate.json", result)
     return result
 
@@ -800,6 +850,7 @@ def certify_strict_report(run_dir, error_evidence, candidate, out_path=None, *,
         path, cfg, manifest, system, trajectory = _load_run(run_dir, data_dir, system_factory, True)
         if cfg.test_case is not None or system_factory is not None or manifest.get("refinement", {}).get("injected_test_system"):
             raise RefinementError("TEST_ONLY/injected equations cannot receive formal drying certificate")
+        _require_cuda_evidence(cfg, manifest)
         if candidate.get("status") != "PROVISIONAL_EVENT":
             raise RefinementError("prepared candidate is unresolved")
         if candidate.get("trajectory_fingerprint") != fingerprint(trajectory.index) or candidate.get("config_fingerprint") != cfg.fingerprint:
@@ -832,6 +883,14 @@ def certify_strict_report(run_dir, error_evidence, candidate, out_path=None, *,
                 raise RefinementError("missing measured three-level comparison: " + category)
             actual = [_load_run(p, data_dir, None, True) for p in paths]
             _validate_category(category, [a[1] for a in actual], [a[2] for a in actual])
+            for _, category_cfg, category_manifest, _, category_trajectory in actual:
+                _require_cuda_evidence(category_cfg, category_manifest)
+                if (any(getattr(category_cfg, k) != getattr(cfg, k) for k in REFERENCE_FIELDS) or
+                    category_manifest["identity"]["input"] != manifest["identity"]["input"] or
+                    _core_hashes(category_manifest) != _core_hashes(manifest) or
+                    category_trajectory.start_time != 0 or category_trajectory.end_time < candidate["t_report"] or
+                    category_manifest.get("refinement", {}).get("injected_test_system")):
+                    raise RefinementError("category/reference physical/backend/source/coverage mismatch")
             for i, comparison in enumerate(proof["comparisons"]):
                 if (not comparison.get("resolved") or comparison.get("coverage_end", -1) < candidate["t_report"] or
                     comparison.get("trajectory_fingerprints") != [fingerprint(actual[i][4].index), fingerprint(actual[i+1][4].index)] or

@@ -1,9 +1,13 @@
-"""Portable, read-only source/config checks and an isolated Stage05 rerun.
+"""CUDA-required server preflight and an isolated Stage05 rerun.
 
 The original Stage05 checker is copied byte-for-byte into a temporary folder.
 Its evidence JSON is copied, and only the copy's source paths are redirected
 to verified portable-input aliases. Historical project evidence is never used
 as a destination for a new test result.
+
+Importing this module never probes a GPU. CUDA probing happens only when the
+server invokes run_preflight(require_cuda=True), its default. An explicitly
+requested CPU_REFERENCE_TEST preflight never impersonates CUDA verification.
 """
 from datetime import datetime,timezone
 import hashlib
@@ -27,6 +31,13 @@ EXPECTED_STAGE05_ASSERTIONS=48
 
 def _sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def _probe_cuda(device_id,memory_mb):
+    # Deliberately lazy: package imports and static inspection must not touch
+    # CuPy, the CUDA runtime, a driver, or a device.
+    from .cuda_backend import probe_cuda
+    return probe_cuda(device_id=device_id,memory_mb=memory_mb)
 
 
 def _pipeline_config(root,path,value):
@@ -53,7 +64,8 @@ def _pipeline_config(root,path,value):
         outputs.add(output)
         cfg=RunConfig.from_json(config)
         rows.append({"config":config.relative_to(root).as_posix(),"out":output.relative_to(root).as_posix(),
-                     "config_fingerprint":cfg.fingerprint})
+                     "config_fingerprint":cfg.fingerprint,"linear_backend":cfg.linear_backend,
+                     "cuda_device":cfg.cuda_device,"gpu_memory_mb":cfg.gpu_memory_mb})
     return {"path":path.relative_to(root).as_posix(),"kind":"PIPELINE_PLAN","status":"PASS",
             "file_sha256":_sha(path),"runs":rows}
 
@@ -128,19 +140,26 @@ def _stage05_isolated(root,manifest):
                 "formal_PDE":"NOT_RUN_BY_PREFLIGHT","stage07":"NOT_RUN"}
 
 
-def run_preflight(output=None,include_stage05=True):
+def run_preflight(output=None,include_stage05=True,require_cuda=True):
     """Return JSON-serializable PASS/FAIL report; caller must honor FAIL.
 
     ``output`` optionally receives a new atomic JSON report. Missing packages,
     altered authority/inputs/configurations, and failed isolated checks are
-    explicit failures. Skipping Stage05 does not impersonate an executed check.
+    explicit failures. CUDA is required by default; unavailable CuPy, a driver,
+    a device, or float64 capability causes FAIL, never CPU fallback.
+    ``require_cuda=False`` is explicitly labeled CPU_REFERENCE_TEST and
+    GPU_NOT_CHECKED. Skipping Stage05 does not impersonate an executed check.
     """
     root=ROOT.resolve()
     authority=root/"workspace/04_model_specification.md"
     report={"status":"PASS","scope":"STAGE06_PORTABLE_PREFLIGHT",
+            "mode":"CUDA_REQUIRED_SERVER" if require_cuda else "CPU_REFERENCE_TEST",
             "timestamp":datetime.now(timezone.utc).isoformat(),"root":str(root),
             "python":sys.version,"executable":sys.executable,"dependencies":{},
             "authority":{},"raw":{},"configs":{},"stage05":{"status":"NOT_RUN"},
+            "gpu":{"status":"NOT_RUN" if require_cuda else "GPU_NOT_CHECKED",
+                   "required":bool(require_cuda),"automatic_cpu_fallback":False,"devices":[],
+                   "scope":"CUDA_RUNTIME_DEVICE_CAPABILITY_NOT_SOLVER_VALIDATION"},
             "failures":[],"formal_PDE":"NOT_RUN_BY_PREFLIGHT","stage07":"NOT_RUN"}
     start=time.perf_counter()
     for name in ("numpy","scipy","sympy","openpyxl","pytest"):
@@ -172,6 +191,7 @@ def run_preflight(output=None,include_stage05=True):
     except Exception as exc:
         report["raw"]={"status":"FAIL","error":str(exc)};report["failures"].append(str(exc))
     config_files=sorted((root/"configs").rglob("*.json"))
+    cuda_requests=set()
     if not config_files:
         report["configs"]={"status":"FAIL","files":[],"error":"No RunConfig JSON files under configs"}
         report["failures"].append("No portable RunConfig JSON files discovered")
@@ -186,16 +206,60 @@ def run_preflight(output=None,include_stage05=True):
                 if not isinstance(value,dict) or not {"route","question"}.issubset(value):
                     raise ValueError("Unexpected config JSON shape; expected explicit route/question RunConfig")
                 cfg=RunConfig.from_json(path)
+                if cfg.linear_backend=="CUDA":
+                    cuda_requests.add((cfg.cuda_device,cfg.gpu_memory_mb))
                 config_records.append({"path":path.relative_to(root).as_posix(),"status":"PASS",
                                        "kind":"RUN_CONFIG",
                                        "file_sha256":_sha(path),"config_fingerprint":cfg.fingerprint,
                                        "route":cfg.route,"question":cfg.question,"geometry":cfg.geometry,
+                                       "linear_backend":cfg.linear_backend,"cuda_device":cfg.cuda_device,
+                                       "gpu_memory_mb":cfg.gpu_memory_mb,
                                        "execution_backend":cfg.execution_backend,"execution_purpose":cfg.execution_purpose,
                                        "production_eligible":cfg.production_eligible})
             except Exception as exc:
                 config_records.append({"path":path.relative_to(root).as_posix(),"status":"FAIL","error":str(exc)})
                 report["failures"].append(f"Configuration {path.name}: {exc}")
         report["configs"]={"status":"PASS" if all(x["status"]=="PASS" for x in config_records) else "FAIL","files":config_records}
+    if require_cuda and not report["failures"]:
+        if not cuda_requests:
+            report["gpu"].update(status="FAIL",reason="No CUDA RunConfig found for CUDA-required server preflight")
+            report["failures"].append("CUDA_REQUIRED: no configured CUDA execution; CPU fallback is forbidden")
+        else:
+            for device_id,memory_mb in sorted(cuda_requests):
+                try:
+                    metadata=_probe_cuda(device_id,memory_mb)
+                    if not isinstance(metadata,dict) or metadata.get("status")!="PASS":
+                        raise ValueError("CUDA probe did not return explicit PASS metadata")
+                    if (metadata.get("backend")!="CUDA" or metadata.get("dtype")!="float64"
+                            or metadata.get("float64_supported") is not True
+                            or metadata.get("device_id")!=device_id):
+                        raise ValueError("CUDA probe metadata does not establish the requested float64 device")
+                    for field in ("cupy_version","device_name","compute_capability","solver"):
+                        if not isinstance(metadata.get(field),str) or not metadata[field]:
+                            raise ValueError(f"CUDA probe metadata missing {field}")
+                    for field in ("cuda_runtime_version","cuda_driver_version","device_total_bytes",
+                                  "device_free_bytes","gpu_memory_budget_bytes"):
+                        if (not isinstance(metadata.get(field),int) or isinstance(metadata[field],bool)
+                                or metadata[field]<0):
+                            raise ValueError(f"CUDA probe metadata missing/invalid {field}")
+                    if not isinstance(metadata.get("solver_probe_performed"),bool):
+                        raise ValueError("CUDA probe must distinguish device checks from an executed solve")
+                    # Keep the actual backend metadata, including CuPy/driver/
+                    # runtime/device/float64 evidence; do not replace it with
+                    # inferred availability or a synthesized device identity.
+                    json.dumps(metadata,allow_nan=False)
+                    report["gpu"]["devices"].append({"device_id":device_id,"memory_mb":memory_mb,
+                                                      "status":"PASS","metadata":metadata})
+                except Exception as exc:
+                    report["gpu"]["devices"].append({"device_id":device_id,"memory_mb":memory_mb,
+                                                      "status":"FAIL","error":str(exc),"error_type":type(exc).__name__,
+                                                      "code":getattr(exc,"code","CUDA_PREFLIGHT_FAILED")})
+                    report["failures"].append(f"CUDA_REQUIRED device {device_id}: {exc}")
+            report["gpu"]["status"]="PASS" if all(x["status"]=="PASS" for x in report["gpu"]["devices"]) else "FAIL"
+    elif require_cuda:
+        report["gpu"]["reason"]="Earlier preflight prerequisite failed; CUDA not probed"
+    else:
+        report["gpu"]["reason"]="Explicit require_cuda=False: CPU_REFERENCE_TEST only; CUDA availability is unverified"
     if include_stage05 and not report["failures"]:
         try:
             report["stage05"]=_stage05_isolated(root,inputs.manifest)

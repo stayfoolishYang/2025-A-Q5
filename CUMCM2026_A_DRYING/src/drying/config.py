@@ -31,6 +31,9 @@ class RunConfig:
     checkpoint_steps: int = 500
     max_output_rows: int = 1048575
     memory_mb: int = 2048
+    linear_backend: str = "CUDA"
+    cuda_device: int = 0
+    gpu_memory_mb: int = 2048
     execution_backend: str = "LOCAL_DEV"
     execution_purpose: str = "FRAMEWORK_INTEGRATION"
     production_eligible: bool = False
@@ -44,14 +47,17 @@ class RunConfig:
         allowed = {"route": {"B", "C"}, "question": {1, 23, 4},
                    "geometry": {"fixed", "moving"}, "end_condition": {"C0", "C1"},
                    "scenario": {"S0", "S1"}, "radius_method": {"linear", "pchip"},
-                   "radius_tail": {"NONE", "HOLD"}}
+                   "radius_tail": {"NONE", "HOLD"},
+                   "linear_backend": {"CUDA", "CPU_REFERENCE"}}
         for name, choices in allowed.items():
             if getattr(self, name) not in choices:
                 raise ValueError(f"CONFIG_INVALID: {name} must be one of {sorted(choices)}")
-        for name in ("nr", "nz", "max_steps", "checkpoint_steps", "max_output_rows", "memory_mb"):
+        for name in ("nr", "nz", "max_steps", "checkpoint_steps", "max_output_rows", "memory_mb", "gpu_memory_mb"):
             v = getattr(self, name)
             if not isinstance(v, int) or isinstance(v, bool) or v < 1:
                 raise ValueError(f"CONFIG_INVALID: {name} must be a positive integer")
+        if not isinstance(self.cuda_device,int) or isinstance(self.cuda_device,bool) or self.cuda_device<0:
+            raise ValueError("CONFIG_INVALID: cuda_device must be a nonnegative integer")
         if self.nr < 2:
             raise ValueError("CONFIG_INVALID: nr >= 2 required for axis reconstruction")
         if self.route == "B" and (self.nz != 1 or self.end_condition != "C0"):
@@ -86,6 +92,8 @@ class RunConfig:
             raise ValueError("CONFIG_INVALID: production_eligible must be boolean")
         if self.production_eligible and (self.execution_backend != "REMOTE_SERVER" or self.execution_purpose != "PRODUCTION" or self.test_case is not None):
             raise ValueError("CONFIG_INVALID: production eligibility requires remote production and no TEST_CASE")
+        if self.linear_backend!="CUDA" and (self.production_eligible or self.execution_purpose=="PRODUCTION"):
+            raise ValueError("CONFIG_INVALID: production runs require CUDA; CPU_REFERENCE is test/development only")
         if self.test_case is not None and self.execution_purpose != "TEST_ONLY":
             raise ValueError("CONFIG_INVALID: synthetic test_case requires TEST_ONLY purpose")
         if not isinstance(self.seed, int) or isinstance(self.seed, bool) or self.seed < 0:

@@ -127,3 +127,7 @@ def test_config_roundtrip_and_finite_contract(tmp_path):
     explicit = RunConfig.from_dict({"question": 4, "geometry": "moving", "tmax": 300000, "radius_tail": "R_EXT_HOLD"})
     assert explicit.radius_tail == "HOLD"
     assert replace(c, route="C", nz=3, end_condition="C1").route == "C"
+    assert c.linear_backend=='CUDA'
+    for change in [{'linear_backend':'auto'}, {'cuda_device':-1}, {'cuda_device':True},
+                   {'gpu_memory_mb':0}, {'linear_backend':'CPU_REFERENCE','execution_purpose':'PRODUCTION'}]:
+        with pytest.raises(ValueError): replace(c,**change)

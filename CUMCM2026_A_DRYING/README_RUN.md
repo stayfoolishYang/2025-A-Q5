@@ -1,24 +1,25 @@
-# CUMCM2026 A 药材烘干：服务器运行说明
+# CUMCM2026 A 药材烘干：GPU服务器运行说明
 
-这是 **A26-04-v2 / Stage06** 的实际求解代码。B 为径向主线兼基准，C 为真正的轴对称二维参考；P 保留，H 未启用。Stage07、Stage08 尚未执行，所有本地计算均为开发证据。代码的可运行性、开发测试通过、某个物理时间窗口完成、严格达标以及模型独立验证是不同状态。
+这是 **A26-04-v2 / Stage06 / CUDA_REQUIRED** 的求解代码。当前GPU修订尚未执行数值测试，须在服务器先通过GPU预检和对照测试。B 为径向主线兼基准，C 为真正的轴对称二维参考；P 保留，H 未启用。Stage07、Stage08 尚未执行，所有本地计算均为开发证据。代码的可运行性、开发测试通过、某个物理时间窗口完成、严格达标以及模型独立验证是不同状态。
 
 用户最新指示：**数值运行交给服务器，本地不再启动求解或数值测试。** 以下命令供用户在服务器执行；上传本代码不代表任务已远程提交。之前产生的本地记录保留为历史开发记录。
 
 ## 1. Linux 服务器首次运行
 
-需要 **Python 3.11 或更新版本、CPU、建议至少 2 GiB 可用内存**；不需要 GPU。使用独立虚拟环境。下面的目录是仓库中新增加的文件夹。
+需要 **NVIDIA GPU、兼容CUDA 12的驱动、CUDA 12.x运行库，以及Python 3.11或更新版本**。运行库须包含cuSOLVER、cuSPARSE、cuBLAS及NVRTC；安装CuPy不会替你安装显卡驱动。默认选可见设备0，主存和CuPy显存池预算分别为2048 MiB。使用独立虚拟环境。下面的目录是仓库中新增加的文件夹。
 
 ```bash
 git clone https://github.com/zhuoshou111/2025-A-Q5.git
 cd 2025-A-Q5/CUMCM2026_A_DRYING
 python3.11 -m venv .venv
 source .venv/bin/activate
+nvidia-smi
 python -m pip install -r requirements.txt
 python -m pip install --no-deps -e .
 python -m drying preflight --tests
 ```
 
-已有该仓库时，在确认本机没有待处理修改后更新自己的 checkout，再进入上述子目录；不必再次克隆。Python 的等价模块入口是 `PYTHONPATH=src python -m drying`。本项目没有调用 SciPy BDF 或其他黑盒时间积分器；SciPy 只提供带状/稀疏线性代数等基础数值工具。
+已有该仓库时，在确认本机没有待处理修改后更新自己的 checkout，再进入上述子目录；不必再次克隆。Python 的等价模块入口是 `PYTHONPATH=src python -m drying`。本项目继续采用自定义BDF2/BE与Newton；每次Newton线性子问题Aδ=-r经CuPy CSR传入GPU，调用cuSOLVER稀疏求解并在GPU检查后向误差。物性、FVM/Jacobian组装、步长控制、余额与Excel仍在CPU。原CPU线性求解只供显式CPU_REFERENCE测试/开发对照，正式PRODUCTION配置禁止选择它，没有CPU自动回退。正式严格报告证书还要求实际CUDA/float64求解遥测；全部误差类别需与候选的后端和设备一致，CPU对照记录不能作为GPU正式证书。
 
 一条命令执行首轮流水线：
 
@@ -26,11 +27,12 @@ python -m drying preflight --tests
 python -u -m drying pipeline --plan configs/server_first_round.json > server_pipeline.log 2>&1
 ```
 
-流水线先运行原件/规格/配置预检、原 Stage05 的48项孤立检查和本项目测试，任何前置失败都阻止求解；随后顺序运行 Q1 的20/40网格、Q2/Q3、Q4。默认生产运行使用 `REMOTE_SERVER + PRODUCTION + production_eligible=true`，但**生产用途不等于 Stage07 PASS**。该命令不自动执行 Stage07，也不自动宣称 result 工作簿合格。
+流水线先检查实际CUDA设备及float64支持，再运行原件/规格/配置预检、原Stage05的48项孤立检查，以及强制DRYING_REQUIRE_CUDA=1的测试（GPU缺失时不得跳过GPU测试；按当前计划的可见设备/显存预算逐组执行），任何前置失败都阻止求解；随后顺序运行 Q1 的20/40网格、Q2/Q3、Q4。默认生产运行使用 `REMOTE_SERVER + PRODUCTION + production_eligible=true`，但**生产用途不等于 Stage07 PASS**。该命令不自动执行 Stage07，也不自动宣称 result 工作簿合格。
 
 ```bash
 tail -f server_pipeline.log
 ps -ef | grep '[p]ython.*drying'
+watch -n 1 nvidia-smi
 ```
 
 退出码0表示所请求的有限时间窗口已计算完成；2表示预算耗尽或误差/事件证据未解决；1表示数值、配置或工程错误。`TIME_LIMIT_REACHED`/`INPUT_HORIZON_REACHED`不等于烘干达标。独立任务遇到预算耗尽时流水线可继续其余任务，但总状态和退出码保留 PARTIAL/2；数值失败停止后续求解。
@@ -38,26 +40,28 @@ ps -ef | grep '[p]ython.*drying'
 ## 2. 分别运行、短时检查与恢复
 
 ```bash
-python -m drying run --config configs/smoke.json --out results/runs/EXP100_smoke__srv001
-python -m drying run --config configs/B_Q1.json --out results/runs/EXP101_B_Q1__srv001
-python -m drying run --config configs/B_Q23_S0.json --out results/runs/EXP102_B_Q23_S0__srv001
-python -m drying run --config configs/B_Q4_S0.json --out results/runs/EXP103_B_Q4_S0__srv001
-python -m drying run --config configs/C0_fixed_short.json --out results/runs/EXP106_C0_fixed__srv001
-python -m drying run --config configs/C0_moving_short.json --out results/runs/EXP107_C0_moving__srv001
-python -m drying run --config configs/C1_short.json --out results/runs/EXP108_C1_short__srv001
+python -m drying run --config configs/smoke.json --out results/runs/EXP100_smoke__cuda001
+python -m drying run --config configs/B_Q1.json --out results/runs/EXP101_B_Q1__cuda001
+python -m drying run --config configs/B_Q23_S0.json --out results/runs/EXP102_B_Q23_S0__cuda001
+python -m drying run --config configs/B_Q4_S0.json --out results/runs/EXP103_B_Q4_S0__cuda001
+python -m drying run --config configs/C0_fixed_short.json --out results/runs/EXP106_C0_fixed__cuda001
+python -m drying run --config configs/C0_moving_short.json --out results/runs/EXP107_C0_moving__cuda001
+python -m drying run --config configs/C1_short.json --out results/runs/EXP108_C1_short__cuda001
 ```
 
 `smoke`和 C 短时配置保留开发用途，不能因为在服务器运行就升级证据。完整 C1 的 Q23/Q4 配置也已提供：`configs/C1_Q23.json`、`configs/C1_Q4.json`；本轮不要求自动运行这两项长算。
 
-若已经执行流水线，不能再用上面相同输出路径从头运行。每次新运行使用新的 `__srv002` 等后缀。恢复原运行必须使用原配置、原源码和原始输入：
+若已经执行流水线，不能再用上面相同输出路径从头运行。每次新运行使用新的 `__cuda002` 等后缀。恢复原运行必须使用原配置、原源码和原始输入：
 
 ```bash
-python -m drying run --config results/runs/EXP102_B_Q23_S0__srv001/config.json --out results/runs/EXP102_B_Q23_S0__srv001 --resume
+python -m drying run --config results/runs/EXP102_B_Q23_S0__cuda001/config.json --out results/runs/EXP102_B_Q23_S0__cuda001 --resume
 ```
 
-每次恢复有新的有限墙钟/步数预算，沿用合法 BDF 历史；已有数值配置不能修改后直接续接。初始检查点、每500接受步检查点以及最终检查点均保留。若异常退出造成已落盘轨迹领先检查点，恢复会保留旧索引/块和日志，再恢复到最后完整检查点；不会覆盖已存历史块。每次执行尝试保存独立环境记录。源码整体指纹变化会拒绝直接续接；旧版本可使用其 `source_snapshot/src` 重现原算法，或以新版本和新 run_id 从初值重跑。
+每次恢复有新的有限墙钟/步数预算，沿用合法 BDF 历史；已有数值配置不能修改后直接续接。初始检查点、每500接受步检查点以及最终检查点均保留。若异常退出造成已落盘轨迹领先检查点，恢复会保留旧索引/块和日志，再恢复到最后完整检查点；不会覆盖已存历史块。每次执行尝试保存独立环境记录。GPU/CPU配置、求解器设置和源码变更会拒绝直接续接；旧版本可使用其 `source_snapshot/src` 重现原算法，或以新版本和新 run_id 从初值重跑。
 
-默认 B 主线最大物理时间72 h，Q1为1800 s；Q23/Q4服务器墙钟预算各4 h，步数上限500000。所有配置都使用float64，h0≤0.1 s、hmax≤60 s，默认 rtol=1e-6、atolT=1e-6 K、atolC=1e-9 kg/kg。内存由运行前容量估计和每100步检查协作限制；Linux/macOS检查历史峰值RSS，Windows检查当前工作集，这不是操作系统硬隔离。配置中2048 MiB不表示一定会用满。Q1开发实测20/40层各约46 s，不能据此保证更细网格、二维或另一台服务器的耗时。
+所有随附运行配置现在显式包含linear_backend="CUDA"、cuda_device=0、gpu_memory_mb=2048。若设置CUDA_VISIBLE_DEVICES，cuda_device使用映射后的可见编号。CPU_REFERENCE只允许非生产测试，不会在GPU失败时自动启用。
+
+默认 B 主线最大物理时间72 h，Q1为1800 s；Q23/Q4服务器墙钟预算各4 h，步数上限500000。所有配置都使用float64，h0≤0.1 s、hmax≤60 s，默认 rtol=1e-6、atolT=1e-6 K、atolC=1e-9 kg/kg。内存由运行前容量估计和每100步检查协作限制；Linux/macOS检查历史峰值RSS，Windows检查当前工作集，这不是操作系统硬隔离。配置中2048 MiB不表示一定会用满。旧CPU版Q1开发记录约46 s，仅是历史数据。GPU版没有本地或服务器实测，不能承诺加速；尤其20/40层小矩阵可能由传输和调度开销主导。GPU记录包含设备/驱动/CuPy、实际成功求解次数、传输字节和同步计时；不能用CUDA标签或GPU占用率代替这些记录。CuPy池限额不能硬限制cuSOLVER内部工作区，分配失败明确退出。
 
 ## 3. 输入和模型约束
 
@@ -70,8 +74,8 @@ Q2从原始初值开始，Q3使用同一 `question=23` 轨迹。环境在观测�
 ## 4. 观察结果和误差加严
 
 ```bash
-python -m drying summarize results/runs/EXP102_B_Q23_S0__srv001
-python -m drying compare-q1 results/runs/EXP101_B_Q1__srv001 results/runs/EXP104_B_Q1_nr40__srv001 --out results/q1_comparison.json
+python -m drying summarize results/runs/EXP102_B_Q23_S0__cuda001
+python -m drying compare-q1 results/runs/EXP101_B_Q1__cuda001 results/runs/EXP104_B_Q1_nr40__cuda001 --out results/q1_comparison.json
 python -m drying plan-refinement --config configs/B_Q23_S0.json --out results/q23_refinement_plan.json
 ```
 
@@ -111,6 +115,10 @@ python -m drying pack-return --runs results/runs --out results/stage06_return_mi
 python -m drying pack-return --runs results/runs --out results/stage06_return_full.zip --full
 ```
 
-先回传minimum包、`results/preflight.json`、`results/pipeline_summary.json`和`server_pipeline.log`。minimum包含各运行manifest、配置、实际环境、指标、余额、事件和结果/回读记录；full另含接受轨迹、检查点、逐步日志及源码快照。失败和预算终止也须回传，不用删去失败记录来形成全成功列表。
+先回传minimum包、`results/preflight.json`、`results/server_tests.xml`、`results/pipeline_summary.json`和`server_pipeline.log`。GPU硬件未核验/测试未通过时应先回传失败预检，不运行生产任务。minimum包含各运行manifest、配置、实际环境、指标、余额、事件和结果/回读记录；full另含接受轨迹、检查点、逐步日志及源码快照。失败和预算终止也须回传，不用删去失败记录来形成全成功列表。
 
 本仓库不包含大量本地轨迹、检查点或缓存；本地首轮摘要和真实测试记录在`workspace/evidence`，完整本地轨迹保留在原项目的`results/runs`。更细误差分析、B/C全程结构比较及物理解释的独立审查留给经人工授权的Stage07。
+
+## 7. 当前GPU修订的验收边界
+
+本轮只做静态代码、JSON、语法和发布核对，未安装CuPy、未探测本机GPU、未运行pytest或数值求解。新增GPU/CPU对照覆盖线性系统以及B固定、B收缩、C端面交换的小型实际PDE；测试代码由服务器执行。Gate06为CONDITIONAL_PASS，条件是服务器GPU预检、测试和短跑通过。旧CPU测试/轨迹仅是历史证据，不能算作CUDA版已验证；Stage07/08仍NOT_RUN。

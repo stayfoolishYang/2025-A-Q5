@@ -1,6 +1,8 @@
 """A26-04-v2 section 6.8: custom variable-step BDF2 / full BE.
 
-Only the linear systems use SciPy. No library time integrator is used.
+CUDA sparse linear solves are required by production RunConfig. SciPy solves
+remain an explicitly selected CPU reference for comparison tests only.
+No library time integrator is used.
 All state/history mutations occur after acceptance; auxiliary BE solves are private.
 """
 from __future__ import annotations
@@ -13,6 +15,7 @@ import numpy as np
 from scipy.sparse import eye, diags, csc_matrix
 from scipy.sparse.linalg import splu
 from scipy.linalg import solve_banded
+from .cuda_backend import CudaLinearSolver, CudaBackendError
 
 
 class NumericalFailure(RuntimeError):
@@ -30,6 +33,9 @@ class Settings:
     linear_tol: float = 1e-8
     max_steps: int = 2000000
     wall_seconds: float = 1800.0
+    linear_backend: str = "CPU_REFERENCE"
+    cuda_device: int = 0
+    gpu_memory_mb: int = 2048
 
     @classmethod
     def from_config(cls, config):
@@ -69,6 +75,10 @@ class Integrator:
     def __init__(self, system, settings=None, *, scale=None, valid=None):
         self.system = system
         self.cfg = settings or Settings()
+        if self.cfg.linear_backend not in ('CUDA','CPU_REFERENCE'):
+            raise ValueError('unknown linear backend')
+        self.cuda_solver=(CudaLinearSolver(self.cfg.cuda_device,self.cfg.gpu_memory_mb)
+                          if self.cfg.linear_backend=='CUDA' else None)
         self.scale = scale or (lambda y, old: physical_scale(y, old, self.cfg))
         formal = getattr(system, 'test_case', None) is None
         self.valid = valid or (lambda y, accepted, s: physical_valid(y, accepted, s, formal))
@@ -91,13 +101,20 @@ class Integrator:
         self.last_step = None
         self.failure = None
 
+    def linear_backend_metadata(self):
+        if self.cuda_solver is not None:
+            return self.cuda_solver.metadata
+        return {'backend':'CPU_REFERENCE','gpu_used':False,'dtype':'float64',
+                'purpose':'EXPLICIT_NONPRODUCTION_REFERENCE_NOT_FALLBACK'}
+
     def snapshot(self):
         return {'t': self.t, 'y': self.y.tolist(), 't_prev': self.t_prev,
                 'y_prev': None if self.y_prev is None else self.y_prev.tolist(),
                 'h_prev': self.h_prev, 'h_next': self.h_next,
                 'needs_be': self.needs_be, 'be_reason': self.be_reason,
                 'stats': deepcopy(self.stats), 'last_step': deepcopy(self.last_step),
-                'settings': asdict(self.cfg), 'algorithm': self.algorithm}
+                'settings': asdict(self.cfg), 'algorithm': self.algorithm,
+                'linear_backend_snapshot':self.linear_backend_metadata()}
 
     def restore(self, state):
         if state['algorithm'] != self.algorithm or state['settings'] != asdict(self.cfg):
@@ -121,6 +138,14 @@ class Integrator:
 
     def _linear(self, matrix, residual):
         started = time.perf_counter()
+        if self.cuda_solver is not None:
+            try:
+                answer, backward=self.cuda_solver.solve(matrix,residual)
+            finally:
+                self.stats['linear_seconds'] += time.perf_counter()-started
+            if not np.all(np.isfinite(answer)) or backward > self.cfg.linear_tol:
+                raise NumericalFailure('LINEAR_RESIDUAL')
+            return answer, backward
         # B's 2x2 block-tridiagonal matrix has scalar bandwidth three.
         grid = getattr(self.system, 'grid', None)
         if grid is not None and grid.route == 'B':
@@ -265,6 +290,10 @@ class Integrator:
                 try:
                     candidate, info = self._attempt(h, trial_method, side)
                     accepted = True; break
+                except CudaBackendError:
+                    # Device/runtime/OOM failures cannot be fixed by a smaller
+                    # time step and must never trigger CPU fallback.
+                    raise
                 except (NumericalFailure, ValueError, FloatingPointError, RuntimeError) as error:
                     reason = str(error)
                     self.stats['rejected'] += 1

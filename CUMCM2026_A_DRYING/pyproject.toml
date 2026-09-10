@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cumcm2026-a-drying"
-version = "0.6.0"
+version = "0.6.1"
 description = "A26-04-v2 reproducible cylindrical drying solver"
 requires-python = ">=3.11"
-dependencies = ["numpy>=1.24", "scipy>=1.10", "openpyxl>=3.0"]
+dependencies = ["numpy>=1.24", "scipy>=1.10", "openpyxl>=3.0", "cupy-cuda12x>=13.6,<14"]
 
 [project.optional-dependencies]
 test = ["pytest>=7", "sympy>=1.11"]
@@ -21,3 +21,4 @@ where = ["src"]
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
+markers = ["cuda: server-only tests requiring a real NVIDIA CUDA device"]

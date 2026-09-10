@@ -10,7 +10,7 @@ from drying.cli import main
 
 
 def test_real_run_restart_package(tmp_path):
-    config=RunConfig(question=1,nr=4,tmax=1,wall_seconds=30,checkpoint_steps=10)
+    config=RunConfig(question=1,nr=4,tmax=1,wall_seconds=30,checkpoint_steps=10,linear_backend='CPU_REFERENCE')
     path=tmp_path/'EXP900_contract__test001'
     first=run_config(config,path)
     assert first['t']==1 and first['failure'] is None
@@ -46,7 +46,7 @@ def test_pipeline_preflight_failure_blocks_runs(tmp_path,monkeypatch):
 def test_actual_crash_ahead_recovery_and_tampered_config(tmp_path):
     import shutil
     from drying.trajectory import Trajectory
-    config=RunConfig(question=1,nr=4,tmax=1,wall_seconds=30,checkpoint_steps=10)
+    config=RunConfig(question=1,nr=4,tmax=1,wall_seconds=30,checkpoint_steps=10,linear_backend='CPU_REFERENCE')
     path=tmp_path/'EXP901_crash__test001'
     run_config(config,path)
     original=Trajectory(path/'trajectory',verify=True).at(1)

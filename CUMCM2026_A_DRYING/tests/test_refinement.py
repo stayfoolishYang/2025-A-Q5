@@ -91,7 +91,7 @@ def write_run(path, config, factory=DecayCells, until=.7, checkpoint_interval=10
 @pytest.fixture
 def config():
     return RunConfig(nr=3, tmax=1., rtol=2e-4, atol_t=2e-5, atol_c=2e-7,
-                     h0=.001, hmax=.04, execution_purpose="TEST_ONLY", wall_seconds=30.)
+                     h0=.001, hmax=.04, execution_purpose="TEST_ONLY", wall_seconds=30.,linear_backend="CPU_REFERENCE")
 
 
 def test_real_event_reintegration_has_new_accepted_states_and_preserves_prefix(tmp_path, config):
@@ -266,3 +266,21 @@ def test_comparison_capacity_is_unresolved_not_zero_error(tmp_path, config):
     comparison = compare_runs(a,b,system_factory=DecayCells,max_time_points=1)
     assert not comparison["resolved"]
     assert comparison["status"] == "COMPARISON_POINT_BUDGET_REACHED"
+
+
+def test_suffix_gpu_failure_keeps_last_checkpoint_and_hard_exit_code(tmp_path, config, monkeypatch):
+    from drying.cuda_backend import CudaBackendError
+    source = tmp_path / "source"
+    write_run(source, config)
+    def fail_run(self, *args, **kwargs):
+        raise CudaBackendError("CUDA_SOLVE_FAILED", "TEST_ONLY injected device failure")
+    monkeypatch.setattr(Integrator, "run", fail_run)
+    output = tmp_path / "gpu_failed_suffix"
+    result = _reintegrate_suffix(source, output, before=.3, until=.7,
+                                system_factory=DecayCells, wall_seconds=30.)
+    manifest = json.loads((output / "manifest.json").read_text())
+    checkpoint = json.loads((output / "checkpoint.json").read_text())
+    assert result["status"] == "GPU_BACKEND_FAILURE" and result["exit_code"] == 1
+    assert manifest["execution"]["exit_code"] == 1
+    assert checkpoint["integrator"]["t"] == result["checkpoint_time"]
+    assert result["new_accepted_steps"] == 0
