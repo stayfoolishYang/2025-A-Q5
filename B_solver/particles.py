@@ -33,6 +33,9 @@ def signal_counts(particles, candidates, device='cpu', particle_chunk=65536, can
     import torch
     if not torch.cuda.is_available():
         raise RuntimeError('CUDA requested but this Python has no usable CUDA runtime')
+    if candidate_chunk is None:
+        free_bytes, _ = torch.cuda.mem_get_info(device)
+        candidate_chunk = max(8, min(32, int(free_bytes*0.05/(particle_chunk*32))))
     counts = torch.zeros(len(candidates), dtype=torch.int64, device=device)
     with torch.inference_mode():
         for first in range(0, len(particles), particle_chunk):

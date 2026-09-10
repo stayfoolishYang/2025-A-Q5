@@ -10,20 +10,35 @@ from simulator import Client, LocalSimulator
 
 
 class Solver:
-    def __init__(self, client, mixed=False, policy='P3', device='cpu', particles=16384, use_negative=True, schedule=True):
+    def __init__(self, client, mixed=False, policy='P3', device='cpu', particles=16384, use_negative=True, schedule=True, diagnostic=None):
         self.api, self.mixed, self.policy = client, mixed, policy
         self.device, self.particles, self.use_negative = device, particles, use_negative
         self.schedule = schedule
+        self.diagnostic = diagnostic or {}
+        self.trace = {}
         self.tracks, self.cleared = {}, set()
         self.history = {c: [] for c in range(1,21)}
         self.observations, self.fallbacks, self.certified = 0, 0, 0
 
+    def target_trace(self, c):
+        return self.trace.setdefault(c, dict(channel=int(c), first_seen_position=None, first_seen_time=None,
+            num_direction_obs=0, num_no_signal_obs=0, num_near_obs=0, geometry_history=[],
+            candidate_choices=[], movement_distance=0., fallback_trigger_reason=[], diagnostic_count=0,
+            diagnostic_decisions=[], optical_grid_points=0, optical_clear_attempts=0,
+            clear_attempts=0, clear_time=0., success=False))
+
     def clear(self, c, p, certified=False):
+        log = self.target_trace(c)
+        log['movement_distance'] += float(np.linalg.norm(p-self.api.position))
+        before = self.api.virtual_time
         response = self.api.action('/clear', p, int(c))
+        log['clear_attempts'] += 1
+        log['clear_time'] += self.api.virtual_time-before
         if response['clear_result'] == 'success':
             self.cleared.add(c)
             self.tracks.pop(c, None)
             self.certified += int(certified)
+            log['success'] = True
             return True
         if certified:
             raise RuntimeError('Certified clear failed: inspect geometry/protocol, do not silently discard source')
@@ -31,8 +46,14 @@ class Solver:
 
     def measure(self, c, p):
         p = np.asarray(p)
+        log = self.target_trace(c)
+        log['movement_distance'] += float(np.linalg.norm(p-self.api.position))
         response = self.api.action('/measure', p, int(c))
         result, angle = response['measure_result'], response.get('svd_deg')
+        log['num_'+result+'_obs'] += 1
+        log['candidate_choices'].append(dict(point=p.tolist(), result=result, time=self.api.virtual_time))
+        if result != 'no_signal' and log['first_seen_position'] is None:
+            log['first_seen_position'], log['first_seen_time'] = p.tolist(), self.api.virtual_time
         self.history[c].append((p.copy(),result,angle))
         if result == 'near':
             self.clear(c, p, certified=True)
@@ -55,6 +76,8 @@ class Solver:
                     track['hyp'] = Hypotheses(c, self.particles, self.device, self.use_negative)
                     track['hyp'].history = list(self.history[c][:-1])
                 track['hyp'].update(track['poly'], (p.copy(), result, angle))
+            log['geometry_history'].append(dict(time=self.api.virtual_time, diameter=diameter(track['poly'])[0],
+                mec_radius=mec(track['poly'])[1], particle_count=len(track['hyp'].p) if track['hyp'] else 0))
 
     def localize(self, c, one_step=False):
         steps = 0
@@ -65,12 +88,21 @@ class Solver:
                 self.clear(c, center, certified=True)
                 return
             if self.policy == 'P0' or track['n'] >= 8 or track['negatives'] >= 3:
+                log = self.target_trace(c)
+                log['fallback_trigger_reason'].append('policy_P0' if self.policy == 'P0' else
+                    'direction_limit' if track['n'] >= 8 else 'consecutive_no_signal')
+                if self.mixed and self.policy == 'P4' and self.diagnostic.get('enabled'):
+                    from directional.diagnostic_recovery import recover
+                    if recover(self, c, self.diagnostic):
+                        return
+                    track = self.tracks[c]
                 self.fallbacks += 1
-                points = optical_grid(track['poly'])
-                # Fixed distance ordering avoids quadratic TSP on the optical fallback.
-                local_order = np.argsort(np.linalg.norm(points-self.api.position, axis=1))
-                for i in local_order:
-                    if self.clear(c, points[i]):
+                from directional.fallback_cost import ordered_grid
+                points = ordered_grid(track['poly'], self.api.position, self.diagnostic.get('local_order', False))
+                log['optical_grid_points'] += len(points)
+                for point in points:
+                    log['optical_clear_attempts'] += 1
+                    if self.clear(c, point):
                         return
                 raise RuntimeError(f'Optical coverage exhausted but channel {c} not cleared')
             if self.policy in ('P2', 'P3'):
@@ -133,6 +165,7 @@ def main():
     p.add_argument('--device', default='cpu')
     p.add_argument('--particles', type=int, default=16384)
     p.add_argument('--robot-id')
+    p.add_argument('--config', help='JSON-compatible YAML diagnostic configuration; default preserves baseline')
     p.add_argument('--output', default='B_solver/results/run.json')
     args = p.parse_args()
     out = Path(args.output)
@@ -140,7 +173,8 @@ def main():
     if args.mode == 'practice' and not args.robot_id:
         p.error('--robot-id is required for an already-open PRACTICE session')
     api = Client(args.robot_id, out.with_suffix('.jsonl')) if args.mode=='practice' else LocalSimulator(args.seed,args.problem==4)
-    solver = Solver(api,args.problem==4,args.policy or ('P4' if args.problem==4 else 'P3'),args.device,args.particles)
+    config = json.loads(Path(args.config).read_text()) if args.config else {}
+    solver = Solver(api,args.problem==4,args.policy or ('P4' if args.problem==4 else 'P3'),args.device,args.particles,diagnostic=config)
     result = solver.run()
     result['evidence'] = 'official_practice' if args.mode=='practice' else 'synthetic_local'
     if isinstance(api,LocalSimulator):
