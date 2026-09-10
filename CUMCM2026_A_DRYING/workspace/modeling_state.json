@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "project_id": "CUMCM2026_A_DRYING",
+    "title": "2026年国赛A题 药材的烘干问题",
+    "competition": "2026年高教社杯全国大学生数学建模竞赛",
+    "problem_code": "A",
+    "created_at": "2026-09-10T11:37:53.674369+00:00"
+  },
+  "workflow": {
+    "operating_mode": "PERFORMANCE",
+    "current_stage": "06_CODE_ENGINEERING",
+    "recommended_next_stage": "SERVER_EXECUTION",
+    "workflow_status": "ACTIVE",
+    "budget_mode": "PERFORMANCE"
+  },
+  "gates": {
+    "gate_01_problem_definition": "CONDITIONAL_PASS",
+    "gate_02_candidate_models": "CONDITIONAL_PASS",
+    "gate_03_pre_experiment_selection": "CONDITIONAL_PASS",
+    "gate_04_mathematical_formulation": "CONDITIONAL_PASS",
+    "gate_05_presolve_qa": "CONDITIONAL_PASS",
+    "gate_06_implementation": "PASS",
+    "gate_07_validation": "NOT_RUN",
+    "gate_08_model_improvement": "NOT_RUN"
+  },
+  "artifacts": {
+    "problem_analysis": "workspace/01_problem_analysis.md",
+    "candidate_models": "workspace/02_candidate_models.md",
+    "model_selection": "workspace/03_model_selection.md",
+    "model_specification": "workspace/04_model_specification.md",
+    "presolve_qa": "workspace/05_presolve_qa.md",
+    "implementation": "workspace/06_implementation.md",
+    "validation": null,
+    "model_improvement": null
+  },
+  "model_status": {
+    "baseline": "B_EMPIRICAL_RADIAL",
+    "primary_candidate": "B_EMPIRICAL_RADIAL",
+    "challenger": "C_AXISYMMETRIC_REFERENCE",
+    "current_best_verified": null,
+    "model_frozen": false
+  },
+  "experiment_status": {
+    "next_experiment_id": 111,
+    "active_experiment": null,
+    "completed_experiments": [
+      "EXP001_B_Q1_smoke__dev001",
+      "EXP002_B_Q1__dev001",
+      "EXP003_B_Q1_nr40__dev001",
+      "EXP006_C0_fixed_short__dev001",
+      "EXP007_C0_moving_short__dev001",
+      "EXP008_C1_short__dev001"
+    ]
+  },
+  "data_status": {
+    "data_inventory": "workspace/data_inventory.md",
+    "raw_data_present": true,
+    "processed_data_present": false,
+    "large_data_warning": false
+  },
+  "open_issues": {
+    "blocking": [],
+    "important": [
+      "User explicitly confirmed A26-04-v2 for Stage06. Implementation delivered; latest instruction stops new local numerical execution and reserves calculation for server. Stage06 human review pending.",
+      "B作为条件主线兼基准，题面rho仅通过a=rho*cp用于有效热方程；有效气固映射可算，真实平衡、完整能量和独立场验证仍未完成。",
+      "P严格湿密度组合不相容：固定静止干骨架约束冲突；Q4积分必要下界R>=1.2112029565383968cm，首次违反观测为70200s/19.5h，不是干燥事件。",
+      "P方向KEEP_IN_RESERVE，不进入当前主求解链；primary_candidate与baseline同为B_EMPIRICAL_RADIAL，不复制B或伪造第三条路线。",
+      "主任务允许区间内全量离线插值；样本内拟合不冒充独立验证，在线扩展另设因果约束。",
+      "S0/S1及邻近平台窗口已定义；长期工况未唯一指定，场/时长敏感性NOT_RUN。",
+      "附录映射已明确，h/hm跨问沿用是基准解释；候选交换势、归一化通量和真实质量因子须保持一致。",
+      "Q4采用L恒定、自相似材料收缩和分段线性R；PCHIP敏感性NOT_RUN。默认72h无半径尾部延拓；超范围须明确R_EXT_HOLD和有限tmax，仅能产生条件结果。",
+      "C0 fixed/moving degeneration and C1 short tests executed in Stage06; full C1 and one-dimensional structural validity await server evidence and Stage07.",
+      "Q23 same-source exporter implemented. Historical Q23/Q4 scans found no event in budget-limited coverage. No candidate result2-4 produced.",
+      "B first runs performed as historical LOCAL_DEV evidence; Q1 full1800s, Q23~20.23h and Q4~25.59h partial. Final drying times unresolved; future runs on server only.",
+      "Actual Stage06 input/derivative/Jacobian/time/PDE/manufactured/balance/recovery tests executed and recorded. Stage07 remains NOT_RUN; do not describe all PDE tests as unexecuted.",
+      "B/C差异归因前分别控制空间/时间/非线性/事件误差；超预设容差且C自身检查通过才重评1D或升级C，不能解决共同物理闭合风险。",
+      "Q1 nr20/40 early true-surface C difference ~0.09001846kg/kg; no developer-approved result1. Final ULP-guard solver revision requires new run IDs; old core snapshots retained."
+    ],
+    "optional": [
+      "端面暴露、周向风场、实验批次和测量误差资料。",
+      "独立内部温度、含水率及总质量记录。",
+      "后续论文格式规范、服务器资源与计算预算。"
+    ]
+  },
+  "history": [
+    {
+      "time": "2026-09-10T11:37:53.674369+00:00",
+      "event": "STAGE_01_COMPLETED",
+      "gate": "CONDITIONAL_PASS"
+    },
+    {
+      "time": "2026-09-10T12:00:55.625506+00:00",
+      "event": "STAGE_01_COMPLETED",
+      "gate": "CONDITIONAL_PASS"
+    },
+    {
+      "time": "2026-09-10T12:10:11.987395+00:00",
+      "event": "STAGE_02_COMPLETED",
+      "gate": "CONDITIONAL_PASS"
+    },
+    {
+      "time": "2026-09-10T12:43:11.955470+00:00",
+      "event": "STAGE_03_COMPLETED",
+      "gate": "CONDITIONAL_PASS"
+    },
+    {
+      "time": "2026-09-10T13:18:06.318089+00:00",
+      "event": "STAGE_04_COMPLETED",
+      "gate": "CONDITIONAL_PASS"
+    },
+    {
+      "time": "2026-09-10T14:02:32.537455+00:00",
+      "event": "STAGE_05_COMPLETED",
+      "gate": "CONDITIONAL_PASS"
+    },
+    {
+      "time": "2026-09-10T15:03:09.431660+00:00",
+      "event": "STAGE_06_COMPLETED",
+      "gate": "PASS"
+    }
+  ]
+}

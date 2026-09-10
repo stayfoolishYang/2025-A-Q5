@@ -1,0 +1,794 @@
+{
+  "status": "PASS",
+  "scope": "STAGE06_PORTABLE_PREFLIGHT",
+  "timestamp": "2026-09-10T14:54:08.272531+00:00",
+  "root": "E:\\数模\\projects\\CUMCM2026_A_DRYING",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "executable": "C:\\Users\\asus\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+  "dependencies": {
+    "numpy": {
+      "status": "PASS",
+      "version": "2.4.4"
+    },
+    "scipy": {
+      "status": "PASS",
+      "version": "1.17.1"
+    },
+    "sympy": {
+      "status": "PASS",
+      "version": "1.14.0"
+    },
+    "openpyxl": {
+      "status": "PASS",
+      "version": "3.1.5"
+    },
+    "pytest": {
+      "status": "PASS",
+      "version": "9.0.3"
+    }
+  },
+  "authority": {
+    "path": "workspace/04_model_specification.md",
+    "expected_sha256": "29ea5f37f9e50dae9f5d7f7515276394d2215fdc8f0d0b79c6d0c91eccd437d4",
+    "actual_sha256": "29ea5f37f9e50dae9f5d7f7515276394d2215fdc8f0d0b79c6d0c91eccd437d4",
+    "model_version": "A26-04-v2",
+    "status": "PASS"
+  },
+  "raw": {
+    "status": "PASS",
+    "input_fingerprint": "1424f7971eb6abba3f5472ec91d4265860e8d08c58fc6ff6c5f1a6f8fbd0e63b",
+    "files": [
+      {
+        "relative_path": "environment.xlsx",
+        "original_relative_path": "附件/附件1.xlsx",
+        "sha256": "7ef32870abeef420b89560b2530ff60dfe4255917805151d89988d0311af9dd7",
+        "size_bytes": 16586,
+        "copied_without_modification": true,
+        "sheets": [
+          {
+            "name": "Sheet1",
+            "rows": 242,
+            "columns": 3,
+            "header": [
+              "时间",
+              "温度",
+              "水分浓度"
+            ]
+          }
+        ]
+      },
+      {
+        "relative_path": "radius.xlsx",
+        "original_relative_path": "附件/附件2.xlsx",
+        "sha256": "5563acbfa4b4afb10cc6c03e2207e5369bf39da27576672aff14cc5c32e704af",
+        "size_bytes": 11485,
+        "copied_without_modification": true,
+        "sheets": [
+          {
+            "name": "Sheet1",
+            "rows": 146,
+            "columns": 2,
+            "header": [
+              "时间",
+              "半径"
+            ]
+          }
+        ]
+      },
+      {
+        "relative_path": "templates/result1.xlsx",
+        "original_relative_path": "附件/附件3/result1.xlsx",
+        "sha256": "23b261b295c1b787d000eebbca6521c37075107b6fcf78724f8d395ce1798ff4",
+        "size_bytes": 10073,
+        "copied_without_modification": true,
+        "sheets": [
+          {
+            "name": "温度",
+            "rows": 5,
+            "columns": 6,
+            "header": [
+              "时间\\到药材中心的距离",
+              0,
+              0.1,
+              0.2,
+              "…",
+              2
+            ]
+          },
+          {
+            "name": "水分浓度",
+            "rows": 5,
+            "columns": 6,
+            "header": [
+              "时间\\到药材中心的距离",
+              0,
+              0.1,
+              0.2,
+              "…",
+              2
+            ]
+          }
+        ]
+      },
+      {
+        "relative_path": "templates/result2.xlsx",
+        "original_relative_path": "附件/附件3/result2.xlsx",
+        "sha256": "23b261b295c1b787d000eebbca6521c37075107b6fcf78724f8d395ce1798ff4",
+        "size_bytes": 10073,
+        "copied_without_modification": true,
+        "sheets": [
+          {
+            "name": "温度",
+            "rows": 5,
+            "columns": 6,
+            "header": [
+              "时间\\到药材中心的距离",
+              0,
+              0.1,
+              0.2,
+              "…",
+              2
+            ]
+          },
+          {
+            "name": "水分浓度",
+            "rows": 5,
+            "columns": 6,
+            "header": [
+              "时间\\到药材中心的距离",
+              0,
+              0.1,
+              0.2,
+              "…",
+              2
+            ]
+          }
+        ]
+      },
+      {
+        "relative_path": "templates/result3.xlsx",
+        "original_relative_path": "附件/附件3/result3.xlsx",
+        "sha256": "07e4793d620a7f899804c0298d49a16a197960440fd47f8bb780c57ec27e2859",
+        "size_bytes": 9345,
+        "copied_without_modification": true,
+        "sheets": [
+          {
+            "name": "Sheet1",
+            "rows": 5,
+            "columns": 6,
+            "header": [
+              "时间\\到药材中心的距离",
+              0,
+              0.1,
+              0.2,
+              "…",
+              2
+            ]
+          }
+        ]
+      },
+      {
+        "relative_path": "templates/result4.xlsx",
+        "original_relative_path": "附件/附件3/result4.xlsx",
+        "sha256": "86e9300ffa3d30c43de895ea6723da943e85b8740b137bcae5af7107f076eeac",
+        "size_bytes": 9351,
+        "copied_without_modification": true,
+        "sheets": [
+          {
+            "name": "Sheet1",
+            "rows": 5,
+            "columns": 6,
+            "header": [
+              "时间\\到药材中心的距离",
+              0,
+              0.1,
+              0.2,
+              "…",
+              "药材表面"
+            ]
+          }
+        ]
+      },
+      {
+        "relative_path": "problem.pdf",
+        "original_relative_path": "A题.pdf",
+        "sha256": "052d8014bff5727c019b72e44fdffaf5c145ce04050dd938baaf3527db331736",
+        "size_bytes": 553320,
+        "copied_without_modification": true
+      }
+    ],
+    "environment_rows": 241,
+    "radius_rows": 145,
+    "environment_window_count": 61,
+    "schema_and_units_checked": true
+  },
+  "configs": {
+    "status": "PASS",
+    "files": [
+      {
+        "path": "configs/B_Q1.json",
+        "status": "PASS",
+        "kind": "RUN_CONFIG",
+        "file_sha256": "2d05e3ab95d065fa4b75e078c4cffe274cbffd31464cf907c9e220804efe6ff6",
+        "config_fingerprint": "b0503b409699090c968084f8b8e73a23bc7657ade15c84d19b9509d1d10e0c46",
+        "route": "B",
+        "question": 1,
+        "geometry": "fixed",
+        "execution_backend": "REMOTE_SERVER",
+        "execution_purpose": "PRODUCTION",
+        "production_eligible": true
+      },
+      {
+        "path": "configs/B_Q1_nr40.json",
+        "status": "PASS",
+        "kind": "RUN_CONFIG",
+        "file_sha256": "20833d60da4f7b6d04508a9edb8d38d0bf27f91d6bd522c4a24313ded2ccd0b8",
+        "config_fingerprint": "4e2857c9e2870caa82b5be7d63fec94f025df8b9d7044509babd4c96e027cd83",
+        "route": "B",
+        "question": 1,
+        "geometry": "fixed",
+        "execution_backend": "REMOTE_SERVER",
+        "execution_purpose": "PRODUCTION",
+        "production_eligible": true
+      },
+      {
+        "path": "configs/B_Q1_nr80.json",
+        "status": "PASS",
+        "kind": "RUN_CONFIG",
+        "file_sha256": "d3d149bc922afc4ce8f3b78ee1a19c6438600721b9c653312d9f0c52fc1d48e1",
+        "config_fingerprint": "6dd8cef27eb3fa98bfe8bdc1fb69fa161013749cf53cc6d2567b652f9412b85a",
+        "route": "B",
+        "question": 1,
+        "geometry": "fixed",
+        "execution_backend": "REMOTE_SERVER",
+        "execution_purpose": "PRODUCTION",
+        "production_eligible": true
+      },
+      {
+        "path": "configs/B_Q23_S0.json",
+        "status": "PASS",
+        "kind": "RUN_CONFIG",
+        "file_sha256": "ca0f46dcaa804b1224bc1d496a2f0d306f52608a77b4aae943653136c0acf8df",
+        "config_fingerprint": "526cc62e7629c5841fb092f7246f4b6f1abaadd2b77bec2a933df0aeae0fe6c1",
+        "route": "B",
+        "question": 23,
+        "geometry": "fixed",
+        "execution_backend": "REMOTE_SERVER",
+        "execution_purpose": "PRODUCTION",
+        "production_eligible": true
+      },
+      {
+        "path": "configs/B_Q4_S0.json",
+        "status": "PASS",
+        "kind": "RUN_CONFIG",
+        "file_sha256": "eb4bd68702e316880fd5069cc88c9719e0b7a5c8d1e8f3ac8084305ba368d56d",
+        "config_fingerprint": "322280c66ce2ac989d0d58872f5cb77ac67d3d5809404e4a5ae680ecd6792fa1",
+        "route": "B",
+        "question": 4,
+        "geometry": "moving",
+        "execution_backend": "REMOTE_SERVER",
+        "execution_purpose": "PRODUCTION",
+        "production_eligible": true
+      },
+      {
+        "path": "configs/C0_fixed_short.json",
+        "status": "PASS",
+        "kind": "RUN_CONFIG",
+        "file_sha256": "9f78d152307bafea1f2adf51e1d642c92c143e0c8286331d502b1bbf21c7a9db",
+        "config_fingerprint": "6219b5554daa00522c7088471fa613a9c96fb8dea353ea3f88e2594fe1529668",
+        "route": "C",
+        "question": 23,
+        "geometry": "fixed",
+        "execution_backend": "LOCAL_DEV",
+        "execution_purpose": "FRAMEWORK_INTEGRATION",
+        "production_eligible": false
+      },
+      {
+        "path": "configs/C0_moving_short.json",
+        "status": "PASS",
+        "kind": "RUN_CONFIG",
+        "file_sha256": "25704c586b21017634d056baab6ecfe8f7088e802c3428873d3048e0e9d905d9",
+        "config_fingerprint": "964fdcdc55482bb003fa90399abad7ed0c6c747e07298672d4f54fc448cac443",
+        "route": "C",
+        "question": 4,
+        "geometry": "moving",
+        "execution_backend": "LOCAL_DEV",
+        "execution_purpose": "FRAMEWORK_INTEGRATION",
+        "production_eligible": false
+      },
+      {
+        "path": "configs/C1_Q23.json",
+        "status": "PASS",
+        "kind": "RUN_CONFIG",
+        "file_sha256": "4218af9cb174cd11e15ad0dcc3c504fcc34caab32280409d1b0c1e20a5ea2cc0",
+        "config_fingerprint": "d34e2a05d78def14b1a5a9718f7f59ac64b6abf270564731fd9f1a70d14eb695",
+        "route": "C",
+        "question": 23,
+        "geometry": "fixed",
+        "execution_backend": "REMOTE_SERVER",
+        "execution_purpose": "PRODUCTION",
+        "production_eligible": true
+      },
+      {
+        "path": "configs/C1_Q4.json",
+        "status": "PASS",
+        "kind": "RUN_CONFIG",
+        "file_sha256": "0491d48d70ae945dfde7872a763ada2a8b4ff06b741b6972c3d849e16eaaa2df",
+        "config_fingerprint": "70ca0ef2af6b6a833cb28f02233a01da010f1f14bc8213666ca9089c14bbb750",
+        "route": "C",
+        "question": 4,
+        "geometry": "moving",
+        "execution_backend": "REMOTE_SERVER",
+        "execution_purpose": "PRODUCTION",
+        "production_eligible": true
+      },
+      {
+        "path": "configs/C1_short.json",
+        "status": "PASS",
+        "kind": "RUN_CONFIG",
+        "file_sha256": "77966e232b455e120453ec5acfd02d84f00efbf9b6c191ca21ed2ee683facb2a",
+        "config_fingerprint": "2e7e2620309fe1cc3e65f09d9add5bc5c42e326fffb62dd4c11b603dd764d14e",
+        "route": "C",
+        "question": 23,
+        "geometry": "fixed",
+        "execution_backend": "LOCAL_DEV",
+        "execution_purpose": "FRAMEWORK_INTEGRATION",
+        "production_eligible": false
+      },
+      {
+        "path": "configs/server_first_round.json",
+        "kind": "PIPELINE_PLAN",
+        "status": "PASS",
+        "file_sha256": "42c2756839151046e96a06be5e623d147e1bb95ef890aacd5bb5e653bb35aa2c",
+        "runs": [
+          {
+            "config": "configs/B_Q1.json",
+            "out": "results/runs/EXP101_B_Q1__srv001",
+            "config_fingerprint": "b0503b409699090c968084f8b8e73a23bc7657ade15c84d19b9509d1d10e0c46"
+          },
+          {
+            "config": "configs/B_Q1_nr40.json",
+            "out": "results/runs/EXP104_B_Q1_nr40__srv001",
+            "config_fingerprint": "4e2857c9e2870caa82b5be7d63fec94f025df8b9d7044509babd4c96e027cd83"
+          },
+          {
+            "config": "configs/B_Q23_S0.json",
+            "out": "results/runs/EXP102_B_Q23_S0__srv001",
+            "config_fingerprint": "526cc62e7629c5841fb092f7246f4b6f1abaadd2b77bec2a933df0aeae0fe6c1"
+          },
+          {
+            "config": "configs/B_Q4_S0.json",
+            "out": "results/runs/EXP103_B_Q4_S0__srv001",
+            "config_fingerprint": "322280c66ce2ac989d0d58872f5cb77ac67d3d5809404e4a5ae680ecd6792fa1"
+          }
+        ]
+      },
+      {
+        "path": "configs/smoke.json",
+        "status": "PASS",
+        "kind": "RUN_CONFIG",
+        "file_sha256": "e938dbb0ab417fa51694bcb36547625b363fbca14e273aaa73a67b3e228dc4f0",
+        "config_fingerprint": "42ea64eb961550543feef4fbd1066c38b44b2bace42e3d313941c4e73de0a667",
+        "route": "B",
+        "question": 1,
+        "geometry": "fixed",
+        "execution_backend": "LOCAL_DEV",
+        "execution_purpose": "SMOKE",
+        "production_eligible": false
+      }
+    ]
+  },
+  "stage05": {
+    "status": "PASS",
+    "scope": "STAGE05_ISOLATED_TEST_ONLY_RERUN",
+    "assertions_passed": 48,
+    "checks": [
+      {
+        "id": "BDF_EQUAL_STEP",
+        "status": "PASS",
+        "observed": "[3/2,-2,1/2]",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "BDF_POLYNOMIAL_0",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "BDF_POLYNOMIAL_1",
+        "status": "PASS",
+        "observed": "1",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "BDF_POLYNOMIAL_2",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "ZERO_EQUATION_INCREMENT_RATIO",
+        "status": "PASS",
+        "observed": "q<=1.5 gives increment multiplier <=9/16; not nonlinear stability proof",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "BDF_BE_MONITOR_LEADING_ORDER",
+        "status": "PASS",
+        "observed": "-lambda**2/2 times h^2",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "BE_STEP_DOUBLING_MONITOR",
+        "status": "PASS",
+        "observed": "lambda**2/2 times h^2",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MASS_JACOBIAN_EQUIVALENCE",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MASS_JACOBIAN_OMISSION_DETECTABLE",
+        "status": "PASS",
+        "observed": "h*(C*T + 3)/(C + 2)**2",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SURFACE_FLUX_IDENTITY",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SURFACE_B_ZERO",
+        "status": "PASS",
+        "observed": "Us=UN; p=0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SURFACE_EQUILIBRIUM",
+        "status": "PASS",
+        "observed": "p=0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SURFACE_ZERO_DISTANCE_LIMIT",
+        "status": "PASS",
+        "observed": "Us -> UN",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SURFACE_CONVEX_COEFFICIENT",
+        "status": "PASS",
+        "observed": "135/149",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SURFACE_CONVEX_COEFFICIENT",
+        "status": "PASS",
+        "observed": "25/27",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "RADIAL_WATER_TELESCOPE",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "HALF_DOMAIN_WATER_TELESCOPE",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_B_DISCRETE_SOURCE_BALANCE",
+        "status": "PASS",
+        "observed": "0; weights 2*omega; static algebra only",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_C_DISCRETE_SOURCE_BALANCE",
+        "status": "PASS",
+        "observed": "0; weights 2*omega*dz/ell; static algebra only",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_1D_SOURCE",
+        "status": "PASS",
+        "observed": "0; symbolic, not solved",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_1D_SIDE",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_1D_GLOBAL_SOURCE_BALANCE",
+        "status": "PASS",
+        "observed": "0; exact weighted integral of capacity*u_t + outward flux - volume source",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_1D_MOVING_HEAT_SOURCE_BALANCE",
+        "status": "PASS",
+        "observed": "0; derivative of volume*capacity*u minus explicit Reynolds volume term + outward flux - source",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_2D_SOURCE",
+        "status": "PASS",
+        "observed": "0; symbolic, not solved",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_2D_SIDE",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_2D_GLOBAL_SOURCE_BALANCE",
+        "status": "PASS",
+        "observed": "0; exact weighted integral of capacity*u_t + outward flux - volume source",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_2D_MOVING_HEAT_SOURCE_BALANCE",
+        "status": "PASS",
+        "observed": "0; derivative of volume*capacity*u minus explicit Reynolds volume term + outward flux - source",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_2D_INITIAL_AVERAGE",
+        "status": "PASS",
+        "observed": "77*amp/96 + base",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_BASE_MULTIPLICATION_COUNTEREXAMPLE",
+        "status": "PASS",
+        "observed": "wrong whole-expression multiplication shifts base by -base/12",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "HEAT_PATH_DIAGNOSTIC_NOT_IDENTICALLY_ZERO",
+        "status": "PASS",
+        "observed": "271/300 for T'=1, V=(1-t/10)^2, a=1, boundary flux=0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "QUADRATIC_EVENT_FINITE_SAMPLES_MISS",
+        "status": "PASS",
+        "observed": {
+          "samples_0_half_1": [
+            "3/25",
+            "1/50",
+            "21/50"
+          ],
+          "roots": [
+            "3/10",
+            "2/5"
+          ],
+          "negative_interval": "(0.30,0.40)",
+          "scope": "not represented by endpoint-linear interpolation"
+        },
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "LINEAR_BASE_NODE_INTERVAL_INTERSECTION",
+        "status": "PASS",
+        "observed": "(1/4,3/4), open",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SLOW_CROSSING_ERROR_SCALE",
+        "status": "PASS",
+        "observed": "TEST_ONLY: 1e-5 kg/kg / 1e-8 kg/kg/s = 1000 s, unrelated to 0.01 s root resolution",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "FINAL_ROW_9009/25_1",
+        "status": "PASS",
+        "observed": {
+          "toy_report_s": "9009/25",
+          "step_s": 1,
+          "rows_with_header": 362
+        },
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "FINAL_ROW_9009/25_60",
+        "status": "PASS",
+        "observed": {
+          "toy_report_s": "9009/25",
+          "step_s": 60,
+          "rows_with_header": 8
+        },
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "FINAL_ROW_360_1",
+        "status": "PASS",
+        "observed": {
+          "toy_report_s": "360",
+          "step_s": 1,
+          "rows_with_header": 361
+        },
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "FINAL_ROW_360_60",
+        "status": "PASS",
+        "observed": {
+          "toy_report_s": "360",
+          "step_s": 60,
+          "rows_with_header": 7
+        },
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "REPORT_GRID_OUTSIDE_HORIZON_REJECT",
+        "status": "PASS",
+        "observed": {
+          "toy_candidate": "25920001/100",
+          "report_grid": "6480009/25",
+          "required_status": "OUT_OF_COVERAGE_NOT_COMPLETE"
+        },
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SOURCE_HASH_A题.pdf",
+        "status": "PASS",
+        "observed": "052d8014bff5727c019b72e44fdffaf5c145ce04050dd938baaf3527db331736",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SOURCE_HASH_附件1.xlsx",
+        "status": "PASS",
+        "observed": "7ef32870abeef420b89560b2530ff60dfe4255917805151d89988d0311af9dd7",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "ENVIRONMENT_BELOW_THRESHOLD",
+        "status": "PASS",
+        "observed": {
+          "min": "0.01963",
+          "max": "0.05025",
+          "count": 241
+        },
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SOURCE_HASH_附件2.xlsx",
+        "status": "PASS",
+        "observed": "5563acbfa4b4afb10cc6c03e2207e5369bf39da27576672aff14cc5c32e704af",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SOURCE_HASH_result1.xlsx",
+        "status": "PASS",
+        "observed": "23b261b295c1b787d000eebbca6521c37075107b6fcf78724f8d395ce1798ff4",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SOURCE_HASH_result2.xlsx",
+        "status": "PASS",
+        "observed": "23b261b295c1b787d000eebbca6521c37075107b6fcf78724f8d395ce1798ff4",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SOURCE_HASH_result3.xlsx",
+        "status": "PASS",
+        "observed": "07e4793d620a7f899804c0298d49a16a197960440fd47f8bb780c57ec27e2859",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SOURCE_HASH_result4.xlsx",
+        "status": "PASS",
+        "observed": "86e9300ffa3d30c43de895ea6723da943e85b8740b137bcae5af7107f076eeac",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "INSTALLED_BDF_IDENTITY",
+        "status": "PASS",
+        "observed": {
+          "scipy": "1.17.1",
+          "claims": [
+            "variable order 1 to 5",
+            "quasi-constant steps",
+            "NDF enhancement"
+          ],
+          "custom_BDF2_equivalent": false
+        },
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SPARSE_LU_CAPABILITY",
+        "status": "PASS",
+        "observed": "imported scipy.sparse.linalg.splu; no linear solve or PDE run",
+        "evidence_class": "SPEC_RECHECKED"
+      }
+    ],
+    "packages": {
+      "numpy": "2.4.4",
+      "scipy": "1.17.1",
+      "sympy": "1.14.0",
+      "openpyxl": "3.1.5"
+    },
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "runtime": "C:\\Users\\asus\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "timestamp": "2026-09-10T14:54:15.149363+00:00",
+    "elapsed_seconds": 5.724213800000143,
+    "returncode": 0,
+    "stdout": "{\"assertions_passed\": 48, \"evidence\": \"C:\\\\Users\\\\asus\\\\AppData\\\\Local\\\\Temp\\\\drying_stage05_preflight_rs9e98vh\\\\stage05_presolve_checks.json\", \"scope\": \"TEST_ONLY_EXECUTED; FORMAL_NUMERICAL_VALIDATION_NOT_RUN\"}",
+    "stderr": "",
+    "source_mapping": [
+      {
+        "original_filename": "A题.pdf",
+        "portable_path": "problem.pdf",
+        "sha256": "052d8014bff5727c019b72e44fdffaf5c145ce04050dd938baaf3527db331736",
+        "alias_bytes_unchanged": true
+      },
+      {
+        "original_filename": "附件1.xlsx",
+        "portable_path": "environment.xlsx",
+        "sha256": "7ef32870abeef420b89560b2530ff60dfe4255917805151d89988d0311af9dd7",
+        "alias_bytes_unchanged": true
+      },
+      {
+        "original_filename": "附件2.xlsx",
+        "portable_path": "radius.xlsx",
+        "sha256": "5563acbfa4b4afb10cc6c03e2207e5369bf39da27576672aff14cc5c32e704af",
+        "alias_bytes_unchanged": true
+      },
+      {
+        "original_filename": "result1.xlsx",
+        "portable_path": "templates/result1.xlsx",
+        "sha256": "23b261b295c1b787d000eebbca6521c37075107b6fcf78724f8d395ce1798ff4",
+        "alias_bytes_unchanged": true
+      },
+      {
+        "original_filename": "result2.xlsx",
+        "portable_path": "templates/result2.xlsx",
+        "sha256": "23b261b295c1b787d000eebbca6521c37075107b6fcf78724f8d395ce1798ff4",
+        "alias_bytes_unchanged": true
+      },
+      {
+        "original_filename": "result3.xlsx",
+        "portable_path": "templates/result3.xlsx",
+        "sha256": "07e4793d620a7f899804c0298d49a16a197960440fd47f8bb780c57ec27e2859",
+        "alias_bytes_unchanged": true
+      },
+      {
+        "original_filename": "result4.xlsx",
+        "portable_path": "templates/result4.xlsx",
+        "sha256": "86e9300ffa3d30c43de895ea6723da943e85b8740b137bcae5af7107f076eeac",
+        "alias_bytes_unchanged": true
+      }
+    ],
+    "historical_hashes_before": {
+      "script": "4aad23ba4e4059518ee90ee5c9cc72b519f834543ce30740f597100ec68cad15",
+      "evidence": "89035cb62013f2eb8d0a09ea349e7a5acbf4a5117129ad7213a861d0c29aea18"
+    },
+    "historical_hashes_after": {
+      "script": "4aad23ba4e4059518ee90ee5c9cc72b519f834543ce30740f597100ec68cad15",
+      "evidence": "89035cb62013f2eb8d0a09ea349e7a5acbf4a5117129ad7213a861d0c29aea18"
+    },
+    "historical_files_unchanged": true,
+    "checker_bytes_unchanged": true,
+    "temporary_copies_removed_on_return": true,
+    "formal_PDE": "NOT_RUN_BY_PREFLIGHT",
+    "stage07": "NOT_RUN"
+  },
+  "failures": [],
+  "formal_PDE": "NOT_RUN_BY_PREFLIGHT",
+  "stage07": "NOT_RUN",
+  "elapsed_seconds": 7.158138300001156
+}

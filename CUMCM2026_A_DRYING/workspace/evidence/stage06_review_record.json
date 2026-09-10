@@ -1,0 +1,54 @@
+{
+  "scope": "STAGE06_IMPLEMENTATION_REVIEW_NOT_STAGE07",
+  "source": "Worker reports and parent integration disposition",
+  "closed_findings": [
+    "Deep-copy accepted solver history/stats",
+    "Cancellation-safe BDF residual using state differences",
+    "Include failed Newton wall time",
+    "Initial checkpoint and crash-ahead recovery retaining orphan chunks",
+    "Config/input/core/constructor identity on postprocess",
+    "Budget partial exit2; numerical failure1",
+    "Explicit workbook question2/3 for config23",
+    "Per-attempt environment records",
+    "Validate selected pipeline before jobs",
+    "Actual Newton step endpoint alignment for ULP tail"
+  ],
+  "tests": {
+    "core_log": "stage06_core_tests.log",
+    "packaging_log": "stage06_packaging_tests.log",
+    "final_core_regression_log": "stage06_final_core_regression.log",
+    "refinement_worker_report": {
+      "passed": 13,
+      "seconds": 40.45,
+      "evidence_kind": "SUBAGENT_REPORTED_ACTUAL_TEST_RUN",
+      "separate_raw_log_available": false
+    }
+  },
+  "exploratory_failures": [
+    {
+      "case": "scalar endpoint error with coarse startup",
+      "errors": [
+        6.977093678e-06,
+        2.182282677e-05,
+        8.779268957e-07,
+        5.252823732e-09
+      ],
+      "tolerances": [
+        0.001,
+        0.0001,
+        1e-05,
+        1e-06
+      ],
+      "disposition": "Separate fixed sufficiently small startup from adaptive tolerance refinement; do not assert arbitrary single-point monotonicity."
+    },
+    {
+      "case": "rate=-100 h0=.1 tol1e-5",
+      "disposition": "Preserved finite12retry failure as explicit expected failure; controller not relaxed."
+    },
+    {
+      "case": "event reintegration until .35010083414859404",
+      "disposition": "Integrated last ordinary Newton step to exact endpoint to avoid2.22e-16 artificial tail."
+    }
+  ],
+  "latest_local_numerical_execution": "Stopped by user; only static packaging checks thereafter"
+}

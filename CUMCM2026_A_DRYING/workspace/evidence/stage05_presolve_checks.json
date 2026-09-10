@@ -1,0 +1,936 @@
+{
+  "scope": "STAGE05_SPEC_RECHECK_AND_TEST_ONLY_NO_PDE",
+  "created_at": "2026-09-10T13:41:28.911517+00:00",
+  "entry_state": {
+    "schema_version": "1.0",
+    "project": {
+      "project_id": "CUMCM2026_A_DRYING",
+      "title": "2026年国赛A题 药材的烘干问题",
+      "competition": "2026年高教社杯全国大学生数学建模竞赛",
+      "problem_code": "A",
+      "created_at": "2026-09-10T11:37:53.674369+00:00"
+    },
+    "workflow": {
+      "operating_mode": "ECONOMY",
+      "current_stage": "04_MATHEMATICAL_MODEL",
+      "recommended_next_stage": "05_PRESOLVE_QA",
+      "workflow_status": "ACTIVE",
+      "budget_mode": "ECONOMY"
+    },
+    "gates": {
+      "gate_01_problem_definition": "CONDITIONAL_PASS",
+      "gate_02_candidate_models": "CONDITIONAL_PASS",
+      "gate_03_pre_experiment_selection": "CONDITIONAL_PASS",
+      "gate_04_mathematical_formulation": "CONDITIONAL_PASS",
+      "gate_05_presolve_qa": "NOT_RUN",
+      "gate_06_implementation": "NOT_RUN",
+      "gate_07_validation": "NOT_RUN",
+      "gate_08_model_improvement": "NOT_RUN"
+    },
+    "artifacts": {
+      "problem_analysis": "workspace/01_problem_analysis.md",
+      "candidate_models": "workspace/02_candidate_models.md",
+      "model_selection": "workspace/03_model_selection.md",
+      "model_specification": "workspace/04_model_specification.md",
+      "presolve_qa": null,
+      "implementation": null,
+      "validation": null,
+      "model_improvement": null
+    },
+    "model_status": {
+      "baseline": "B_EMPIRICAL_RADIAL",
+      "primary_candidate": "B_EMPIRICAL_RADIAL",
+      "challenger": "C_AXISYMMETRIC_REFERENCE",
+      "current_best_verified": null,
+      "model_frozen": false
+    },
+    "experiment_status": {
+      "next_experiment_id": 1,
+      "active_experiment": null,
+      "completed_experiments": []
+    },
+    "data_status": {
+      "data_inventory": "workspace/data_inventory.md",
+      "raw_data_present": true,
+      "processed_data_present": false,
+      "large_data_warning": false
+    },
+    "open_issues": {
+      "blocking": [],
+      "important": [
+        "Stage04数学规格A26-04-v1已完成并条件通过，本轮停止等待Stage04人工审核；不自动执行Stage05或编码。",
+        "B作为条件主线兼基准，题面rho仅通过a=rho*cp用于有效热方程；有效气固映射可算，真实平衡、完整能量和独立场验证仍未完成。",
+        "P严格湿密度组合不相容：固定静止干骨架约束冲突；Q4积分必要下界R>=1.2112029565383968cm，首次违反观测为70200s/19.5h，不是干燥事件。",
+        "P方向KEEP_IN_RESERVE，不进入当前主求解链；primary_candidate与baseline同为B_EMPIRICAL_RADIAL，不复制B或伪造第三条路线。",
+        "主任务允许区间内全量离线插值；样本内拟合不冒充独立验证，在线扩展另设因果约束。",
+        "S0/S1及邻近平台窗口已定义；长期工况未唯一指定，场/时长敏感性NOT_RUN。",
+        "附录映射已明确，h/hm跨问沿用是基准解释；候选交换势、归一化通量和真实质量因子须保持一致。",
+        "Q4采用L恒定、自相似材料收缩和分段线性R；PCHIP敏感性NOT_RUN。默认72h无半径尾部延拓；超范围须明确R_EXT_HOLD和有限tmax，仅能产生条件结果。",
+        "C为轴对称参考，C0/C1分别对应E0/E1；短时退化、附录3固定和附录4移动参考必检，预设容差不等于实测精度，全部NOT_RUN。",
+        "Q2输出主解释至同模型Q3严格达标报告时刻并确保3h展示；固定距离/域外空白/真实表面规则已明确，正式输出NOT_RUN。",
+        "Q3/Q4同时变几何和物性，需同物性几何对照；所有数值求解、最终时长和正式结果均NOT_RUN。",
+        "Stage04已定义归一化水余额/有效热速率余额及Reynolds区别、守恒FVM+MOL+变步BDF2/BE+同步Newton、重建/事件/输出合同；实际正值性、收敛、余额和事件数值测试均NOT_RUN。",
+        "B/C差异归因前分别控制空间/时间/非线性/事件误差；超预设容差且C自身检查通过才重评1D或升级C，不能解决共同物理闭合风险。"
+      ],
+      "optional": [
+        "端面暴露、周向风场、实验批次和测量误差资料。",
+        "独立内部温度、含水率及总质量记录。",
+        "后续论文格式规范、服务器资源与计算预算。"
+      ]
+    },
+    "history": [
+      {
+        "time": "2026-09-10T11:37:53.674369+00:00",
+        "event": "STAGE_01_COMPLETED",
+        "gate": "CONDITIONAL_PASS"
+      },
+      {
+        "time": "2026-09-10T12:00:55.625506+00:00",
+        "event": "STAGE_01_COMPLETED",
+        "gate": "CONDITIONAL_PASS"
+      },
+      {
+        "time": "2026-09-10T12:10:11.987395+00:00",
+        "event": "STAGE_02_COMPLETED",
+        "gate": "CONDITIONAL_PASS"
+      },
+      {
+        "time": "2026-09-10T12:43:11.955470+00:00",
+        "event": "STAGE_03_COMPLETED",
+        "gate": "CONDITIONAL_PASS"
+      },
+      {
+        "time": "2026-09-10T13:18:06.318089+00:00",
+        "event": "STAGE_04_COMPLETED",
+        "gate": "CONDITIONAL_PASS"
+      }
+    ]
+  },
+  "entry_hashes": {
+    "03_model_selection.md": "f34ec19e71839592bf69ab6a2db0e50cb0ba5beae903583bb1eec3b19b413f9e",
+    "04_model_specification.md": "e13edd5c81ce07ebdd034068e3390aca282e8209de1810ff2d243bdcd56f5780",
+    "data_inventory.md": "9aa154f68e9d25896da169ed797c2e7ba302cbbeabc3c945df7e5e737af4fa55",
+    "modeling_state.json": "67a029bd783acece8bc5f9cc509a0e70a5fbebdba3581d106a005c048386814b",
+    "evidence/stage04_formulation_checks.json": "c0bca81970bd11dd7e5c62f9fdbb0ce425db93ea04c83969c24128d05806c4b6"
+  },
+  "source_hashes": [
+    {
+      "path": "D:\\桌面\\2026国赛\\题目\\A题\\A题.pdf",
+      "sha256": "052d8014bff5727c019b72e44fdffaf5c145ce04050dd938baaf3527db331736",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\桌面\\2026国赛\\题目\\A题\\附件\\附件1.xlsx",
+      "sha256": "7ef32870abeef420b89560b2530ff60dfe4255917805151d89988d0311af9dd7",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\桌面\\2026国赛\\题目\\A题\\附件\\附件2.xlsx",
+      "sha256": "5563acbfa4b4afb10cc6c03e2207e5369bf39da27576672aff14cc5c32e704af",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\桌面\\2026国赛\\题目\\A题\\附件\\附件3\\result1.xlsx",
+      "sha256": "23b261b295c1b787d000eebbca6521c37075107b6fcf78724f8d395ce1798ff4",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\桌面\\2026国赛\\题目\\A题\\附件\\附件3\\result2.xlsx",
+      "sha256": "23b261b295c1b787d000eebbca6521c37075107b6fcf78724f8d395ce1798ff4",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\桌面\\2026国赛\\题目\\A题\\附件\\附件3\\result3.xlsx",
+      "sha256": "07e4793d620a7f899804c0298d49a16a197960440fd47f8bb780c57ec27e2859",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\桌面\\2026国赛\\题目\\A题\\附件\\附件3\\result4.xlsx",
+      "sha256": "86e9300ffa3d30c43de895ea6723da943e85b8740b137bcae5af7107f076eeac",
+      "unchanged": true
+    }
+  ],
+  "framework_hashes": {
+    "E:\\数模\\AGENTS.md": "7044913d200cc7dec3f28550ff7c443e96ec6270675dd728edb010b33d835e08",
+    "E:\\数模\\templates\\modeling_pool.json": "92f1bc544db936ba5e0578053eb6eed896322791c43db64cb46d49e815770549"
+  },
+  "mode_authorization": {
+    "user_text": "不要保持economy直接开启最高模式",
+    "from": "ECONOMY",
+    "to": "PERFORMANCE",
+    "time": "2026-09-10T13:41:28.911517+00:00",
+    "scope": "This project and Stage05 task; no global pool/platform rewrite"
+  },
+  "agent_authorization": {
+    "user_text": "话说你怎么没有用子代理审计？这是正式比赛啊",
+    "reviewer": {
+      "task": "stage05_independent_audit",
+      "requested_model": "gpt-5.6-sol",
+      "requested_effort": "high",
+      "dispatch": "ACCEPTED",
+      "result": "COMPLETED"
+    },
+    "core": {
+      "task": "stage05_core_event_proof",
+      "requested_model": "gpt-6-astra",
+      "requested_effort": "ultra",
+      "dispatch": "ACCEPTED",
+      "result": "COMPLETED"
+    },
+    "parent_runtime_identity": "UNVERIFIED"
+  },
+  "numerical_evidence": "FORMAL_NUMERICAL_VALIDATION_NOT_RUN",
+  "post_mode_state_sha256": "f3f83e1a97fa9241b4c764727146420f1f6878f1ccb71d2d232adf5e80d5d4eb",
+  "test_only_execution": {
+    "timestamp": "2026-09-10T13:58:28.270486+00:00",
+    "runtime": "C:\\Users\\asus\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "packages": {
+      "numpy": "2.4.4",
+      "scipy": "1.17.1",
+      "sympy": "1.14.0",
+      "openpyxl": "3.1.5"
+    },
+    "checks": [
+      {
+        "id": "BDF_EQUAL_STEP",
+        "status": "PASS",
+        "observed": "[3/2,-2,1/2]",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "BDF_POLYNOMIAL_0",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "BDF_POLYNOMIAL_1",
+        "status": "PASS",
+        "observed": "1",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "BDF_POLYNOMIAL_2",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "ZERO_EQUATION_INCREMENT_RATIO",
+        "status": "PASS",
+        "observed": "q<=1.5 gives increment multiplier <=9/16; not nonlinear stability proof",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "BDF_BE_MONITOR_LEADING_ORDER",
+        "status": "PASS",
+        "observed": "-lambda**2/2 times h^2",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "BE_STEP_DOUBLING_MONITOR",
+        "status": "PASS",
+        "observed": "lambda**2/2 times h^2",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MASS_JACOBIAN_EQUIVALENCE",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MASS_JACOBIAN_OMISSION_DETECTABLE",
+        "status": "PASS",
+        "observed": "h*(C*T + 3)/(C + 2)**2",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SURFACE_FLUX_IDENTITY",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SURFACE_B_ZERO",
+        "status": "PASS",
+        "observed": "Us=UN; p=0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SURFACE_EQUILIBRIUM",
+        "status": "PASS",
+        "observed": "p=0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SURFACE_ZERO_DISTANCE_LIMIT",
+        "status": "PASS",
+        "observed": "Us -> UN",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SURFACE_CONVEX_COEFFICIENT",
+        "status": "PASS",
+        "observed": "135/149",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SURFACE_CONVEX_COEFFICIENT",
+        "status": "PASS",
+        "observed": "25/27",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "RADIAL_WATER_TELESCOPE",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "HALF_DOMAIN_WATER_TELESCOPE",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_B_DISCRETE_SOURCE_BALANCE",
+        "status": "PASS",
+        "observed": "0; weights 2*omega; static algebra only",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_C_DISCRETE_SOURCE_BALANCE",
+        "status": "PASS",
+        "observed": "0; weights 2*omega*dz/ell; static algebra only",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_1D_SOURCE",
+        "status": "PASS",
+        "observed": "0; symbolic, not solved",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_1D_SIDE",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_1D_GLOBAL_SOURCE_BALANCE",
+        "status": "PASS",
+        "observed": "0; exact weighted integral of capacity*u_t + outward flux - volume source",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_1D_MOVING_HEAT_SOURCE_BALANCE",
+        "status": "PASS",
+        "observed": "0; derivative of volume*capacity*u minus explicit Reynolds volume term + outward flux - source",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_2D_SOURCE",
+        "status": "PASS",
+        "observed": "0; symbolic, not solved",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_2D_SIDE",
+        "status": "PASS",
+        "observed": "0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_2D_GLOBAL_SOURCE_BALANCE",
+        "status": "PASS",
+        "observed": "0; exact weighted integral of capacity*u_t + outward flux - volume source",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_2D_MOVING_HEAT_SOURCE_BALANCE",
+        "status": "PASS",
+        "observed": "0; derivative of volume*capacity*u minus explicit Reynolds volume term + outward flux - source",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_2D_INITIAL_AVERAGE",
+        "status": "PASS",
+        "observed": "77*amp/96 + base",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "MMS_BASE_MULTIPLICATION_COUNTEREXAMPLE",
+        "status": "PASS",
+        "observed": "wrong whole-expression multiplication shifts base by -base/12",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "HEAT_PATH_DIAGNOSTIC_NOT_IDENTICALLY_ZERO",
+        "status": "PASS",
+        "observed": "271/300 for T'=1, V=(1-t/10)^2, a=1, boundary flux=0",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "QUADRATIC_EVENT_FINITE_SAMPLES_MISS",
+        "status": "PASS",
+        "observed": {
+          "samples_0_half_1": [
+            "3/25",
+            "1/50",
+            "21/50"
+          ],
+          "roots": [
+            "3/10",
+            "2/5"
+          ],
+          "negative_interval": "(0.30,0.40)",
+          "scope": "not represented by endpoint-linear interpolation"
+        },
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "LINEAR_BASE_NODE_INTERVAL_INTERSECTION",
+        "status": "PASS",
+        "observed": "(1/4,3/4), open",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SLOW_CROSSING_ERROR_SCALE",
+        "status": "PASS",
+        "observed": "TEST_ONLY: 1e-5 kg/kg / 1e-8 kg/kg/s = 1000 s, unrelated to 0.01 s root resolution",
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "FINAL_ROW_9009/25_1",
+        "status": "PASS",
+        "observed": {
+          "toy_report_s": "9009/25",
+          "step_s": 1,
+          "rows_with_header": 362
+        },
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "FINAL_ROW_9009/25_60",
+        "status": "PASS",
+        "observed": {
+          "toy_report_s": "9009/25",
+          "step_s": 60,
+          "rows_with_header": 8
+        },
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "FINAL_ROW_360_1",
+        "status": "PASS",
+        "observed": {
+          "toy_report_s": "360",
+          "step_s": 1,
+          "rows_with_header": 361
+        },
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "FINAL_ROW_360_60",
+        "status": "PASS",
+        "observed": {
+          "toy_report_s": "360",
+          "step_s": 60,
+          "rows_with_header": 7
+        },
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "REPORT_GRID_OUTSIDE_HORIZON_REJECT",
+        "status": "PASS",
+        "observed": {
+          "toy_candidate": "25920001/100",
+          "report_grid": "6480009/25",
+          "required_status": "OUT_OF_COVERAGE_NOT_COMPLETE"
+        },
+        "evidence_class": "TEST_ONLY_EXECUTED"
+      },
+      {
+        "id": "SOURCE_HASH_A题.pdf",
+        "status": "PASS",
+        "observed": "052d8014bff5727c019b72e44fdffaf5c145ce04050dd938baaf3527db331736",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SOURCE_HASH_附件1.xlsx",
+        "status": "PASS",
+        "observed": "7ef32870abeef420b89560b2530ff60dfe4255917805151d89988d0311af9dd7",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "ENVIRONMENT_BELOW_THRESHOLD",
+        "status": "PASS",
+        "observed": {
+          "min": "0.01963",
+          "max": "0.05025",
+          "count": 241
+        },
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SOURCE_HASH_附件2.xlsx",
+        "status": "PASS",
+        "observed": "5563acbfa4b4afb10cc6c03e2207e5369bf39da27576672aff14cc5c32e704af",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SOURCE_HASH_result1.xlsx",
+        "status": "PASS",
+        "observed": "23b261b295c1b787d000eebbca6521c37075107b6fcf78724f8d395ce1798ff4",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SOURCE_HASH_result2.xlsx",
+        "status": "PASS",
+        "observed": "23b261b295c1b787d000eebbca6521c37075107b6fcf78724f8d395ce1798ff4",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SOURCE_HASH_result3.xlsx",
+        "status": "PASS",
+        "observed": "07e4793d620a7f899804c0298d49a16a197960440fd47f8bb780c57ec27e2859",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SOURCE_HASH_result4.xlsx",
+        "status": "PASS",
+        "observed": "86e9300ffa3d30c43de895ea6723da943e85b8740b137bcae5af7107f076eeac",
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "INSTALLED_BDF_IDENTITY",
+        "status": "PASS",
+        "observed": {
+          "scipy": "1.17.1",
+          "claims": [
+            "variable order 1 to 5",
+            "quasi-constant steps",
+            "NDF enhancement"
+          ],
+          "custom_BDF2_equivalent": false
+        },
+        "evidence_class": "SPEC_RECHECKED"
+      },
+      {
+        "id": "SPARSE_LU_CAPABILITY",
+        "status": "PASS",
+        "observed": "imported scipy.sparse.linalg.splu; no linear solve or PDE run",
+        "evidence_class": "SPEC_RECHECKED"
+      }
+    ],
+    "assertions_passed": 48,
+    "script": "E:\\数模\\projects\\CUMCM2026_A_DRYING\\workspace\\evidence\\stage05_test_only_checks.py",
+    "script_sha256": "4aad23ba4e4059518ee90ee5c9cc72b519f834543ce30740f597100ec68cad15",
+    "source_schema_recheck": [
+      {
+        "file": "附件1.xlsx",
+        "sheets": [
+          {
+            "name": "Sheet1",
+            "rows": 242,
+            "cols": 3,
+            "header": [
+              "时间",
+              "温度",
+              "水分浓度"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "附件2.xlsx",
+        "sheets": [
+          {
+            "name": "Sheet1",
+            "rows": 146,
+            "cols": 2,
+            "header": [
+              "时间",
+              "半径"
+            ]
+          }
+        ]
+      },
+      {
+        "file": "result1.xlsx",
+        "sheets": [
+          {
+            "name": "温度",
+            "rows": 5,
+            "cols": 6,
+            "header": [
+              "时间\\到药材中心的距离",
+              0,
+              0.1,
+              0.2,
+              "…",
+              2
+            ]
+          },
+          {
+            "name": "水分浓度",
+            "rows": 5,
+            "cols": 6,
+            "header": [
+              "时间\\到药材中心的距离",
+              0,
+              0.1,
+              0.2,
+              "…",
+              2
+            ]
+          }
+        ]
+      },
+      {
+        "file": "result2.xlsx",
+        "sheets": [
+          {
+            "name": "温度",
+            "rows": 5,
+            "cols": 6,
+            "header": [
+              "时间\\到药材中心的距离",
+              0,
+              0.1,
+              0.2,
+              "…",
+              2
+            ]
+          },
+          {
+            "name": "水分浓度",
+            "rows": 5,
+            "cols": 6,
+            "header": [
+              "时间\\到药材中心的距离",
+              0,
+              0.1,
+              0.2,
+              "…",
+              2
+            ]
+          }
+        ]
+      },
+      {
+        "file": "result3.xlsx",
+        "sheets": [
+          {
+            "name": "Sheet1",
+            "rows": 5,
+            "cols": 6,
+            "header": [
+              "时间\\到药材中心的距离",
+              0,
+              0.1,
+              0.2,
+              "…",
+              2
+            ]
+          }
+        ]
+      },
+      {
+        "file": "result4.xlsx",
+        "sheets": [
+          {
+            "name": "Sheet1",
+            "rows": 5,
+            "cols": 6,
+            "header": [
+              "时间\\到药材中心的距离",
+              0,
+              0.1,
+              0.2,
+              "…",
+              "药材表面"
+            ]
+          }
+        ]
+      }
+    ],
+    "formal_PDE": "NOT_RUN",
+    "formal_convergence": "NOT_RUN",
+    "formal_workbooks": "NOT_RUN",
+    "classification_counts": {
+      "TEST_ONLY_EXECUTED": 38,
+      "SPEC_RECHECKED": 10
+    }
+  },
+  "stage04_archive": {
+    "path": "E:\\数模\\projects\\CUMCM2026_A_DRYING\\workspace\\stale\\04_model_specification_rev001.md",
+    "sha256": "e13edd5c81ce07ebdd034068e3390aca282e8209de1810ff2d243bdcd56f5780",
+    "nonempty": true,
+    "original_version": "A26-04-v1",
+    "replacement_version": "A26-04-v2",
+    "downstream_completed_at_repair": [],
+    "downstream_invalidation_event_required": false
+  },
+  "technical_docs": {
+    "local_scipy_version": "1.17.1",
+    "installed_official_docstring_checked": true,
+    "BDF_source": "C:/Users/asus/AppData/Local/Programs/Python/Python311/Lib/site-packages/scipy/integrate/_ivp/bdf.py",
+    "online_attempts": [
+      {
+        "url": "https://docs.scipy.org/doc/scipy-1.17.1/reference/generated/scipy.integrate.BDF.html",
+        "status": "BROWSER_NAVIGATION_TIMEOUT"
+      },
+      {
+        "url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.BDF.html",
+        "status": "BROWSER_NAVIGATION_TIMEOUT"
+      }
+    ],
+    "online_content_verified": false,
+    "environment_upgraded": false
+  },
+  "document_integrity": {
+    "04_model_specification.md": {
+      "headings": 20,
+      "display_math_blocks": 50,
+      "math_braces_and_environments_balanced": true,
+      "tables_consistent": 12,
+      "replacement_characters": 0,
+      "sha256": "29ea5f37f9e50dae9f5d7f7515276394d2215fdc8f0d0b79c6d0c91eccd437d4",
+      "bytes": 80819
+    },
+    "05_presolve_qa.md": {
+      "headings": 24,
+      "display_math_blocks": 2,
+      "math_braces_and_environments_balanced": true,
+      "tables_consistent": 5,
+      "replacement_characters": 0,
+      "sha256": "75f8915e1c089ff81df086b5ac11f079fe59d97f6c6b294fa3c2e8b0f8841b87",
+      "bytes": 33179
+    }
+  },
+  "preservation_checks": {
+    "upstream_hashes_verified": {
+      "01_problem_analysis.md": "d839b81255552c123d8297b09459fede7706eb9498ea2754a1488cf891c64de5",
+      "02_candidate_models.md": "53c6131b91e3f10bbd7a209949d0e55a7bf0be4c86991228181782bc93d907c1",
+      "03_model_selection.md": "f34ec19e71839592bf69ab6a2db0e50cb0ba5beae903583bb1eec3b19b413f9e",
+      "data_inventory.md": "9aa154f68e9d25896da169ed797c2e7ba302cbbeabc3c945df7e5e737af4fa55",
+      "evidence/stage04_formulation_checks.json": "c0bca81970bd11dd7e5c62f9fdbb0ce425db93ea04c83969c24128d05806c4b6"
+    },
+    "all_7_original_hashes_unchanged": true,
+    "framework_hashes_unchanged": true,
+    "archive_original_hash_verified": true,
+    "no_solver_results_experiments_directories": true,
+    "no_project_simulated_workbooks": true,
+    "no_stage06_08_artifacts": true
+  },
+  "integrity_checker_note": "First heading-comparison attempt included contract heading 57; corrected selector to expected numbered headings 1-24. No artifact change was needed for that checker failure.",
+  "pre_state_update_check_time": "2026-09-10T14:01:40.586976+00:00",
+  "findings": [
+    {
+      "id": "F01",
+      "severity": "HIGH",
+      "responsible_stage": "04_MATHEMATICAL_MODEL",
+      "location": "workspace/04_model_specification.md sections 6.8",
+      "finding": "BE fallback monitor ambiguous",
+      "evidence": "Sol audit and scalar BE doubling",
+      "repair": "Independent full/two-half BE; retry/history specified",
+      "disposition": "CLOSED_SPEC_RECHECKED",
+      "future_execution_validation": "NOT_RUN"
+    },
+    {
+      "id": "F02",
+      "severity": "HIGH",
+      "responsible_stage": "04_MATHEMATICAL_MODEL",
+      "location": "workspace/04_model_specification.md sections 16.2;17.2",
+      "finding": "Moisture-error to time sensitivity and order incomplete",
+      "evidence": "Astra proof/reread; scalar conditioning; parent final order review",
+      "repair": "Threshold perturbation, report coverage, budget and recheck loop",
+      "disposition": "CLOSED_SPEC_RECHECKED",
+      "future_execution_validation": "NOT_RUN"
+    },
+    {
+      "id": "F03",
+      "severity": "HIGH",
+      "responsible_stage": "04_MATHEMATICAL_MODEL",
+      "location": "workspace/04_model_specification.md sections 6.8",
+      "finding": "Newton/linear residual and candidate scale ambiguous",
+      "evidence": "Sol audit; mass/Jacobian algebra",
+      "repair": "Fixed iteration scale; backward residual; normalized Jacobian; main-candidate scale",
+      "disposition": "CLOSED_SPEC_RECHECKED",
+      "future_execution_validation": "NOT_RUN"
+    },
+    {
+      "id": "F04",
+      "severity": "MEDIUM",
+      "responsible_stage": "04_MATHEMATICAL_MODEL",
+      "location": "workspace/04_model_specification.md sections 17.2;16.5",
+      "finding": "Continuous attainment retention versus numerical rebound unclear",
+      "evidence": "Astra positive-part energy proof; original input maximum",
+      "repair": "Threshold retention proof; numerical rebound unresolved",
+      "disposition": "CLOSED_SPEC_RECHECKED",
+      "future_execution_validation": "NOT_RUN"
+    },
+    {
+      "id": "F05",
+      "severity": "MEDIUM",
+      "responsible_stage": "04_MATHEMATICAL_MODEL",
+      "location": "workspace/04_model_specification.md sections 16.4",
+      "finding": "MMS axial factor may multiply background",
+      "evidence": "Symbolic integration, counterexample and agent rereads",
+      "repair": "Explicit cell means; axial factor multiplies perturbation only",
+      "disposition": "CLOSED_SPEC_RECHECKED",
+      "future_execution_validation": "NOT_RUN"
+    },
+    {
+      "id": "F06",
+      "severity": "MEDIUM",
+      "responsible_stage": "04_MATHEMATICAL_MODEL",
+      "location": "workspace/04_model_specification.md sections 6.7",
+      "finding": "Layer tolerance not tied to Newton residual",
+      "evidence": "Weighted residual derivation and Sol reread",
+      "repair": "Newton bounds plus floating allowance; independent cumulative check retained",
+      "disposition": "CLOSED_SPEC_RECHECKED",
+      "future_execution_validation": "NOT_RUN"
+    },
+    {
+      "id": "F07",
+      "severity": "MEDIUM",
+      "responsible_stage": "04_MATHEMATICAL_MODEL",
+      "location": "workspace/04_model_specification.md sections 6.8;17.4",
+      "finding": "Checkpoint/history insufficiently explicit",
+      "evidence": "Sol reread and toy row/coverage tests",
+      "repair": "Two accepted states/time/step/order/input side/event coverage; exclude auxiliary states",
+      "disposition": "CLOSED_SPEC_RECHECKED",
+      "future_execution_validation": "NOT_RUN"
+    },
+    {
+      "id": "F08",
+      "severity": "MEDIUM",
+      "responsible_stage": "04_MATHEMATICAL_MODEL",
+      "location": "workspace/04_model_specification.md sections 16.4",
+      "finding": "MMS discrete source and diagnostic interface absent",
+      "evidence": "Sol final targeted closure; six added algebra/symbolic assertions",
+      "repair": "B/C source weights; SW/Sa subtraction; V05 separate from source-free V08",
+      "disposition": "CLOSED_SPEC_RECHECKED",
+      "future_execution_validation": "NOT_RUN"
+    },
+    {
+      "id": "F09",
+      "severity": "LOW",
+      "responsible_stage": "04_MATHEMATICAL_MODEL",
+      "location": "workspace/04_model_specification.md sections 16.1",
+      "finding": "Main and supplementary comparison windows conflated",
+      "evidence": "Parent comparison against Stage03 14.1",
+      "repair": "Earlier-event primary window; later reference/paper window separately labeled",
+      "disposition": "CLOSED_SPEC_RECHECKED",
+      "future_execution_validation": "NOT_RUN"
+    }
+  ],
+  "finding_counts": {
+    "CRITICAL": 0,
+    "HIGH": 3,
+    "MEDIUM": 5,
+    "LOW": 1,
+    "open_implementation_blockers": 0
+  },
+  "agent_review_results": {
+    "core": {
+      "task": "stage05_core_event_proof",
+      "requested_model": "gpt-6-astra",
+      "requested_effort": "ultra",
+      "selection_accepted": true,
+      "status": "COMPLETED",
+      "scope": "continuous threshold barrier; specified reconstruction completeness; event-error propagation and MMS means",
+      "returned_evidence": "Proof and targeted v2 reread accepted barrier, t_plus/t_minus diagnostic, reconstruction scope and MMS mean; requested one execution-order clarification.",
+      "parent_disposition": "ACCEPTED; final event steps 4-5 use field error -> margin -> report candidate -> coverage-wide recheck. Parent checked final ordering; this last clarification was not sent for another independent review.",
+      "formal_validation": "NOT_RUN"
+    },
+    "reviewer": {
+      "task": "stage05_independent_audit",
+      "requested_model": "gpt-5.6-sol",
+      "requested_effort": "high",
+      "selection_accepted": true,
+      "status": "COMPLETED",
+      "scope": "BDF2/BE; Newton/Jacobian; FVM; conservation; history/checkpoint; output; TEST_CASE source interface",
+      "baseline_sha256": "e13edd5c81ce07ebdd034068e3390aca282e8209de1810ff2d243bdcd56f5780",
+      "first_v2_reread_sha256": "d8261fee426417c6179469a4436a30604aac5cd82956dff7600fc3ee63a87a8e",
+      "targeted_source_repair_reread_sha256": "35b892aec36dbe1934059b4de22d39badc333d9719dbad7e57d5d2524c75314e",
+      "returned_evidence": "Final targeted reread: omega and omega*dz source weights, unit-dry SW, full-volume Sa, source subtraction in instantaneous/cumulative/BDF balances, and V05/V08 separation all correct. No remaining known CRITICAL/HIGH/MEDIUM implementation defect in assigned scope.",
+      "parent_disposition": "ACCEPTED. F03 HIGH and F07 MEDIUM adopted from reviewer. F08 closed after targeted reread and six added checks. Later main/supplementary comparison-window and handoff edits integrated by parent; do not treat this slice review hash as current full-document hash.",
+      "formal_validation": "NOT_RUN"
+    },
+    "ownership": "Read-only bounded agents; no recursive delegation, PDE/ODE march, network or official-file writes reported. Parent alone integrates and owns Gate. Accepted model requests do not independently attest remote backend identity."
+  },
+  "parent_self_qa": {
+    "status": "COMPLETED",
+    "model_version": "A26-04-v2",
+    "rechecked": [
+      "BDF2/BE acceptance and history",
+      "normalized/raw Newton Jacobian distinction",
+      "FVM full/half-domain source weights",
+      "continuous proof versus reconstructed event scope",
+      "margin/time/report dependency ordering",
+      "Stage03 comparison-window consistency",
+      "final-row coverage and failure statuses",
+      "contract structure and source/archive integrity"
+    ],
+    "physical_model_replacement": false,
+    "formal_validation": "NOT_RUN"
+  },
+  "delivery": {
+    "gate_05": "CONDITIONAL_PASS",
+    "implementation_approved_routes": [
+      "B_EMPIRICAL_RADIAL",
+      "C_AXISYMMETRIC_REFERENCE"
+    ],
+    "route_P": "DEFERRED",
+    "route_H": "DROP",
+    "human_confirmation": "NOT_CONFIRMED",
+    "pde_solver_source_created": false,
+    "formal_PDE": "NOT_RUN",
+    "formal_convergence": "NOT_RUN",
+    "final_drying_time": "NOT_RUN",
+    "formal_result_workbooks": "NOT_RUN",
+    "stop": "WAIT_FOR_STAGE05_HUMAN_REVIEW_OF_A26-04-v2",
+    "files": [
+      "workspace/05_presolve_qa.md",
+      "workspace/04_model_specification.md",
+      "workspace/stale/04_model_specification_rev001.md",
+      "workspace/evidence/stage05_presolve_checks.json",
+      "workspace/evidence/stage05_test_only_checks.py",
+      "workspace/modeling_state.json"
+    ]
+  },
+  "state_update": {
+    "timestamp": "2026-09-10T14:02:32.537455+00:00",
+    "parsed_before_and_after": true,
+    "changed_fields": [
+      "workflow.current_stage",
+      "workflow.recommended_next_stage",
+      "gates.gate_05_presolve_qa",
+      "artifacts.presolve_qa",
+      "open_issues.important",
+      "history"
+    ],
+    "mode_change_previously_authorized": [
+      "workflow.operating_mode",
+      "workflow.budget_mode"
+    ],
+    "unrelated_fields_preserved": true,
+    "history_appended": 1,
+    "stage05_completion_event_count": 1,
+    "gate_05": "CONDITIONAL_PASS",
+    "operating_mode": "PERFORMANCE",
+    "current_stage": "05_PRESOLVE_QA",
+    "recommended_next_stage": "06_CODE_ENGINEERING",
+    "stage06_08_all_NOT_RUN": true,
+    "future_artifact_pointers_null": true,
+    "current_best_verified": null,
+    "model_frozen": false,
+    "sha256": "e1d3ecb98836214a3aa22164eddd94f98235a20421b27ee777db7721503fa3d6"
+  },
+  "completed_at": "2026-09-10T14:02:32.537455+00:00"
+}
