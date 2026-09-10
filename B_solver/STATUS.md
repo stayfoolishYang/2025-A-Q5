@@ -1,5 +1,7 @@
 # B题最新状态：还原演练引擎逐种子评测已完成
 
+**Q4晨检已整理：** [图表与519例交互检查](results/recovered/q4_morning_review/index.html)、[给GPT的结论稿](results/recovered/q4_morning_review/README.md)、[四个关键案例逐动作审计](results/recovered/q4_morning_review/CASE_NOTES.md)。原始配对CSV、重点轨迹和来源哈希随包保留；本轮整理没有新增求解器运行。
+
 求解代码冻结于 **3c4e844**，工作分支为 `q4-diagnostic-recovery`。本轮使用用户提供的 `G:/QQ/jammers_linux` 直接调用本地Python核心；没有启动官方App、HTTP服务或任何正式测试。没有加入first-hit恢复、没有重新调参。
 
 ## 当前结果

@@ -1,0 +1,91 @@
+{
+  "solver_commit": "3c4e844a010a36d8a441231025e2c1c9d2bc2cce",
+  "evidence_commit": "a3d94ff",
+  "scope": "recovered practice generator plus independent local engine; no formal tests",
+  "inputs": [
+    {
+      "path": "source/primary_cases.csv",
+      "repo_path": "B_solver/results/recovered/grid_v1_519/q4/cases.csv",
+      "sha256": "428bce82e95648294815e494ae90d7de052160f7cb57056324163c1e644cc0a1"
+    },
+    {
+      "path": "source/primary_summary.json",
+      "repo_path": "B_solver/results/recovered/grid_v1_519/q4/summary.json",
+      "sha256": "6e22c9741462cc759fa608aa72646485fceb3f163020b4dd6e582efcdbfc2bc2"
+    },
+    {
+      "path": "source/primary_acceptance.json",
+      "repo_path": "B_solver/results/recovered/grid_v1_519/q4/acceptance.json",
+      "sha256": "f7833dee0925f246fae6b8c0f18dba8aeb955d61b73cffee0610a3c1886e1154"
+    },
+    {
+      "path": "source/primary_manifest.json",
+      "repo_path": "B_solver/results/recovered/grid_v1_519/manifest.json",
+      "sha256": "d6525caefcba7fe2d8ebd89a9916ef40a2906a385b8cd9e0b1b347094bc71afe"
+    },
+    {
+      "path": "source/primary_stage_profile.json",
+      "repo_path": "B_solver/results/recovered/grid_v1_519/q4/stage_profile.json",
+      "sha256": "9dead322313dd2ff41eaf7a98468c83a73dfef2c46ec465e63158e4d42a5540a"
+    },
+    {
+      "path": "source/legacy_cases.csv",
+      "repo_path": "B_solver/results/recovered/grid_v0_reference100/q4/subsets/9dd50adbd73b/cases.csv",
+      "sha256": "1676a0e81be90a8df75018e80534332245ad0f54668d3c910f4ec93780b26fe4"
+    },
+    {
+      "path": "source/legacy_acceptance.json",
+      "repo_path": "B_solver/results/recovered/grid_v0_reference100/q4/subsets/9dd50adbd73b/acceptance.json",
+      "sha256": "f810b73059791b72685949b7de5fbe45456701396da51b0681e046e3897db88d"
+    },
+    {
+      "path": "source/legacy_manifest.json",
+      "repo_path": "B_solver/results/recovered/grid_v0_reference100/manifest.json",
+      "sha256": "32071ef280e314c16d7724825055a08e7fd6a3b68af1be74f47488329752ba1e"
+    },
+    {
+      "path": "source/cuda_manifest.json",
+      "repo_path": "B_solver/results/recovered/grid_v1_cuda20/manifest.json",
+      "sha256": "d6525caefcba7fe2d8ebd89a9916ef40a2906a385b8cd9e0b1b347094bc71afe"
+    },
+    {
+      "path": "source/cuda_cases.csv",
+      "repo_path": "B_solver/results/recovered/grid_v1_cuda20/q4/subsets/bc5e474c6611/cases.csv",
+      "sha256": "31ae495f35c1946a3a7f4e0ed2597388e47e2416a51ee0dc721e022a243b5975"
+    },
+    {
+      "path": "source/cuda_acceptance.json",
+      "repo_path": "B_solver/results/recovered/grid_v1_cuda20/q4/subsets/bc5e474c6611/acceptance.json",
+      "sha256": "031cab668d272f9c7c90800e92b41f2c9831effc012e1144b6b8a9c3b88d44b5"
+    },
+    {
+      "path": "source/EVIDENCE_AUDIT.json",
+      "repo_path": "B_solver/results/recovered/EVIDENCE_AUDIT.json",
+      "sha256": "a10746fbb7a0ce4c48e0d30e1f0e5b37532419fc334f49b159f05bddd62b8bf2"
+    }
+  ],
+  "selected_case_seeds": [
+    105,
+    283,
+    366,
+    455
+  ],
+  "validation": {
+    "primary_rows": 1557,
+    "legacy_rows": 300,
+    "cuda_rows": 60,
+    "primary_summary_recalculated": true,
+    "stage_sums_consistent": true,
+    "cuda_exact_match_fields": [
+      "virtual_time_s",
+      "distance",
+      "fallback_count",
+      "clear_attempts",
+      "detect_count",
+      "switch_count",
+      "diagnostic_count"
+    ],
+    "cuda_exact_match_count": 60,
+    "no_solver_runs_during_report_build": true
+  }
+}
