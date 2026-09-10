@@ -9,10 +9,10 @@ import subprocess
 import time
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
-import numpy as np
 from solver import Solver
 from simulator import LocalSimulator
 from geometry import contains
+from evaluation import classify_run, evaluate_rows, expected_pairs as plan_pairs, exception_status, json_safe
 
 BASE = Path(__file__).resolve().parent
 
@@ -28,27 +28,36 @@ class AuditedSolver(Solver):
 def run_case(job):
     seed, config, device, directory = job
     stress = ('random','edge','bias','cluster')[seed % 4]
-    api = LocalSimulator(seed, True, stress)
-    solver = AuditedSolver(api, True, 'P4', device, config.get('particles',16384), diagnostic=config)
     start = time.perf_counter()
-    error = ''
+    error, status, api, solver = '', None, None, None
     try:
+        api = LocalSimulator(seed, True, stress)
+        solver = AuditedSolver(api, True, 'P4', device, config.get('particles',16384), diagnostic=config)
         solver.run()
     except Exception as exc:
-        error = repr(exc)
-    traces = list(solver.trace.values())
-    row = dict(seed=seed, stress=stress, variant=config['name'], total=len(api.sources),
-        cleared=len(api.cleared), clear_rate=len(api.cleared)/len(api.sources), error=error,
-        mean_time_per_source=api.virtual_time/len(api.sources), distance=api.distance,
-        fallback_count=solver.fallbacks, grid_points=sum(t['optical_grid_points'] for t in traces),
-        clear_attempts=api.clear_attempts, optical_clear_attempts=sum(t['optical_clear_attempts'] for t in traces),
-        diagnostic_count=sum(t['diagnostic_count'] for t in traces), detect_count=api.measures,
-        switch_count=api.switches, runtime=time.perf_counter()-start,
+        error, status = repr(exc), exception_status(exc)
+    traces = list(solver.trace.values()) if solver is not None else []
+    sources = getattr(api, 'sources', {})
+    total, cleared = len(sources), len(getattr(api, 'cleared', []))
+    virtual_time = getattr(api, 'virtual_time', 0.)
+    row = dict(seed=seed, stress=stress, variant=config['name'], total=total,
+        cleared=cleared, clear_rate=cleared/total if total else None, error=error,
+        mean_time_per_source=virtual_time/total if total else None, virtual_time=virtual_time,
+        distance=getattr(api, 'distance', 0.),
+        fallback_count=getattr(solver, 'fallbacks', 0), grid_points=sum(t['optical_grid_points'] for t in traces),
+        clear_attempts=getattr(api, 'clear_attempts', 0), optical_clear_attempts=sum(t['optical_clear_attempts'] for t in traces),
+        diagnostic_count=sum(t['diagnostic_count'] for t in traces), detect_count=getattr(api, 'measures', 0),
+        switch_count=getattr(api, 'switches', 0), runtime=time.perf_counter()-start,
+        scene_hash=hashlib.sha256(json.dumps(sources, sort_keys=True).encode()).hexdigest(),
         config_hash=hashlib.sha256(json.dumps(config,sort_keys=True).encode()).hexdigest())
+    if status is not None:
+        row['run_status'] = status
+    row = classify_run(row)
     path = Path(directory)/'traces'/f"{config['name']}_{seed:05d}.json"
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(dict(row=row, source_truth_evaluator_only=api.sources,
-        targets=traces, actions=api.log), ensure_ascii=False), encoding='utf-8')
+    with path.open('x', encoding='utf-8') as f:
+        json.dump(json_safe(dict(row=row, source_truth_evaluator_only=sources,
+            targets=traces, actions=getattr(api, 'log', []))), f, ensure_ascii=False, allow_nan=False)
     return row
 
 
@@ -64,54 +73,64 @@ def metadata(seeds, configs, device):
         evidence='synthetic_local', cuda_visible_devices=os.environ.get('CUDA_VISIBLE_DEVICES'))
 
 
-def summarize(rows, out):
-    with (out/'cases.csv').open('w',newline='',encoding='utf-8-sig') as f:
-        w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
-    summaries={}
-    for name in sorted({r['variant'] for r in rows}):
-        a=[r for r in rows if r['variant']==name]
-        t=np.array([r['mean_time_per_source'] for r in a])
-        summaries[name]=dict(n=len(a),all_clear=sum(r['clear_rate']==1 and not r['error'] for r in a),
-            clear_rate=sum(r['cleared'] for r in a)/sum(r['total'] for r in a),
-            mean=float(t.mean()),median=float(np.median(t)),
-            **{f'P{q}':float(np.percentile(t,q)) for q in (90,95,99)},max=float(t.max()),
-            mean_distance=float(np.mean([r['distance'] for r in a])),
-            P95_distance=float(np.percentile([r['distance'] for r in a],95)),
-            fallback_rate=float(np.mean([r['fallback_count']>0 for r in a])),
-            fallback_count=sum(r['fallback_count'] for r in a),
-            mean_fallback_grid_points=float(np.mean([r['grid_points'] for r in a])),
-            **{key:sum(r[key] for r in a) for key in ('clear_attempts','optical_clear_attempts','diagnostic_count','detect_count','switch_count')})
-    baseline={r['seed']:r for r in rows if r['variant']=='P4_current'}
-    for name, summary in summaries.items():
-        a=[r for r in rows if r['variant']==name and r['seed'] in baseline]
-        if a:
-            delta=np.array([r['mean_time_per_source']-baseline[r['seed']]['mean_time_per_source'] for r in a])
-            summary['paired_mean_delta']=float(delta.mean())
-            summary['paired_wins']=int((delta < -1e-6).sum())
-            summary['paired_losses']=int((delta > 1e-6).sum())
-    (out/'summary.json').write_text(json.dumps(summaries,indent=2),encoding='utf-8')
-    worst=sorted(rows,key=lambda r:(r['clear_rate']<1, r['mean_time_per_source']),reverse=True)[:10]
-    (out/'worst10.json').write_text(json.dumps(worst,indent=2),encoding='utf-8')
-    print(json.dumps(summaries,indent=2),flush=True)
-    return summaries
+def summarize(rows, out, expected_pairs=None, baseline_name='P4_current', write_cases=True):
+    """Write evaluated artifacts; pass write_cases=False to audit old raw CSVs.
+
+    Raw cases.csv is created exclusively and is never overwritten. Derived
+    summaries are replaceable. Acceptance requires an explicit frozen pair plan.
+    """
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    rows = list(rows)
+    if write_cases:
+        fields = list(dict.fromkeys(key for row in rows for key in row)) or ['seed', 'variant']
+        with (out/'cases.csv').open('x', newline='', encoding='utf-8-sig') as f:
+            writer = csv.DictWriter(f, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(rows)
+    result = evaluate_rows(rows, expected_pairs, baseline_name)
+    classified = result['classified_rows']
+    fields = list(dict.fromkeys(key for row in classified for key in row)) or ['seed', 'variant', 'run_status']
+    with (out/'classified_cases.csv').open('w', newline='', encoding='utf-8-sig') as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(classified)
+    for name in ('summary', 'acceptance', 'worst10'):
+        (out/f'{name}.json').write_text(json.dumps(json_safe(result[name]), indent=2,
+            ensure_ascii=False, allow_nan=False), encoding='utf-8')
+    print(json.dumps(result['acceptance'], indent=2, ensure_ascii=False), flush=True)
+    return result['summary']
 
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--count',type=int,default=20);p.add_argument('--start',type=int,default=0)
     p.add_argument('--workers',type=int,default=4);p.add_argument('--device',default='cpu')
     p.add_argument('--configs',nargs='+',default=['q4_p4_baseline','q4_p4_diag_v1','q4_p4_diag_v2'])
+    p.add_argument('--baseline-name',default='P4_current')
     p.add_argument('--output',default=str(BASE/'results/diagnostic/paired20'))
-    a=p.parse_args();out=Path(a.output);out.mkdir(parents=True,exist_ok=True)
+    a=p.parse_args();out=Path(a.output)
+    if a.count < 1 or a.workers < 1:
+        p.error('--count and --workers must be positive')
+    if out.exists() and any(out.iterdir()):
+        p.error('output directory must be empty; archived evidence is immutable')
+    out.mkdir(parents=True,exist_ok=True)
     configs=[json.loads((BASE/'configs'/f'{name}.yaml').read_text()) for name in a.configs]
     seeds=list(range(a.start,a.start+a.count))
+    variants=[config['name'] for config in configs]
+    if len(set(variants)) != len(variants):
+        p.error('configuration variant names must be unique')
     (out/'manifest.json').write_text(json.dumps(metadata(seeds,configs,a.device),indent=2),encoding='utf-8')
     jobs=[(seed,c,a.device,str(out)) for seed in seeds for c in configs]
     rows=[]
-    with ProcessPoolExecutor(max_workers=a.workers) as pool:
-        for row in pool.map(run_case,jobs):
-            rows.append(row)
-            if len(rows)%5==0:print(f'{len(rows)}/{len(jobs)} cases; errors={sum(bool(r["error"]) for r in rows)}',flush=True)
-    summarize(rows,out)
+    try:
+        with ProcessPoolExecutor(max_workers=a.workers) as pool:
+            for row in pool.map(run_case,jobs):
+                rows.append(row)
+                if len(rows)%5==0:print(f'{len(rows)}/{len(jobs)} cases; errors={sum(bool(r["error"]) for r in rows)}',flush=True)
+    finally:
+        summarize(rows,out,expected_pairs=plan_pairs(seeds,variants),baseline_name=a.baseline_name)
+    if not json.loads((out/'acceptance.json').read_text(encoding='utf-8'))['accept']:
+        raise SystemExit(2)
 
 
 if __name__=='__main__':main()

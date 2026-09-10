@@ -157,7 +157,7 @@ def route(points, start):
     return path[1:]
 
 
-def optical_grid(poly):
+def _legacy_optical_grid(poly):
     """20 m spacing rotated to the polygon long axis: covering radius sqrt(200)<20."""
     _, a, b = diameter(poly)
     u = (b-a) / max(np.linalg.norm(b-a), 1e-12)
@@ -169,6 +169,90 @@ def optical_grid(poly):
     # ponytail: bounding rectangle overcovers a narrow wedge; no fragile polygon-offset dependency.
     pts = [(x*20, y*20) for x in range(int(lo[0]), int(hi[0])+1) for y in range(int(lo[1]), int(hi[1])+1)]
     return np.asarray(pts) @ basis.T
+
+
+def canonical_grid(poly, *, materialize=True):
+    """Construct grid_v1 and its integer-lattice metadata from a convex polygon.
+
+    Equivalent cyclic/reversed vertex lists have exactly the same construction.
+    The axis is a deterministically selected (possibly numerically tied)
+    diameter, never a covariance/PCA axis.  One outward padding is applied to
+    the projected bounding rectangle.  Its complete 20 m lattice has covering
+    radius sqrt(200) m; padding can add points and never snaps a bound inward.
+
+    Small geometric perturbations need not have identical lattice bounds.
+    ``materialize=False`` returns the same bounds/count without allocating the
+    point set, for the cheap planning estimate.
+    """
+    vertices = np.asarray(poly, dtype=np.float64)
+    if vertices.ndim != 2 or vertices.shape[1] != 2 or not len(vertices):
+        raise ValueError('Expected a non-empty polygon with shape (n, 2)')
+    if not np.isfinite(vertices).all():
+        raise ValueError('Polygon coordinates must be finite')
+    # Sorting also removes duplicate closing vertices. Pair enumeration below
+    # therefore has no dependency on perimeter start, orientation or duplicates.
+    vertices = np.unique(vertices, axis=0)
+    if len(vertices) == 1:
+        a = b = vertices[0]
+        u = np.array([1., 0.])
+        longest = 0.
+        axis_tolerance_m = 1e-8
+    else:
+        i, j = np.triu_indices(len(vertices), 1)
+        differences = vertices[j] - vertices[i]
+        lengths = np.linalg.norm(differences, axis=1)
+        longest = float(lengths.max())
+        axis_tolerance_m = 1e-8 + 1e-12 * longest
+        # Lexicographically first endpoint pair wins a near-equal-diameter tie.
+        # This tolerance changes orientation selection only, not the outer set.
+        selected = int(np.flatnonzero(lengths >= longest-axis_tolerance_m)[0])
+        a, b = vertices[i[selected]], vertices[j[selected]]
+        u = differences[selected] / lengths[selected]
+        if (u[0] < -1e-12) or (abs(u[0]) <= 1e-12 and u[1] < 0):
+            u = -u
+    basis = np.column_stack((u, [-u[1], u[0]]))
+    origin = np.zeros(2, dtype=np.float64)
+    projected = vertices @ basis
+    # The fixed margin absorbs the observed ~1e-10 m boundary noise; the scale
+    # term and nextafter additionally cover normal FP64 projection/rounding.
+    padding_m = 1e-8 + 64*np.finfo(np.float64).eps*max(1., float(np.abs(vertices).max()))
+    lower = np.nextafter(projected.min(axis=0)-padding_m, -np.inf)
+    upper = np.nextafter(projected.max(axis=0)+padding_m, np.inf)
+    index_lo = np.floor(lower/20.).astype(np.int64)
+    index_hi = np.ceil(upper/20.).astype(np.int64)
+    count = int(index_hi[0]-index_lo[0]+1) * int(index_hi[1]-index_lo[1]+1)
+    result = {
+        'grid_version': 'grid_v1', 'spacing_m': 20., 'origin': origin,
+        'basis': basis, 'index_bounds': np.vstack((index_lo, index_hi)),
+        'count': count, 'padding_m': padding_m,
+        'projected_bounds': np.vstack((lower, upper)),
+        'diameter_endpoints': np.vstack((a, b)), 'diameter_m': longest,
+        'axis_tolerance_m': axis_tolerance_m,
+    }
+    if materialize:
+        ix, iy = np.meshgrid(np.arange(index_lo[0], index_hi[0]+1, dtype=np.int64),
+                             np.arange(index_lo[1], index_hi[1]+1, dtype=np.int64),
+                             indexing='ij')
+        indices = np.column_stack((ix.ravel(), iy.ravel()))
+        result['indices'] = indices
+        result['points'] = origin + (indices*20.) @ basis.T
+    return result
+
+
+def optical_grid(poly, grid_version='grid_v0', return_metadata=False):
+    """Return a complete optical lattice, preserving grid_v0 by default.
+
+    grid_v1 callers may request the canonical constructor metadata, including
+    integer point identifiers; legacy metadata intentionally is not supported.
+    """
+    if grid_version == 'grid_v0':
+        if return_metadata:
+            raise ValueError('Canonical metadata requires grid_version=grid_v1')
+        return _legacy_optical_grid(poly)
+    if grid_version != 'grid_v1':
+        raise ValueError('Unknown optical grid version: '+str(grid_version))
+    grid = canonical_grid(poly)
+    return grid if return_metadata else grid['points']
 
 
 def candidate_views(poly, current):

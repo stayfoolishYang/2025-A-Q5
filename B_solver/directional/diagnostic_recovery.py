@@ -56,14 +56,16 @@ def choose(poly, particles, current, channel, target_channel, config, history=()
         outcomes = list(branches(poly, particles, pts[i]))
         total = 0.
         for weight, post, subset in outcomes:
-            terminal = estimate_optical_fallback_cost(post, pts[i], exact=False)
+            terminal = estimate_optical_fallback_cost(post, pts[i], exact=False,
+                         grid_version=config.get('grid_version', 'grid_v0'))
             total += weight*terminal
         # Limited beam over nominal continuation, then weighted into first-step outcomes.
         if depth > 1 and outcomes:
             selected = sorted(range(len(outcomes)), key=lambda j: -outcomes[j][0])[:2]
             for j in selected:
                 weight, post, subset = outcomes[j]
-                old = estimate_optical_fallback_cost(post, pts[i], exact=False)
+                old = estimate_optical_fallback_cost(post, pts[i], exact=False,
+                         grid_version=config.get('grid_version', 'grid_v0'))
                 child = choose(post, subset, pts[i], target_channel, target_channel, config,
                                (*history, pts[i]), depth-1, device)
                 if child:
@@ -94,7 +96,8 @@ def recover(solver, channel, config):
         plan = choose(track['poly'], p, solver.api.position, solver.api.channel, channel,
                       config, [o[0] for o in solver.history[channel]], device=solver.device)
         grid_cost = estimate_optical_fallback_cost(track['poly'], solver.api.position,
-                          local=config.get('local_order', True))
+                          local=config.get('local_order', True),
+                          grid_version=config.get('grid_version', 'grid_v0'))
         if plan is None or plan['estimated_cost'] >= config.get('alpha',1.0)*grid_cost:
             log['diagnostic_decisions'].append(dict(accepted=False, grid_cost=grid_cost, plan=plan))
             break

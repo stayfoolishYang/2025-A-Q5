@@ -1,0 +1,4523 @@
+{
+  "policy": "P4",
+  "mixed": true,
+  "cleared": 15,
+  "virtual_time_s": 11416.020193,
+  "mean_time_per_source_s": 761.0680128666667,
+  "runtime_s": 7.304022500000428,
+  "localization_observations": 48,
+  "optical_fallbacks": 0,
+  "certified_clears": 15,
+  "evidence": "official_practice",
+  "variant": "P4_diagnostic_v1",
+  "configuration": {
+    "name": "P4_diagnostic_v1",
+    "enabled": true,
+    "local_order": true,
+    "particles": 16384,
+    "depth": 1,
+    "max_steps": 3,
+    "beam_width": 4,
+    "alpha": 1.0,
+    "split_weight": 0.5,
+    "offsets": [
+      100,
+      200,
+      300,
+      500,
+      700
+    ]
+  },
+  "git_commit": "903b99767f1b0bc62c74d54c253febf24395f844",
+  "config_hash": "20e64799f04f01d1fb1b5464620a5f79d1600c80ea31ba792e04019f6bab6949",
+  "diagnostic_count": 2,
+  "target_trace": {
+    "1": {
+      "channel": 1,
+      "first_seen_position": [
+        0.0,
+        0.0
+      ],
+      "first_seen_time": 5.0,
+      "num_direction_obs": 2,
+      "num_no_signal_obs": 0,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 5.0,
+          "diameter": 1500.477163054672,
+          "mec_radius": 750.275060177591,
+          "particle_count": 8686
+        },
+        {
+          "time": 270.0,
+          "diameter": 29.80083743942309,
+          "mec_radius": 14.900418729711546,
+          "particle_count": 10715
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "direction",
+          "time": 5.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "direction",
+          "time": 270.0
+        }
+      ],
+      "movement_distance": 874.7409165579426,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 179.94818300000003,
+      "success": true
+    },
+    "2": {
+      "channel": 2,
+      "first_seen_position": [
+        -700.0,
+        -700.0
+      ],
+      "first_seen_time": 749.34595,
+      "num_direction_obs": 2,
+      "num_no_signal_obs": 3,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 749.34595,
+          "diameter": 1501.4809784669076,
+          "mec_radius": 750.7404892434538,
+          "particle_count": 5346
+        },
+        {
+          "time": 1219.673255,
+          "diameter": 1501.4809784669076,
+          "mec_radius": 750.7404892434538,
+          "particle_count": 5204
+        },
+        {
+          "time": 2340.715542,
+          "diameter": 34.12263280391995,
+          "mec_radius": 17.061316411959975,
+          "particle_count": 2644
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 11.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 276.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "direction",
+          "time": 749.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1219.673255
+        },
+        {
+          "point": [
+            166.28352479877213,
+            -909.4171449524606
+          ],
+          "result": "direction",
+          "time": 2340.715542
+        }
+      ],
+      "movement_distance": 1627.9735265972902,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 101.87516700000015,
+      "success": true
+    },
+    "3": {
+      "channel": 3,
+      "first_seen_position": null,
+      "first_seen_time": null,
+      "num_direction_obs": 0,
+      "num_no_signal_obs": 45,
+      "num_near_obs": 0,
+      "geometry_history": [],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 17.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 282.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 755.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1225.673255
+        },
+        {
+          "point": [
+            -1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 2819.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3024.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3223.287294
+        },
+        {
+          "point": [
+            -1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3422.287294
+        },
+        {
+          "point": [
+            -2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3679.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 3878.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4077.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4276.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4475.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4674.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 4873.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5072.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5271.277193
+        },
+        {
+          "point": [
+            -700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5470.277193
+        },
+        {
+          "point": [
+            -700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5669.277193
+        },
+        {
+          "point": [
+            -700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 5868.277193
+        },
+        {
+          "point": [
+            0.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 6067.277193
+        },
+        {
+          "point": [
+            0.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6266.277193
+        },
+        {
+          "point": [
+            0.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6465.277193
+        },
+        {
+          "point": [
+            700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6664.277193
+        },
+        {
+          "point": [
+            700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6863.277193
+        },
+        {
+          "point": [
+            700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 7106.233391
+        },
+        {
+          "point": [
+            700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 7305.233391
+        },
+        {
+          "point": [
+            700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 7854.479573
+        },
+        {
+          "point": [
+            0.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 8041.479573
+        },
+        {
+          "point": [
+            0.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 8222.479573
+        },
+        {
+          "point": [
+            0.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 8403.479573
+        },
+        {
+          "point": [
+            700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 8584.479573
+        },
+        {
+          "point": [
+            700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 8862.253201
+        },
+        {
+          "point": [
+            1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 9037.253201
+        },
+        {
+          "point": [
+            1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 9212.253201
+        },
+        {
+          "point": [
+            2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 9445.2431
+        },
+        {
+          "point": [
+            2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 9620.2431
+        },
+        {
+          "point": [
+            1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 9795.2431
+        },
+        {
+          "point": [
+            1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 9970.2431
+        },
+        {
+          "point": [
+            1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 10145.2431
+        },
+        {
+          "point": [
+            1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 10320.2431
+        },
+        {
+          "point": [
+            1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 10495.2431
+        },
+        {
+          "point": [
+            2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 10728.232999
+        },
+        {
+          "point": [
+            2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 10903.232999
+        },
+        {
+          "point": [
+            2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 11078.232999
+        }
+      ],
+      "movement_distance": 2498.6529006744117,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 0,
+      "clear_time": 0.0,
+      "success": false
+    },
+    "4": {
+      "channel": 4,
+      "first_seen_position": [
+        700.0,
+        0.0
+      ],
+      "first_seen_time": 7311.233391,
+      "num_direction_obs": 3,
+      "num_no_signal_obs": 26,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 7311.233391,
+          "diameter": 1134.833859600959,
+          "mec_radius": 567.4169298104796,
+          "particle_count": 5644
+        },
+        {
+          "time": 7492.612884,
+          "diameter": 99.45403719741593,
+          "mec_radius": 49.72701860870798,
+          "particle_count": 653
+        },
+        {
+          "time": 7633.905018,
+          "diameter": 25.36269164418271,
+          "mec_radius": 12.681345832091413,
+          "particle_count": 8556
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 23.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 288.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 761.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1231.673255
+        },
+        {
+          "point": [
+            -1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 2825.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3030.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3229.287294
+        },
+        {
+          "point": [
+            -1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3428.287294
+        },
+        {
+          "point": [
+            -2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3685.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 3884.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4083.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4282.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4481.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4680.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 4879.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5078.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5277.277193
+        },
+        {
+          "point": [
+            -700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5476.277193
+        },
+        {
+          "point": [
+            -700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5675.277193
+        },
+        {
+          "point": [
+            -700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 5874.277193
+        },
+        {
+          "point": [
+            0.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 6073.277193
+        },
+        {
+          "point": [
+            0.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6272.277193
+        },
+        {
+          "point": [
+            0.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6471.277193
+        },
+        {
+          "point": [
+            700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6670.277193
+        },
+        {
+          "point": [
+            700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6869.277193
+        },
+        {
+          "point": [
+            700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 7112.233391
+        },
+        {
+          "point": [
+            700.0,
+            0.0
+          ],
+          "result": "direction",
+          "time": 7311.233391
+        },
+        {
+          "point": [
+            1295.315663445925,
+            188.897936098085
+          ],
+          "result": "direction",
+          "time": 7492.612884
+        },
+        {
+          "point": [
+            1685.636422243138,
+            -369.70599500311226
+          ],
+          "result": "direction",
+          "time": 7633.905018
+        }
+      ],
+      "movement_distance": 777.9436487413976,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 11.590222999999241,
+      "success": true
+    },
+    "5": {
+      "channel": 5,
+      "first_seen_position": [
+        -700.0,
+        0.0
+      ],
+      "first_seen_time": 294.0,
+      "num_direction_obs": 3,
+      "num_no_signal_obs": 1,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 294.0,
+          "diameter": 1210.4583785951058,
+          "mec_radius": 605.229189307553,
+          "particle_count": 8064
+        },
+        {
+          "time": 767.34595,
+          "diameter": 98.92269107932586,
+          "mec_radius": 49.46134554966293,
+          "particle_count": 644
+        },
+        {
+          "time": 1085.96257,
+          "diameter": 35.387711217574946,
+          "mec_radius": 17.744503078444726,
+          "particle_count": 8755
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 29.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "direction",
+          "time": 294.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "direction",
+          "time": 767.34595
+        },
+        {
+          "point": [
+            -1241.7034412824926,
+            -1085.5817908304032
+          ],
+          "result": "direction",
+          "time": 1085.96257
+        }
+      ],
+      "movement_distance": 776.5692851321432,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 102.58294300000011,
+      "success": true
+    },
+    "6": {
+      "channel": 6,
+      "first_seen_position": null,
+      "first_seen_time": null,
+      "num_direction_obs": 0,
+      "num_no_signal_obs": 45,
+      "num_near_obs": 0,
+      "geometry_history": [],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 35.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 300.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 773.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1237.673255
+        },
+        {
+          "point": [
+            -1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 2831.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3036.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3235.287294
+        },
+        {
+          "point": [
+            -1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3434.287294
+        },
+        {
+          "point": [
+            -2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3691.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 3890.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4089.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4288.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4487.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4686.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 4885.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5084.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5283.277193
+        },
+        {
+          "point": [
+            -700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5482.277193
+        },
+        {
+          "point": [
+            -700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5681.277193
+        },
+        {
+          "point": [
+            -700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 5880.277193
+        },
+        {
+          "point": [
+            0.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 6079.277193
+        },
+        {
+          "point": [
+            0.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6278.277193
+        },
+        {
+          "point": [
+            0.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6477.277193
+        },
+        {
+          "point": [
+            700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6676.277193
+        },
+        {
+          "point": [
+            700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6875.277193
+        },
+        {
+          "point": [
+            700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 7118.233391
+        },
+        {
+          "point": [
+            700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 7317.233391
+        },
+        {
+          "point": [
+            700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 7860.479573
+        },
+        {
+          "point": [
+            0.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 8047.479573
+        },
+        {
+          "point": [
+            0.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 8228.479573
+        },
+        {
+          "point": [
+            0.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 8409.479573
+        },
+        {
+          "point": [
+            700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 8590.479573
+        },
+        {
+          "point": [
+            700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 8868.253201
+        },
+        {
+          "point": [
+            1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 9043.253201
+        },
+        {
+          "point": [
+            1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 9218.253201
+        },
+        {
+          "point": [
+            2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 9451.2431
+        },
+        {
+          "point": [
+            2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 9626.2431
+        },
+        {
+          "point": [
+            1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 9801.2431
+        },
+        {
+          "point": [
+            1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 9976.2431
+        },
+        {
+          "point": [
+            1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 10151.2431
+        },
+        {
+          "point": [
+            1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 10326.2431
+        },
+        {
+          "point": [
+            1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 10501.2431
+        },
+        {
+          "point": [
+            2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 10734.232999
+        },
+        {
+          "point": [
+            2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 10909.232999
+        },
+        {
+          "point": [
+            2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 11084.232999
+        }
+      ],
+      "movement_distance": 0.0,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 0,
+      "clear_time": 0.0,
+      "success": false
+    },
+    "7": {
+      "channel": 7,
+      "first_seen_position": [
+        700.0,
+        700.0
+      ],
+      "first_seen_time": 7124.233391,
+      "num_direction_obs": 3,
+      "num_no_signal_obs": 25,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 7124.233391,
+          "diameter": 1487.8617951332171,
+          "mec_radius": 743.9308975766087,
+          "particle_count": 5731
+        },
+        {
+          "time": 7323.233391,
+          "diameter": 43.841392791080025,
+          "mec_radius": 21.920696405540127,
+          "particle_count": 5663
+        },
+        {
+          "time": 7467.749439,
+          "diameter": 11.57072558901513,
+          "mec_radius": 5.785362804507565,
+          "particle_count": 3359
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 41.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 306.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 779.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1243.673255
+        },
+        {
+          "point": [
+            -1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 2837.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3042.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3241.287294
+        },
+        {
+          "point": [
+            -1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3440.287294
+        },
+        {
+          "point": [
+            -2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3697.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 3896.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4095.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4294.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4493.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4692.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 4891.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5090.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5289.277193
+        },
+        {
+          "point": [
+            -700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5488.277193
+        },
+        {
+          "point": [
+            -700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5687.277193
+        },
+        {
+          "point": [
+            -700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 5886.277193
+        },
+        {
+          "point": [
+            0.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 6085.277193
+        },
+        {
+          "point": [
+            0.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6284.277193
+        },
+        {
+          "point": [
+            0.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6483.277193
+        },
+        {
+          "point": [
+            700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6682.277193
+        },
+        {
+          "point": [
+            700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6881.277193
+        },
+        {
+          "point": [
+            700.0,
+            700.0
+          ],
+          "result": "direction",
+          "time": 7124.233391
+        },
+        {
+          "point": [
+            700.0,
+            0.0
+          ],
+          "result": "direction",
+          "time": 7323.233391
+        },
+        {
+          "point": [
+            1237.3425510283728,
+            197.76530186090775
+          ],
+          "result": "direction",
+          "time": 7467.749439
+        }
+      ],
+      "movement_distance": 578.3656032550163,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 6.1570729999994,
+      "success": true
+    },
+    "8": {
+      "channel": 8,
+      "first_seen_position": [
+        0.0,
+        0.0
+      ],
+      "first_seen_time": 47.0,
+      "num_direction_obs": 3,
+      "num_no_signal_obs": 0,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 47.0,
+          "diameter": 1501.8089947055887,
+          "mec_radius": 750.9044973627944,
+          "particle_count": 8656
+        },
+        {
+          "time": 312.0,
+          "diameter": 133.72691555771425,
+          "mec_radius": 66.86345778885712,
+          "particle_count": 331
+        },
+        {
+          "time": 446.631067,
+          "diameter": 14.361215090960298,
+          "mec_radius": 7.180607555480153,
+          "particle_count": 8948
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "direction",
+          "time": 47.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "direction",
+          "time": 312.0
+        },
+        {
+          "point": [
+            -986.788332920822,
+            125.77247364411629
+          ],
+          "result": "direction",
+          "time": 446.631067
+        }
+      ],
+      "movement_distance": 352.8140076643494,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 12.931735000000003,
+      "success": true
+    },
+    "9": {
+      "channel": 9,
+      "first_seen_position": [
+        0.0,
+        0.0
+      ],
+      "first_seen_time": 53.0,
+      "num_direction_obs": 4,
+      "num_no_signal_obs": 1,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 53.0,
+          "diameter": 1500.5073538201832,
+          "mec_radius": 750.2845766356307,
+          "particle_count": 8634
+        },
+        {
+          "time": 318.0,
+          "diameter": 57.88982189301995,
+          "mec_radius": 28.944910956509975,
+          "particle_count": 11210
+        },
+        {
+          "time": 785.34595,
+          "diameter": 57.88982189301995,
+          "mec_radius": 28.944910956509975,
+          "particle_count": 1183
+        },
+        {
+          "time": 1249.673255,
+          "diameter": 57.88982189301995,
+          "mec_radius": 28.944910956509975,
+          "particle_count": 1183
+        },
+        {
+          "time": 1684.60764,
+          "diameter": 33.36952668172412,
+          "mec_radius": 16.725915125342024,
+          "particle_count": 380
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "direction",
+          "time": 53.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "direction",
+          "time": 318.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "direction",
+          "time": 785.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1249.673255
+        },
+        {
+          "point": [
+            -1136.4097367839922,
+            464.42186603303566
+          ],
+          "result": "direction",
+          "time": 1684.60764
+        }
+      ],
+      "movement_distance": 1566.1047245012383,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 197.58691599999997,
+      "success": true
+    },
+    "10": {
+      "channel": 10,
+      "first_seen_position": [
+        700.0,
+        -700.0
+      ],
+      "first_seen_time": 7866.479573,
+      "num_direction_obs": 4,
+      "num_no_signal_obs": 28,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 7866.479573,
+          "diameter": 845.6539154626478,
+          "mec_radius": 422.8269577413239,
+          "particle_count": 6194
+        },
+        {
+          "time": 8053.479573,
+          "diameter": 97.05399566292331,
+          "mec_radius": 48.52699784146166,
+          "particle_count": 499
+        },
+        {
+          "time": 8234.479573,
+          "diameter": 44.822097029692635,
+          "mec_radius": 22.41104852484632,
+          "particle_count": 4277
+        },
+        {
+          "time": 8415.479573,
+          "diameter": 44.822097029692635,
+          "mec_radius": 22.41104852484632,
+          "particle_count": 3991
+        },
+        {
+          "time": 8596.479573,
+          "diameter": 37.66497007053024,
+          "mec_radius": 18.832485045265244,
+          "particle_count": 2927
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 59.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 324.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 791.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1255.673255
+        },
+        {
+          "point": [
+            -1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 2843.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3048.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3247.287294
+        },
+        {
+          "point": [
+            -1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3446.287294
+        },
+        {
+          "point": [
+            -2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3703.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 3902.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4101.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4300.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4499.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4698.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 4897.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5096.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5295.277193
+        },
+        {
+          "point": [
+            -700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5494.277193
+        },
+        {
+          "point": [
+            -700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5693.277193
+        },
+        {
+          "point": [
+            -700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 5892.277193
+        },
+        {
+          "point": [
+            0.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 6091.277193
+        },
+        {
+          "point": [
+            0.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6290.277193
+        },
+        {
+          "point": [
+            0.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6489.277193
+        },
+        {
+          "point": [
+            700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6688.277193
+        },
+        {
+          "point": [
+            700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6887.277193
+        },
+        {
+          "point": [
+            700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 7130.233391
+        },
+        {
+          "point": [
+            700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 7329.233391
+        },
+        {
+          "point": [
+            700.0,
+            -700.0
+          ],
+          "result": "direction",
+          "time": 7866.479573
+        },
+        {
+          "point": [
+            0.0,
+            -700.0
+          ],
+          "result": "direction",
+          "time": 8053.479573
+        },
+        {
+          "point": [
+            0.0,
+            -1400.0
+          ],
+          "result": "direction",
+          "time": 8234.479573
+        },
+        {
+          "point": [
+            0.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 8415.479573
+        },
+        {
+          "point": [
+            700.0,
+            -2100.0
+          ],
+          "result": "direction",
+          "time": 8596.479573
+        }
+      ],
+      "movement_distance": 882.3658992176934,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 181.47317999999905,
+      "success": true
+    },
+    "11": {
+      "channel": 11,
+      "first_seen_position": [
+        700.0,
+        2100.0
+      ],
+      "first_seen_time": 6694.277193,
+      "num_direction_obs": 5,
+      "num_no_signal_obs": 23,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 6694.277193,
+          "diameter": 1081.9045673675764,
+          "mec_radius": 540.9522836937883,
+          "particle_count": 696
+        },
+        {
+          "time": 6893.277193,
+          "diameter": 300.47350145840863,
+          "mec_radius": 150.23675073920433,
+          "particle_count": 582
+        },
+        {
+          "time": 6959.79547,
+          "diameter": 152.10010423445266,
+          "mec_radius": 76.05005212722634,
+          "particle_count": 653
+        },
+        {
+          "time": 6990.948978,
+          "diameter": 84.572695058336,
+          "mec_radius": 42.286347539168,
+          "particle_count": 627
+        },
+        {
+          "time": 7014.216448,
+          "diameter": 39.30444445415079,
+          "mec_radius": 19.652222237075446,
+          "particle_count": 653
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 65.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 330.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 797.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1261.673255
+        },
+        {
+          "point": [
+            -1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 2849.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3054.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3253.287294
+        },
+        {
+          "point": [
+            -1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3452.287294
+        },
+        {
+          "point": [
+            -2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3709.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 3908.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4107.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4306.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4505.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4704.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 4903.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5102.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5301.277193
+        },
+        {
+          "point": [
+            -700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5500.277193
+        },
+        {
+          "point": [
+            -700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5699.277193
+        },
+        {
+          "point": [
+            -700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 5898.277193
+        },
+        {
+          "point": [
+            0.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 6097.277193
+        },
+        {
+          "point": [
+            0.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6296.277193
+        },
+        {
+          "point": [
+            0.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6495.277193
+        },
+        {
+          "point": [
+            700.0,
+            2100.0
+          ],
+          "result": "direction",
+          "time": 6694.277193
+        },
+        {
+          "point": [
+            700.0,
+            1400.0
+          ],
+          "result": "direction",
+          "time": 6893.277193
+        },
+        {
+          "point": [
+            672.607788101248,
+            1189.1807318006777
+          ],
+          "result": "direction",
+          "time": 6959.79547
+        },
+        {
+          "point": [
+            635.5722632683552,
+            1063.7673352345057
+          ],
+          "result": "direction",
+          "time": 6990.948978
+        },
+        {
+          "point": [
+            608.7557858628145,
+            976.4553180102295
+          ],
+          "result": "direction",
+          "time": 7014.216448
+        }
+      ],
+      "movement_distance": 585.4105348475002,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 35.14285099999961,
+      "success": true
+    },
+    "12": {
+      "channel": 12,
+      "first_seen_position": [
+        -700.0,
+        -700.0
+      ],
+      "first_seen_time": 803.34595,
+      "num_direction_obs": 3,
+      "num_no_signal_obs": 3,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 803.34595,
+          "diameter": 1307.0995700617905,
+          "mec_radius": 653.5497850408954,
+          "particle_count": 7931
+        },
+        {
+          "time": 1267.673255,
+          "diameter": 1307.0995700617905,
+          "mec_radius": 653.5497850408954,
+          "particle_count": 6739
+        },
+        {
+          "time": 2470.287174,
+          "diameter": 92.10115324335264,
+          "mec_radius": 46.05057663167633,
+          "particle_count": 359
+        },
+        {
+          "time": 2556.221153,
+          "diameter": 15.05793917536748,
+          "mec_radius": 7.52896959768374,
+          "particle_count": 9421
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 71.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 336.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "direction",
+          "time": 803.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1267.673255
+        },
+        {
+          "point": [
+            -181.974049798438,
+            -1144.092214938671
+          ],
+          "result": "direction",
+          "time": 2470.287174
+        },
+        {
+          "point": [
+            -207.36927862961375,
+            -1547.964478404491
+          ],
+          "result": "direction",
+          "time": 2556.221153
+        }
+      ],
+      "movement_distance": 544.1221424825812,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 11.193984999999884,
+      "success": true
+    },
+    "13": {
+      "channel": 13,
+      "first_seen_position": [
+        -700.0,
+        0.0
+      ],
+      "first_seen_time": 342.0,
+      "num_direction_obs": 3,
+      "num_no_signal_obs": 2,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 342.0,
+          "diameter": 1125.0507933975503,
+          "mec_radius": 562.5253967087752,
+          "particle_count": 8605
+        },
+        {
+          "time": 809.34595,
+          "diameter": 1125.0507933975503,
+          "mec_radius": 562.5253967087752,
+          "particle_count": 5063
+        },
+        {
+          "time": 1273.673255,
+          "diameter": 73.62006202228545,
+          "mec_radius": 36.810031021142755,
+          "particle_count": 686
+        },
+        {
+          "time": 1549.41936,
+          "diameter": 35.54251202916924,
+          "mec_radius": 17.77125602458464,
+          "particle_count": 5952
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 77.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "direction",
+          "time": 342.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 809.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "direction",
+          "time": 1273.673255
+        },
+        {
+          "point": [
+            -1736.9009353851334,
+            347.12087312113977
+          ],
+          "result": "direction",
+          "time": 1549.41936
+        }
+      ],
+      "movement_distance": 327.9098847860588,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 8.554250999999795,
+      "success": true
+    },
+    "14": {
+      "channel": 14,
+      "first_seen_position": null,
+      "first_seen_time": null,
+      "num_direction_obs": 0,
+      "num_no_signal_obs": 45,
+      "num_near_obs": 0,
+      "geometry_history": [],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 83.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 348.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 815.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1279.673255
+        },
+        {
+          "point": [
+            -1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 2855.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3060.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3259.287294
+        },
+        {
+          "point": [
+            -1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3458.287294
+        },
+        {
+          "point": [
+            -2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3715.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 3914.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4113.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4312.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4511.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4710.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 4909.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5108.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5307.277193
+        },
+        {
+          "point": [
+            -700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5506.277193
+        },
+        {
+          "point": [
+            -700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5705.277193
+        },
+        {
+          "point": [
+            -700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 5904.277193
+        },
+        {
+          "point": [
+            0.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 6103.277193
+        },
+        {
+          "point": [
+            0.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6302.277193
+        },
+        {
+          "point": [
+            0.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6501.277193
+        },
+        {
+          "point": [
+            700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6700.277193
+        },
+        {
+          "point": [
+            700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6899.277193
+        },
+        {
+          "point": [
+            700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 7136.233391
+        },
+        {
+          "point": [
+            700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 7335.233391
+        },
+        {
+          "point": [
+            700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 7872.479573
+        },
+        {
+          "point": [
+            0.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 8059.479573
+        },
+        {
+          "point": [
+            0.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 8240.479573
+        },
+        {
+          "point": [
+            0.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 8421.479573
+        },
+        {
+          "point": [
+            700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 8602.479573
+        },
+        {
+          "point": [
+            700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 8874.253201
+        },
+        {
+          "point": [
+            1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 9049.253201
+        },
+        {
+          "point": [
+            1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 9224.253201
+        },
+        {
+          "point": [
+            2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 9457.2431
+        },
+        {
+          "point": [
+            2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 9632.2431
+        },
+        {
+          "point": [
+            1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 9807.2431
+        },
+        {
+          "point": [
+            1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 9982.2431
+        },
+        {
+          "point": [
+            1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 10157.2431
+        },
+        {
+          "point": [
+            1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 10332.2431
+        },
+        {
+          "point": [
+            1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 10507.2431
+        },
+        {
+          "point": [
+            2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 10740.232999
+        },
+        {
+          "point": [
+            2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 10915.232999
+        },
+        {
+          "point": [
+            2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 11090.232999
+        }
+      ],
+      "movement_distance": 0.0,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 0,
+      "clear_time": 0.0,
+      "success": false
+    },
+    "15": {
+      "channel": 15,
+      "first_seen_position": [
+        -700.0,
+        0.0
+      ],
+      "first_seen_time": 354.0,
+      "num_direction_obs": 4,
+      "num_no_signal_obs": 1,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 354.0,
+          "diameter": 1102.3665486564296,
+          "mec_radius": 551.1832743382149,
+          "particle_count": 8712
+        },
+        {
+          "time": 821.34595,
+          "diameter": 113.134100104714,
+          "mec_radius": 56.567050062357,
+          "particle_count": 772
+        },
+        {
+          "time": 1285.673255,
+          "diameter": 49.039100110886096,
+          "mec_radius": 24.519550065443127,
+          "particle_count": 302
+        },
+        {
+          "time": 1473.945557,
+          "diameter": 24.460770802287442,
+          "mec_radius": 12.230385411143798,
+          "particle_count": 6551
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 89.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "direction",
+          "time": 354.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "direction",
+          "time": 821.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "direction",
+          "time": 1285.673255
+        },
+        {
+          "point": [
+            -1567.3108532943834,
+            73.4727624885427
+          ],
+          "result": "direction",
+          "time": 1473.945557
+        }
+      ],
+      "movement_distance": 803.5918931469782,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 7.446077000000059,
+      "success": true
+    },
+    "16": {
+      "channel": 16,
+      "first_seen_position": null,
+      "first_seen_time": null,
+      "num_direction_obs": 0,
+      "num_no_signal_obs": 45,
+      "num_near_obs": 0,
+      "geometry_history": [],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 95.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 360.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 827.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1291.673255
+        },
+        {
+          "point": [
+            -1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 2861.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3066.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3265.287294
+        },
+        {
+          "point": [
+            -1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3464.287294
+        },
+        {
+          "point": [
+            -2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3721.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 3920.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4119.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4318.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4517.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4716.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 4915.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5114.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5313.277193
+        },
+        {
+          "point": [
+            -700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5512.277193
+        },
+        {
+          "point": [
+            -700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5711.277193
+        },
+        {
+          "point": [
+            -700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 5910.277193
+        },
+        {
+          "point": [
+            0.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 6109.277193
+        },
+        {
+          "point": [
+            0.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6308.277193
+        },
+        {
+          "point": [
+            0.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6507.277193
+        },
+        {
+          "point": [
+            700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6706.277193
+        },
+        {
+          "point": [
+            700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6905.277193
+        },
+        {
+          "point": [
+            700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 7142.233391
+        },
+        {
+          "point": [
+            700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 7341.233391
+        },
+        {
+          "point": [
+            700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 7878.479573
+        },
+        {
+          "point": [
+            0.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 8065.479573
+        },
+        {
+          "point": [
+            0.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 8246.479573
+        },
+        {
+          "point": [
+            0.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 8427.479573
+        },
+        {
+          "point": [
+            700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 8608.479573
+        },
+        {
+          "point": [
+            700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 8880.253201
+        },
+        {
+          "point": [
+            1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 9055.253201
+        },
+        {
+          "point": [
+            1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 9230.253201
+        },
+        {
+          "point": [
+            2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 9463.2431
+        },
+        {
+          "point": [
+            2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 9638.2431
+        },
+        {
+          "point": [
+            1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 9813.2431
+        },
+        {
+          "point": [
+            1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 9988.2431
+        },
+        {
+          "point": [
+            1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 10163.2431
+        },
+        {
+          "point": [
+            1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 10338.2431
+        },
+        {
+          "point": [
+            1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 10513.2431
+        },
+        {
+          "point": [
+            2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 10746.232999
+        },
+        {
+          "point": [
+            2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 10921.232999
+        },
+        {
+          "point": [
+            2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 11096.232999
+        }
+      ],
+      "movement_distance": 0.0,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 0,
+      "clear_time": 0.0,
+      "success": false
+    },
+    "17": {
+      "channel": 17,
+      "first_seen_position": [
+        700.0,
+        -700.0
+      ],
+      "first_seen_time": 7884.479573,
+      "num_direction_obs": 3,
+      "num_no_signal_obs": 42,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 7884.479573,
+          "diameter": 1500.9889656705302,
+          "mec_radius": 750.4944828452651,
+          "particle_count": 337
+        },
+        {
+          "time": 8071.479573,
+          "diameter": 1500.9889656705302,
+          "mec_radius": 750.4944828452651,
+          "particle_count": 361
+        },
+        {
+          "time": 8216.479573,
+          "diameter": 1500.9889656705302,
+          "mec_radius": 750.4944828452651,
+          "particle_count": 284
+        },
+        {
+          "time": 8433.479573,
+          "diameter": 1500.9889656705302,
+          "mec_radius": 750.4944828452651,
+          "particle_count": 284
+        },
+        {
+          "time": 8578.479573,
+          "diameter": 1500.9889656705302,
+          "mec_radius": 750.4944828452651,
+          "particle_count": 284
+        },
+        {
+          "time": 8886.253201,
+          "diameter": 1500.9889656705302,
+          "mec_radius": 750.4944828452651,
+          "particle_count": 81
+        },
+        {
+          "time": 9031.253201,
+          "diameter": 1500.9889656705302,
+          "mec_radius": 750.4944828452651,
+          "particle_count": 122
+        },
+        {
+          "time": 9236.253201,
+          "diameter": 1500.9889656705302,
+          "mec_radius": 750.4944828452651,
+          "particle_count": 158
+        },
+        {
+          "time": 9439.2431,
+          "diameter": 1500.9889656705302,
+          "mec_radius": 750.4944828452651,
+          "particle_count": 195
+        },
+        {
+          "time": 9644.2431,
+          "diameter": 1500.9889656705302,
+          "mec_radius": 750.4944828452651,
+          "particle_count": 239
+        },
+        {
+          "time": 9789.2431,
+          "diameter": 61.44116421977745,
+          "mec_radius": 30.720582119888725,
+          "particle_count": 432
+        },
+        {
+          "time": 9994.2431,
+          "diameter": 33.31599944843475,
+          "mec_radius": 16.682254169455447,
+          "particle_count": 256
+        },
+        {
+          "time": 10139.2431,
+          "diameter": 33.31599944843475,
+          "mec_radius": 16.682254169455447,
+          "particle_count": 256
+        },
+        {
+          "time": 10344.2431,
+          "diameter": 33.31599944843475,
+          "mec_radius": 16.682254169455447,
+          "particle_count": 256
+        },
+        {
+          "time": 10489.2431,
+          "diameter": 33.31599944843475,
+          "mec_radius": 16.682254169455447,
+          "particle_count": 256
+        },
+        {
+          "time": 10752.232999,
+          "diameter": 33.31599944843475,
+          "mec_radius": 16.682254169455447,
+          "particle_count": 256
+        },
+        {
+          "time": 10897.232999,
+          "diameter": 33.31599944843475,
+          "mec_radius": 16.682254169455447,
+          "particle_count": 256
+        },
+        {
+          "time": 11102.232999,
+          "diameter": 33.31599944843475,
+          "mec_radius": 16.682254169455447,
+          "particle_count": 256
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 101.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 366.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 833.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1297.673255
+        },
+        {
+          "point": [
+            -1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 2867.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3072.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3217.287294
+        },
+        {
+          "point": [
+            -1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3470.287294
+        },
+        {
+          "point": [
+            -2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3673.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 3926.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4071.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4324.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4469.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4722.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 4867.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5120.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5265.277193
+        },
+        {
+          "point": [
+            -700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5518.277193
+        },
+        {
+          "point": [
+            -700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5663.277193
+        },
+        {
+          "point": [
+            -700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 5916.277193
+        },
+        {
+          "point": [
+            0.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 6061.277193
+        },
+        {
+          "point": [
+            0.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6314.277193
+        },
+        {
+          "point": [
+            0.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6459.277193
+        },
+        {
+          "point": [
+            700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6712.277193
+        },
+        {
+          "point": [
+            700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6857.277193
+        },
+        {
+          "point": [
+            700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 7148.233391
+        },
+        {
+          "point": [
+            700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 7347.233391
+        },
+        {
+          "point": [
+            700.0,
+            -700.0
+          ],
+          "result": "direction",
+          "time": 7884.479573
+        },
+        {
+          "point": [
+            0.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 8071.479573
+        },
+        {
+          "point": [
+            0.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 8216.479573
+        },
+        {
+          "point": [
+            0.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 8433.479573
+        },
+        {
+          "point": [
+            700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 8578.479573
+        },
+        {
+          "point": [
+            700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 8886.253201
+        },
+        {
+          "point": [
+            1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 9031.253201
+        },
+        {
+          "point": [
+            1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 9236.253201
+        },
+        {
+          "point": [
+            2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 9439.2431
+        },
+        {
+          "point": [
+            2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 9644.2431
+        },
+        {
+          "point": [
+            1400.0,
+            -700.0
+          ],
+          "result": "direction",
+          "time": 9789.2431
+        },
+        {
+          "point": [
+            1400.0,
+            0.0
+          ],
+          "result": "direction",
+          "time": 9994.2431
+        },
+        {
+          "point": [
+            1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 10139.2431
+        },
+        {
+          "point": [
+            1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 10344.2431
+        },
+        {
+          "point": [
+            1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 10489.2431
+        },
+        {
+          "point": [
+            2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 10752.232999
+        },
+        {
+          "point": [
+            2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 10897.232999
+        },
+        {
+          "point": [
+            2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 11102.232999
+        }
+      ],
+      "movement_distance": 14723.83495920171,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 313.78719400000045,
+      "success": true
+    },
+    "18": {
+      "channel": 18,
+      "first_seen_position": [
+        0.0,
+        0.0
+      ],
+      "first_seen_time": 107.0,
+      "num_direction_obs": 3,
+      "num_no_signal_obs": 3,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 107.0,
+          "diameter": 1501.8089947055903,
+          "mec_radius": 750.9044973627952,
+          "particle_count": 8640
+        },
+        {
+          "time": 372.0,
+          "diameter": 1501.8089947055903,
+          "mec_radius": 750.9044973627952,
+          "particle_count": 6205
+        },
+        {
+          "time": 839.34595,
+          "diameter": 1501.8089947055903,
+          "mec_radius": 750.9044973627952,
+          "particle_count": 5207
+        },
+        {
+          "time": 1303.673255,
+          "diameter": 1501.8089947055903,
+          "mec_radius": 750.9044973627952,
+          "particle_count": 5207
+        },
+        {
+          "time": 2041.223476,
+          "diameter": 107.0974925811399,
+          "mec_radius": 53.54874630057003,
+          "particle_count": 284
+        },
+        {
+          "time": 2209.83924,
+          "diameter": 23.664052908215893,
+          "mec_radius": 11.835745138674271,
+          "particle_count": 5456
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "direction",
+          "time": 107.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 372.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 839.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1303.673255
+        },
+        {
+          "point": [
+            415.18388842415993,
+            203.55642573657033
+          ],
+          "result": "direction",
+          "time": 2041.223476
+        },
+        {
+          "point": [
+            659.3148376313472,
+            -577.2463866643294
+          ],
+          "result": "direction",
+          "time": 2209.83924
+        }
+      ],
+      "movement_distance": 1683.8207702088403,
+      "fallback_trigger_reason": [
+        "consecutive_no_signal"
+      ],
+      "diagnostic_count": 2,
+      "diagnostic_decisions": [
+        {
+          "accepted": true,
+          "grid_cost": 2313.717344987869,
+          "plan": {
+            "point": [
+              415.18388842415993,
+              203.55642573657033
+            ],
+            "estimated_cost": 754.1947766210202,
+            "move_time": 159.0289199040789,
+            "signal_fraction": 0.9541015625,
+            "split": 0.0458984375,
+            "proxy_score": 0.0031425135671693588,
+            "gpu_count_max_difference": 0.0,
+            "candidate_scores": [
+              {
+                "point": [
+                  241.58015435710593,
+                  104.25011416487024
+                ],
+                "estimated_cost": 933.7154677822363,
+                "move_time": 148.18948739976872,
+                "signal_fraction": 0.970703125,
+                "split": 0.029296875,
+                "proxy_score": 0.0033348225975734394,
+                "gpu_count_max_difference": 0.0
+              },
+              {
+                "point": [
+                  328.382021390633,
+                  153.9032699507203
+                ],
+                "estimated_cost": 761.3700699332101,
+                "move_time": 152.34838682749117,
+                "signal_fraction": 0.962890625,
+                "split": 0.037109375,
+                "proxy_score": 0.003277256445195442,
+                "gpu_count_max_difference": 0.0
+              },
+              {
+                "point": [
+                  415.18388842415993,
+                  203.55642573657033
+                ],
+                "estimated_cost": 754.1947766210202,
+                "move_time": 159.0289199040789,
+                "signal_fraction": 0.9541015625,
+                "split": 0.0458984375,
+                "proxy_score": 0.0031425135671693588,
+                "gpu_count_max_difference": 0.0
+              },
+              {
+                "point": [
+                  -105.62731377700217,
+                  -94.36250897852997
+                ],
+                "estimated_cost": 1272.3007037979878,
+                "move_time": 159.02891990407886,
+                "signal_fraction": 0.9365234375,
+                "split": 0.0634765625,
+                "proxy_score": 0.0031290325444354485,
+                "gpu_count_max_difference": 0.0
+              }
+            ],
+            "depth": 1
+          }
+        },
+        {
+          "accepted": true,
+          "grid_cost": 374.8106476499397,
+          "plan": {
+            "point": [
+              659.3148376313472,
+              -577.2463866643294
+            ],
+            "estimated_cost": 225.2020338184699,
+            "move_time": 168.6157635698904,
+            "signal_fraction": 0.8591549295774648,
+            "split": 0.14084507042253525,
+            "proxy_score": 0.0025381081803137456,
+            "gpu_count_max_difference": 0.0,
+            "candidate_scores": [
+              {
+                "point": [
+                  659.3148376313472,
+                  -577.2463866643294
+                ],
+                "estimated_cost": 225.2020338184699,
+                "move_time": 168.6157635698904,
+                "signal_fraction": 0.8591549295774648,
+                "split": 0.14084507042253525,
+                "proxy_score": 0.0025381081803137456,
+                "gpu_count_max_difference": 0.0
+              },
+              {
+                "point": [
+                  480.35781927552694,
+                  -666.5458020106497
+                ],
+                "estimated_cost": 247.103554979568,
+                "move_time": 179.50793999051092,
+                "signal_fraction": 0.8098591549295775,
+                "split": 0.1901408450704225,
+                "proxy_score": 0.002407125845266011,
+                "gpu_count_max_difference": 0.0
+              },
+              {
+                "point": [
+                  748.7933468092574,
+                  -532.5966789911693
+                ],
+                "estimated_cost": 241.43521358747688,
+                "move_time": 166.64364068212376,
+                "signal_fraction": 0.8661971830985915,
+                "split": 0.1338028169014085,
+                "proxy_score": 0.0017000761503542837,
+                "gpu_count_max_difference": 0.0
+              },
+              {
+                "point": [
+                  390.87931009761684,
+                  -711.1955096838099
+                ],
+                "estimated_cost": 273.73785209118887,
+                "move_time": 188.01495194469356,
+                "signal_fraction": 0.8169014084507042,
+                "split": 0.18309859154929575,
+                "proxy_score": 0.001572422857352032,
+                "gpu_count_max_difference": 0.0
+              }
+            ],
+            "depth": 1
+          }
+        }
+      ],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 25.11947100000043,
+      "success": true
+    },
+    "19": {
+      "channel": 19,
+      "first_seen_position": [
+        -700.0,
+        -700.0
+      ],
+      "first_seen_time": 845.34595,
+      "num_direction_obs": 3,
+      "num_no_signal_obs": 2,
+      "num_near_obs": 0,
+      "geometry_history": [
+        {
+          "time": 845.34595,
+          "diameter": 827.6727276037662,
+          "mec_radius": 413.83636381188313,
+          "particle_count": 5724
+        },
+        {
+          "time": 898.729586,
+          "diameter": 182.21731070084505,
+          "mec_radius": 91.1086553604226,
+          "particle_count": 1340
+        },
+        {
+          "time": 1007.165253,
+          "diameter": 25.311413142132217,
+          "mec_radius": 12.655706581066239,
+          "particle_count": 7941
+        }
+      ],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 113.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 378.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "direction",
+          "time": 845.34595
+        },
+        {
+          "point": [
+            -672.2225067181653,
+            -905.0452263987477
+          ],
+          "result": "direction",
+          "time": 898.729586
+        },
+        {
+          "point": [
+            -1005.3166589842486,
+            -1300.67348176707
+          ],
+          "result": "direction",
+          "time": 1007.165253
+        }
+      ],
+      "movement_distance": 774.4285303896611,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 1,
+      "clear_time": 15.066403000000037,
+      "success": true
+    },
+    "20": {
+      "channel": 20,
+      "first_seen_position": null,
+      "first_seen_time": null,
+      "num_direction_obs": 0,
+      "num_no_signal_obs": 45,
+      "num_near_obs": 0,
+      "geometry_history": [],
+      "candidate_choices": [
+        {
+          "point": [
+            0.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 119.0
+        },
+        {
+          "point": [
+            -700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 264.0
+        },
+        {
+          "point": [
+            -700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 851.34595
+        },
+        {
+          "point": [
+            -1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 1309.673255
+        },
+        {
+          "point": [
+            -1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 2873.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3018.287294
+        },
+        {
+          "point": [
+            -700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3271.287294
+        },
+        {
+          "point": [
+            -1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 3416.287294
+        },
+        {
+          "point": [
+            -2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 3727.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 3872.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4125.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 4270.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4523.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 4668.277193
+        },
+        {
+          "point": [
+            -2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 4921.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5066.277193
+        },
+        {
+          "point": [
+            -1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5319.277193
+        },
+        {
+          "point": [
+            -700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 5464.277193
+        },
+        {
+          "point": [
+            -700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 5717.277193
+        },
+        {
+          "point": [
+            -700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 5862.277193
+        },
+        {
+          "point": [
+            0.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 6115.277193
+        },
+        {
+          "point": [
+            0.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6260.277193
+        },
+        {
+          "point": [
+            0.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6513.277193
+        },
+        {
+          "point": [
+            700.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 6658.277193
+        },
+        {
+          "point": [
+            700.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 6911.277193
+        },
+        {
+          "point": [
+            700.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 7154.233391
+        },
+        {
+          "point": [
+            700.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 7299.233391
+        },
+        {
+          "point": [
+            700.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 7890.479573
+        },
+        {
+          "point": [
+            0.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 8035.479573
+        },
+        {
+          "point": [
+            0.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 8252.479573
+        },
+        {
+          "point": [
+            0.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 8397.479573
+        },
+        {
+          "point": [
+            700.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 8614.479573
+        },
+        {
+          "point": [
+            700.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 8856.253201
+        },
+        {
+          "point": [
+            1400.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 9061.253201
+        },
+        {
+          "point": [
+            1400.0,
+            -2100.0
+          ],
+          "result": "no_signal",
+          "time": 9206.253201
+        },
+        {
+          "point": [
+            2100.0,
+            -1400.0
+          ],
+          "result": "no_signal",
+          "time": 9469.2431
+        },
+        {
+          "point": [
+            2100.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 9614.2431
+        },
+        {
+          "point": [
+            1400.0,
+            -700.0
+          ],
+          "result": "no_signal",
+          "time": 9819.2431
+        },
+        {
+          "point": [
+            1400.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 9964.2431
+        },
+        {
+          "point": [
+            1400.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 10169.2431
+        },
+        {
+          "point": [
+            1400.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 10314.2431
+        },
+        {
+          "point": [
+            1400.0,
+            2100.0
+          ],
+          "result": "no_signal",
+          "time": 10519.2431
+        },
+        {
+          "point": [
+            2100.0,
+            1400.0
+          ],
+          "result": "no_signal",
+          "time": 10722.232999
+        },
+        {
+          "point": [
+            2100.0,
+            700.0
+          ],
+          "result": "no_signal",
+          "time": 10927.232999
+        },
+        {
+          "point": [
+            2100.0,
+            0.0
+          ],
+          "result": "no_signal",
+          "time": 11072.232999
+        }
+      ],
+      "movement_distance": 14566.451733419795,
+      "fallback_trigger_reason": [],
+      "diagnostic_count": 0,
+      "diagnostic_decisions": [],
+      "optical_grid_points": 0,
+      "optical_clear_attempts": 0,
+      "clear_attempts": 0,
+      "clear_time": 0.0,
+      "success": false
+    }
+  }
+}

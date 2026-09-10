@@ -98,7 +98,8 @@ class Solver:
                     track = self.tracks[c]
                 self.fallbacks += 1
                 from directional.fallback_cost import ordered_grid
-                points = ordered_grid(track['poly'], self.api.position, self.diagnostic.get('local_order', False))
+                points = ordered_grid(track['poly'], self.api.position, self.diagnostic.get('local_order', False),
+                                      grid_version=self.diagnostic.get('grid_version', 'grid_v0'))
                 log['optical_grid_points'] += len(points)
                 for point in points:
                     log['optical_clear_attempts'] += 1
