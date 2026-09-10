@@ -15,7 +15,7 @@ if(mode==='templates'){
   }
 }else{
   const books=JSON.parse(await fs.readFile(path.join(out,'workbooks.json'),'utf8'));
-  for(const book of books){
+  for(const book of books.filter(b=>!process.argv[3] || b.q===Number(process.argv[3]))){
     const wb=await SpreadsheetFile.importXlsx(await FileBlob.load(path.join(root,'data','templates',`result${book.q}.xlsx`)));
     for(const spec of book.sheets){
       const sheet=wb.worksheets.getItem(spec.name),rows=spec.rows,cols=rows[0].length;
@@ -33,6 +33,13 @@ if(mode==='templates'){
     for(const spec of book.sheets){
       const blob=await wb.render({sheetName:spec.name,range:'A1:H8',scale:1.2,format:'png'});
       await fs.writeFile(path.join(preview,`result${book.q}_${spec.name}.png`),new Uint8Array(await blob.arrayBuffer()));
+      if(book.q===4){
+        const last=spec.rows.length;
+        for(const [label,range] of [['end',`A${last-4}:F${last}`],['surface',`R${last-4}:W${last}`]]){
+          const snapshot=await wb.render({sheetName:spec.name,range,scale:1.2,format:'png'});
+          await fs.writeFile(path.join(preview,`result4_${label}.png`),new Uint8Array(await snapshot.arrayBuffer()));
+        }
+      }
       console.log((await wb.inspect({kind:'table',range:`'${spec.name}'!A1:D3`,include:'values',tableMaxRows:3,tableMaxCols:4,maxChars:600})).ndjson);
     }
     console.log((await wb.inspect({kind:'match',searchTerm:'#REF!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!',options:{useRegex:true,maxResults:5},maxChars:400})).ndjson);

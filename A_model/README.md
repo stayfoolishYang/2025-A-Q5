@@ -1,6 +1,6 @@
 # 2026 A题：药材烘干
 
-**审计结论：** 同物性严格对照为固定129.1006 h、移动材料坐标50.8235 h、原Eulerian 52.3814 h。后4 h边界仍是延续假设，原几何守恒不能证明干基质量守恒；暂不上8卡UQ。见[审计报告](audit/审计报告.md)和[当前阶段](STATUS.md)。旧Excel保留为条件模型基线。
+**Q4已冻结：材料坐标＋末小时均值平台，51.0913 h。** 末值50.8235 h、名义平台51.0899 h保留为情景。新版result4.xlsx、主图、表6与Q4消融表已同步。见[冻结说明](Q4_FREEZE.md)和[当前阶段](STATUS.md)。Q1—Q3保留原结果，暂不上8卡UQ。
 
 四问完整求解、有限体积误差验证和CUDA批量对照。入口结果见 [求解报告](results/求解报告.md)、[图表导航](results/index.html)。原仓库2025题保持原状。
 
@@ -20,9 +20,9 @@
 
 跨机器安装数值依赖：`pip install numpy scipy numba matplotlib`。只有GPU实验需要CUDA版PyTorch。电子表格输出使用Codex附带的`@oai/artifact-tool`和Node，A_model/node_modules需链接到该机器的runtime node_modules。已提供原始CSV、模板和完整结果；无需访问原OneDrive路径即可重复求解。重新提取附件使用 `preprocess/prepare.py <A题目录>`，该只读脚本还需openpyxl。
 
-`run.py --n 81 --dt 0.5`为默认主结果。Q1/Q2每1 s输出，Q3/Q4每60 s及最后事件时刻输出。数组文件保留未舍入全精度状态；Excel按题意保留四位小数。Q4的固定物理半径超出当时表面时留空，不外推药材外部浓度；独立末列表面值随R(t)移动，实际半径见q4_radius_output.csv。
+`run.py --questions 4 --n 81 --dt 0.5`仅重算Q4，默认材料坐标、均值平台。完整冻结版对照用`experiments/q4_release.py`生成；随后运行prepare_outputs.py、`workbooks.mjs export 4`及report.py。Q1/Q2每1 s输出，Q3/Q4每60 s及最后事件时刻输出。数组保留全精度；Excel四位小数。Q4超出当时表面的物理半径列留空，独立末列表面值随R(t)移动，实际半径见q4_radius_output.csv。
 
-`experiments/run_experiments.py`按实验名称恢复已完成任务。修改模型或物性后应将旧experiments.json改名备份，再全量运行，不能把不同模型版本结果混合。本次记录对应最终Kirchhoff面扩散通量、低Peclet中心ALE通量的版本。
+`experiments/run_experiments.py`及experiments.json保留为旧Eulerian基线的96组实验。当前Q4对照单独保存在q4_release_experiments.json，避免混用版本。旧收敛/灵敏度图仅为历史证据，当前报告不引用它们验证新模型。
 
 ## 文件职责
 
@@ -49,4 +49,4 @@ CUDA_VISIBLE_DEVICES=0 python A_model/solver/gpu_batch.py --batch 256 --worker 0
 
 ## 模型解释
 
-详见题目分析报告：后4小时边界为假设；Q4采用用户指定的Eulerian扩散方程坐标变换。移动域审计包括边界扫掠项，但不把含水率几何积分称为真实水质量。材料随动坐标另作消融。所有数值结果均为此数学模型下的条件预测。
+详见Q4_FREEZE.md与当前求解报告：Q4采用均匀材料收缩，质量方程干密度随R⁻²变化，附录ρ解释为热方程有效经验系数；后4小时均值平台及经验Robin驱动力明确为假设。旧Eulerian仅作对照，所有数值结果仍为条件预测。
