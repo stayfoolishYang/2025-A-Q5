@@ -11,7 +11,11 @@ class Boundary:
         self.interpolation = interpolation
         self.pchip = PchipInterpolator(self.data[:, 0], self.data[:, 1:], axis=0)
         self.rpchip = PchipInterpolator(self.radius_data[:, 0], self.radius_data[:, 1] / 100)
-        self.tail = self.data[-1, 1:] if tail == 'last' else self.data[self.data[:, 0] >= 10800, 1:].mean(axis=0)
+        if tail not in ('last', 'mean', 'nominal'):
+            raise ValueError('tail must be last, mean, or nominal')
+        self.tail = (self.data[-1, 1:] if tail == 'last' else
+                     np.array([50., .05]) if tail == 'nominal' else
+                     self.data[self.data[:, 0] >= 10800, 1:].mean(axis=0))
 
     def ambient(self, time):
         t = np.asarray(time)

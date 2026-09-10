@@ -94,7 +94,9 @@ def integrate(n, dt, ambient, radius, model, mode, scales, omega, bdf2, ale, str
     _, v = geometry(n)
     integral0 = np.sum(v*C)*radius[0]**2
     loss, lossp = 0., 0.
-    check_global = ale or np.max(radius) == np.min(radius)
+    # The no-ALE equation conserves the reference/material integral, not R²*C.
+    if not ale:
+        integral0 = np.sum(v*C)
     for j in range(1, nsteps+1):
         alpha, beta, gamma = (1.5, 2., 0.5) if bdf2 and j > 1 else (1., 1., 0.)
         R, Ro, Rp = radius[j], radius[j-1], radius[max(0,j-2)]
@@ -105,11 +107,12 @@ def integrate(n, dt, ambient, radius, model, mode, scales, omega, bdf2, ale, str
             Vo, Vp = V, V
         flux = -R*8e-7*scales[1]*(Cn[-1]-ambient[j,1]) + g*Cn[-1]
         err = np.sum(alpha*V*Cn-beta*Vo*C+gamma*Vp*Cp)-dt*flux
-        residual = max(residual, abs(err)/integral0)
-        lossn = (beta*loss-gamma*lossp+dt*flux)/alpha
+        residual = max(residual, abs(err)/(integral0 if ale else integral0*R*R))
+        audited_flux = flux if ale else flux/(R*R)
+        lossn = (beta*loss-gamma*lossp+dt*audited_flux)/alpha
         lossp, loss = loss, lossn
-        if check_global:
-            balance = max(balance, abs(np.sum(V*Cn)-integral0-loss)/integral0)
+        audited_integral = np.sum(V*Cn) if ale else np.sum(v*Cn)
+        balance = max(balance, abs(audited_integral-integral0-loss)/integral0)
         if event and np.max(Cn) <= 0.15:
             # Return left bracket states so Python can evaluate exact interpolants during bisection.
             return output[:count], j, T, C, Tn, Cn, maxit, residual, balance
@@ -153,5 +156,8 @@ def solve(model=2, moving=False, n=81, dt=1., end=432000., interval=60., event=T
     meta = dict(model=model, moving=moving, n=n, dt=dt, scheme=scheme, interpolation=interpolation, tail=tail, mode=mode,
                 scales=scales.tolist(), omega=omega, ale=ale, event_s=event_s, event_h=None if event_s is None else event_s/3600,
                 event_bracket_s=bracket, max_picard_iterations=int(maxit), max_step_balance_relative=float(residual),
-                max_cumulative_balance_relative=float(balance), final_max_C=float(np.max(C)), radius_extrapolated=bool(event_s and moving and event_s>259200))
+                max_cumulative_balance_relative=float(balance),
+                balance_quantity='geometric_integral_with_swept_boundary' if ale else 'material_integral_uniform_dry_density',
+                balance_includes_event_bisection=False,
+                final_max_C=float(np.max(C)), radius_extrapolated=bool(event_s and moving and event_s>259200))
     return out, meta

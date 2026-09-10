@@ -41,6 +41,15 @@ def main():
     assert np.all(out[:,2:23] >= 28-1e-7) and np.all(out[:,23:] > 0)
     assert out[-1,22] > out[-1,2] and out[-1,-1] < out[-1,23]
     assert meta['max_cumulative_balance_relative'] < 1e-6
+    # A shrinking material mesh must audit the normalized dry-basis integral.
+    # Previously this path silently returned an unchecked zero.
+    material_checks = {}
+    for scheme in ('be', 'bdf2'):
+        _, check = solve(model=3, moving=True, ale=False, n=41, dt=2.,
+                         end=14400., interval=60., event=False, scheme=scheme)
+        assert check['balance_quantity'] == 'material_integral_uniform_dry_density'
+        assert check['max_cumulative_balance_relative'] < 1e-8
+        material_checks[scheme] = check['max_cumulative_balance_relative']
     # Independent adaptive quadrature validates nonlinear face transmissibility.
     quadrature_error = 0.
     for c1,c2 in ((.05,.1),(.1,.4),(2.,2.55)):
@@ -50,7 +59,8 @@ def main():
         quadrature_error=max(quadrature_error,abs(actual-exact)/exact)
     assert quadrature_error<1e-6
     result = dict(thomas_scipy_max_error=tri_error, geometric_constant_error=constant_error,
-                  cylindrical_eigenmode_errors=errors, nonlinear_face_quadrature_error=quadrature_error, q1=meta)
+                  cylindrical_eigenmode_errors=errors, nonlinear_face_quadrature_error=quadrature_error,
+                  material_coordinate_balance=material_checks, q1=meta)
     dest = Path(__file__).resolve().parents[1]/'results'; dest.mkdir(exist_ok=True)
     (dest/'tests.json').write_text(json.dumps(result, indent=2),encoding='utf-8')
     print(json.dumps(result,indent=2))
