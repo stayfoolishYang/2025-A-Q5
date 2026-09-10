@@ -38,6 +38,8 @@
 
 若中断，使用完全相同参数加`--resume`。恢复时核对源码、场景、配置、设备与结果身份；已完成案例不会重复运行。不同网格或设备必须使用新输出目录。`--count 6`仅运行清单前6个完整种子，结果存入独立subsets报告；后续可`--resume`不带count完成全部清单。
 
+本轮已完成，结果见`results/recovered/grid_v1_519/RESULTS.md`。再次完整重跑须指定新目录，例如`grid_v1_519_repeat`。仓库直接保留汇总、配置、种子清单和验收文件；大量scenes/rows/traces完整保存在`交付包/2026B_还原演练引擎_2436次评测_3c4e844.zip`，恢复归档运行前先解压补齐这些目录。证据包另附用户提供的三个最小仿真源文件，可将`--sim-root`指向解压后的`provided_simulator`。它们保持原始SHA256，未改写生成器或引擎。
+
 输出包括manifest.json、scenes、每例rows、完整traces、cases.csv、classified_cases.csv、summary.json、acceptance.json、stage_profile.json。旧原始CSV不覆盖；重复汇总只重建派生文件。
 
 ## 不在本轮证据范围内
