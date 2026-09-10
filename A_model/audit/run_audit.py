@@ -9,6 +9,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from solver.fvm_cpu import solve, geometry
 from physics.boundary import Boundary
+from physics.material import MODEL_Q4
 
 DEST = Path(__file__).resolve().parent
 
@@ -26,7 +27,7 @@ def main():
     _, weights = geometry(81)
     for name, moving, ale, tail, dt in cases:
         start = time.perf_counter()
-        data, meta = solve(model=3, moving=moving, ale=ale, tail=tail,
+        data, meta = solve(model=MODEL_Q4, moving=moving, ale=ale, tail=tail,
                            n=81, dt=dt, interval=60., end=180*3600.)
         meta['wall_seconds'] = time.perf_counter()-start
         C = data[:, 83:]

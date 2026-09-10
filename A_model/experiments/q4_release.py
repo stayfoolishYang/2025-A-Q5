@@ -5,6 +5,7 @@ import numpy as np
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from solver.fvm_cpu import solve
 from physics.boundary import Boundary
+from physics.material import MODEL_Q4
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'results'
@@ -17,7 +18,7 @@ def main():
            ('material_mean_grid41',{'n':41})]
     records=[]
     for name,overrides in cases:
-        options=dict(model=4,moving=True,ale=False,tail='mean',n=81,dt=.5,
+        options=dict(model=MODEL_Q4,moving=True,ale=False,tail='mean',n=81,dt=.5,
                      end=180*3600.,interval=60.,event=True)
         options.update(overrides)
         start=time.perf_counter(); data,meta=solve(**options)

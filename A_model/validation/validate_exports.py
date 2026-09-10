@@ -1,12 +1,16 @@
 """Independent reopen check of every delivered numeric cell, time, and Q4 mask."""
 from pathlib import Path
 import json
+import sys
 import openpyxl
 import numpy as np
 
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT))
+from validation.q4_contract import load_current_q4
 
 def main():
+    load_current_q4()
     result=[]
     payload=json.loads((ROOT/'results'/'workbooks.json').read_text(encoding='utf-8'))
     for book in payload:
@@ -37,7 +41,20 @@ def main():
             assert np.max(source[-1,2+n:])<=.15
             assert meta['event_bracket_s'][1]-meta['event_bracket_s'][0]<=.1
         if q==4:
+            # Independently rebuild expected Q4 cells from full-precision NPZ,
+            # rather than trusting the intermediate export payload alone.
+            raw=source[source[:,0]>0]
+            assert np.array_equal(times,raw[:,0]) and times[-1]==meta['event_s']
+            for cells,profile in zip(actual[1:],raw):
+                radius_cm=profile[1]*100
+                values=np.interp(np.arange(21)/10,np.linspace(0,radius_cm,n),profile[2+n:])
+                for r,value,cell in zip(np.arange(21)/10,values,cells[1:-1]):
+                    if r>radius_cm+1e-10:assert cell is None
+                    else:assert abs(cell-round(float(value),4))<1e-10
+                assert abs(cells[-1]-round(float(profile[-1]),4))<1e-10
             expected_r=np.loadtxt(ROOT/'results'/'q4_radius_output.csv',delimiter=',',skiprows=1)
+            assert np.array_equal(expected_r[:,0],raw[:,0])
+            assert np.allclose(expected_r[:,1],raw[:,1]*100,rtol=0,atol=1e-12)
             for row,(_,r) in zip(book['sheets'][0]['rows'][1:],expected_r):
                 for pos,v in zip(np.arange(21)/10,row[1:-1]):
                     assert (v is None)==(pos>r+1e-10)

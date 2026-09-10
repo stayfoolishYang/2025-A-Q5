@@ -1,0 +1,80 @@
+{
+  "label": "fine",
+  "model": 4,
+  "formulation": "material_coordinate",
+  "tail": "mean",
+  "nr": 81,
+  "nz": 37,
+  "dt_s": 15.0,
+  "scheme": "BE",
+  "ends": true,
+  "axial_half_length_m": 0.125,
+  "end_hm_m_s": 8e-07,
+  "end_hT_W_m2_K": 25.0,
+  "z_grid": "z=0.125*(1-(1-u)^2), uniform u in [0,1]",
+  "event_h": 51.100830078125,
+  "event_s": 183962.98828125,
+  "event_bracket_s": [
+    183962.9296875,
+    183962.98828125
+  ],
+  "mean_C_final": 0.11607800218271132,
+  "max_C_final": 0.14999997937583553,
+  "side_loss_C_average": 2.338922113586552,
+  "end_loss_C_average": 0.09499988423060202,
+  "normalized_dry_mass": 1.0,
+  "normalized_water_mass_definition": "Mw/Md = sum(vr*vz*C)/(0.5*L/2)",
+  "max_step_water_budget_relative": 2.8554908982010386e-16,
+  "max_cumulative_water_budget_relative": 5.60553782041133e-14,
+  "budget_includes_final_event_step": true,
+  "max_picard_iterations": 7,
+  "steps": 12265,
+  "wall_seconds": 612.3756904999991,
+  "snapshots": [
+    {
+      "time_s": 0.0,
+      "max_C": 2.55,
+      "mean_C": 2.55,
+      "center_midplane_C": 2.55,
+      "center_end_C": 2.55,
+      "min_T": 28.0,
+      "max_T": 28.0
+    },
+    {
+      "time_s": 1800.0,
+      "max_C": 2.5500000000000007,
+      "mean_C": 2.3287426849660346,
+      "center_midplane_C": 2.5499999999999954,
+      "center_end_C": 1.1611529067700257,
+      "min_T": 31.080314203482867,
+      "max_T": 38.656360558699504
+    },
+    {
+      "time_s": 14400.0,
+      "max_C": 2.2405852606117533,
+      "mean_C": 1.3786980696522062,
+      "center_midplane_C": 2.2405852606117533,
+      "center_end_C": 0.6089303238308791,
+      "min_T": 49.975370190023305,
+      "max_T": 50.02110935118618
+    },
+    {
+      "time_s": 86400.0,
+      "max_C": 0.28516378607449994,
+      "mean_C": 0.199312296160352,
+      "center_midplane_C": 0.28516378607449994,
+      "center_end_C": 0.06356425288961685,
+      "min_T": 49.998934426227,
+      "max_T": 49.998934426229404
+    },
+    {
+      "time_s": 183962.98828125,
+      "max_C": 0.14999997937583553,
+      "mean_C": 0.11607800218271132,
+      "center_midplane_C": 0.14999997937583553,
+      "center_end_C": 0.052268342054472776,
+      "min_T": 49.99893442622662,
+      "max_T": 49.99893442622981
+    }
+  ]
+}
