@@ -23,7 +23,8 @@ def main():
         comparisons[name]=dict(paired_P95_difference=float(np.percentile(v,95)-np.percentile(b,95)),
             paired_bootstrap_P95_difference_95_interval=np.percentile(diffs,[2.5,97.5]).tolist(),
             heldout_20plus=dict(n=int(hold.sum()),baseline_P95=float(np.percentile(b[hold],95)),
-                variant_P95=float(np.percentile(v[hold],95)),mean_delta=float((v[hold]-b[hold]).mean())) if hold.any() else None)
+                variant_P95=float(np.percentile(v[hold],95)),baseline_P99=float(np.percentile(b[hold],99)),
+                variant_P99=float(np.percentile(v[hold],99)),mean_delta=float((v[hold]-b[hold]).mean())) if hold.any() else None)
     worst=sorted(baseline.values(),key=lambda r:float(r['mean_time_per_source']),reverse=True)[:10]
     detail=[]
     for original in worst:

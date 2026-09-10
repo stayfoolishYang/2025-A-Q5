@@ -1,0 +1,101 @@
+[
+  {
+    "git_commit": "2f517ed9b8e8704135d518c1e586062f887691cf",
+    "git_dirty": true,
+    "source_hashes": {
+      "ablations.py": "1b8164f317cab44218e78cb79814bfb1599484c166ade80ed2d1609f97be539b",
+      "audit_logs.py": "ac0a3321a25ff7606c8fbcb3cbb838603c8e578ed660911b0d7019d6996d2c60",
+      "build_report.py": "4420b1728527d83395a8d452b9f2156af6095ce7601d49f0937e8fe1e19a2e62",
+      "experiments.py": "4a8307adba6b13cd2fe80264e15497a16d777a691b3f6e0a2a1083631aaf194b",
+      "failure_mining.py": "e9023d92533de8303641be6b9644196370c09cd04a41b48cf1e1d29d94bac965",
+      "geometry.py": "ab93ed26c8a0035935a0286bac1cc3d0e7843038e57d1f85869848e6470efa85",
+      "make_figures.py": "44c90da4c66a748bde8bbc08232ebfa904f13fde9211d682e223a50ba5a7a978",
+      "multi_gpu.py": "5608bd83abb0d1ece2d789763ed437987251693128ce63495bfb3ca05eb25c16",
+      "paired_multi_gpu.py": "d944db30ac6087889be07d8e56c5097e5e92c99830afb2975b626dfebed9b81c",
+      "paired_q4.py": "bc336176822de63c28ccd6eec7c1d11e6ad6d4a4d05f4049f329d5fde69f29a0",
+      "particles.py": "5d3b51ec3c9469b1be41d36d43751f32b0648c215482221ca5b806b0322a497e",
+      "questions.py": "df1c981d30bd722e77be1adc1789b3077cf842e917118e8e768d336b4450d557",
+      "simulator.py": "9008b52014d71b2c62b43484c6f511953908f7831f109e47efa3cf5d225117e6",
+      "solver.py": "15e5ec9914cd1a708c6c6aa9766e5a6f8e1af7155178cd4c0648925a0fbaf8e9",
+      "directional\\diagnostic_candidates.py": "41c6ccefe5a38caee004c92c6ca2af0e2c233074ee2babcc30eddf8766b041d5",
+      "directional\\diagnostic_recovery.py": "cd7bf8df812d9631bce01782d3af6617e5ec5c12afcb033150367d9cee9cc442",
+      "directional\\fallback_cost.py": "acda49bcdd7876c41c5e11584bee60dd696e435149d84ee3113a480daa75a264",
+      "directional\\__init__.py": "97158de657eecc3dd760e91b223d1dabb68f8f40233fb5a14fd4d9ff03914fb6",
+      "tests\\test_diagnostic.py": "d4e704d556f4fdacdb0961a24bebadede0aa66cf852d4c6d83eed0bc7fc5720b"
+    },
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "configs": [
+      {
+        "name": "P4_current",
+        "enabled": false,
+        "local_order": false,
+        "particles": 16384
+      },
+      {
+        "name": "P4_diagnostic_v1",
+        "enabled": true,
+        "local_order": true,
+        "particles": 16384,
+        "depth": 1,
+        "max_steps": 3,
+        "beam_width": 4,
+        "alpha": 1.0,
+        "split_weight": 0.5,
+        "offsets": [
+          100,
+          200,
+          300,
+          500,
+          700
+        ]
+      },
+      {
+        "name": "P4_diagnostic_v2",
+        "enabled": true,
+        "local_order": true,
+        "particles": 16384,
+        "depth": 2,
+        "max_steps": 3,
+        "beam_width": 4,
+        "alpha": 1.0,
+        "split_weight": 0.5,
+        "offsets": [
+          100,
+          200,
+          300,
+          500,
+          700
+        ]
+      }
+    ],
+    "hardware": "Windows-10-10.0.26100-SP0",
+    "processor": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "torch": "2.7.1+cu118",
+    "cuda": "11.8",
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "evidence": "synthetic_local",
+    "cuda_visible_devices": "0"
+  }
+]

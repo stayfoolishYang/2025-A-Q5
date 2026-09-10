@@ -49,6 +49,12 @@ class DiagnosticTests(unittest.TestCase):
         gpu=choose(poly,p,np.zeros(2),1,2,cfg,device='cuda')
         np.testing.assert_array_equal(cpu['point'],gpu['point'])
         self.assertEqual(cpu['estimated_cost'],gpu['estimated_cost'])
+        boundary=np.array([[0.,0.,0.,1000.,0.], [0.,0.,0.,1000.,1.]])
+        pts=np.array([[1000.+1e-6,0.],[-1e-6,500.]])
+        reference=signal_counts(boundary,pts,'cpu')
+        accelerated=signal_counts(boundary,pts,'cuda',candidate_chunk=None)
+        self.assertLessEqual(np.abs(reference-accelerated).max(),2)
+        self.assertEqual(reference[0],0)
 
     def test_disabled_matches_frozen_baseline(self):
         import csv
@@ -60,11 +66,13 @@ class DiagnosticTests(unittest.TestCase):
         self.assertAlmostEqual(r['mean_time_per_source_s'],float(expected['mean_time_per_source_s']),places=8)
 
     def test_paired_determinism(self):
-        cfg={'enabled':True,'local_order':True,'depth':1,'max_steps':2,'beam_width':2}
+        cfg={'enabled':True,'local_order':True,'depth':2,'max_steps':3,'beam_width':4}
         results=[]
         for _ in range(2):
-            api=LocalSimulator(7,True,'cluster');solver=Solver(api,True,'P4',diagnostic=cfg)
-            solver.run();results.append((api.virtual_time,api.log,solver.trace))
+            api=LocalSimulator(1,True,'edge');solver=Solver(api,True,'P4',diagnostic=cfg)
+            solver.run()
+            self.assertGreater(sum(t['diagnostic_count'] for t in solver.trace.values()),0)
+            results.append((api.virtual_time,api.log,solver.trace))
         self.assertEqual(results[0],results[1])
 
 

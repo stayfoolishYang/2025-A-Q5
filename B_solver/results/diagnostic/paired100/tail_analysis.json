@@ -1,0 +1,2451 @@
+{
+  "comparisons": {
+    "P4_diagnostic_v1": {
+      "paired_P95_difference": -1329.3217530581953,
+      "paired_bootstrap_P95_difference_95_interval": [
+        -1954.3255341745485,
+        -709.8795238043501
+      ],
+      "heldout_20plus": {
+        "n": 80,
+        "baseline_P95": 2493.0353189144253,
+        "variant_P95": 1175.2101783857158,
+        "baseline_P99": 2748.3259978408305,
+        "variant_P99": 1206.252906944707,
+        "mean_delta": -266.16822081682005
+      }
+    },
+    "P4_diagnostic_v2": {
+      "paired_P95_difference": -1328.7862986123541,
+      "paired_bootstrap_P95_difference_95_interval": [
+        -1957.8106933371516,
+        -717.3731864984181
+      ],
+      "heldout_20plus": {
+        "n": 80,
+        "baseline_P95": 2493.0353189144253,
+        "variant_P95": 1171.2063572077943,
+        "baseline_P99": 2748.3259978408305,
+        "variant_P99": 1206.9808442479282,
+        "mean_delta": -266.4782291841787
+      }
+    },
+    "P4_route_only": {
+      "paired_P95_difference": -1289.1517647043734,
+      "paired_bootstrap_P95_difference_95_interval": [
+        -1913.2228439671394,
+        -672.5442374534059
+      ],
+      "heldout_20plus": {
+        "n": 80,
+        "baseline_P95": 2493.0353189144253,
+        "variant_P95": 1217.1541929906232,
+        "baseline_P99": 2748.3259978408305,
+        "variant_P99": 1321.066299272531,
+        "mean_delta": -227.67859975371078
+      }
+    }
+  },
+  "worst10": [
+    {
+      "seed": 93,
+      "stress": "edge",
+      "variants": [
+        {
+          "metrics": {
+            "seed": "93",
+            "stress": "edge",
+            "variant": "P4_current",
+            "total": "16",
+            "cleared": "16",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "3426.274353811227",
+            "distance": "247936.94830489802",
+            "fallback_count": "4",
+            "grid_points": "729",
+            "clear_attempts": "554",
+            "optical_clear_attempts": "542",
+            "diagnostic_count": "0",
+            "detect_count": "598",
+            "switch_count": "549",
+            "runtime": "3.0730416999995214",
+            "config_hash": "2fa715e1dcfd6fc70fc744e5c9d93d446823ad806bed0b77d6bace9168105808"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 15,
+              "movement_distance": 138231.85002547427,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 9,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 336,
+              "optical_clear_attempts": 322,
+              "success": true
+            },
+            {
+              "channel": 14,
+              "movement_distance": 68741.65625630437,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 39,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 208,
+              "optical_clear_attempts": 195,
+              "success": true
+            },
+            {
+              "channel": 20,
+              "movement_distance": 15686.855729837203,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "93",
+            "stress": "edge",
+            "variant": "P4_diagnostic_v1",
+            "total": "16",
+            "cleared": "16",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "775.9336206362145",
+            "distance": "43839.68965089714",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "16",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "5",
+            "detect_count": "603",
+            "switch_count": "552",
+            "runtime": "3.2717083000006824",
+            "config_hash": "20e64799f04f01d1fb1b5464620a5f79d1600c80ea31ba792e04019f6bab6949"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 14924.708398536764,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 19,
+              "movement_distance": 9327.463118920772,
+              "num_direction_obs": 4,
+              "num_no_signal_obs": 30,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 1,
+              "movement_distance": 6337.325203698637,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "93",
+            "stress": "edge",
+            "variant": "P4_diagnostic_v2",
+            "total": "16",
+            "cleared": "16",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "773.406659606278",
+            "distance": "43562.532768502235",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "16",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "8",
+            "detect_count": "606",
+            "switch_count": "552",
+            "runtime": "5.7714390000001",
+            "config_hash": "307bdde9bb28e4e31fe57181341b7fbf2ce954ab6927a71e683371dd70a5a695"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 14924.708398536764,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 19,
+              "movement_distance": 9327.463118920772,
+              "num_direction_obs": 4,
+              "num_no_signal_obs": 30,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 1,
+              "movement_distance": 6354.467335310078,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "93",
+            "stress": "edge",
+            "variant": "P4_route_only",
+            "total": "16",
+            "cleared": "16",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "886.1787553600896",
+            "distance": "48194.30042880713",
+            "fallback_count": "4",
+            "grid_points": "729",
+            "clear_attempts": "323",
+            "optical_clear_attempts": "311",
+            "diagnostic_count": "0",
+            "detect_count": "598",
+            "switch_count": "549",
+            "runtime": "2.9118961000003765",
+            "config_hash": "7137893ecb99cb1d66ea52c4632cb5aa1efd276b6882c4f93f74497d2cbdf232"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 15686.855729837203,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 19,
+              "movement_distance": 10027.463118920772,
+              "num_direction_obs": 4,
+              "num_no_signal_obs": 30,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 15,
+              "movement_distance": 6127.148368470187,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 9,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 336,
+              "optical_clear_attempts": 225,
+              "success": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 17,
+      "stress": "edge",
+      "variants": [
+        {
+          "metrics": {
+            "seed": "17",
+            "stress": "edge",
+            "variant": "P4_current",
+            "total": "15",
+            "cleared": "15",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "3201.0015571045174",
+            "distance": "210305.11678283816",
+            "fallback_count": "5",
+            "grid_points": "1295",
+            "clear_attempts": "817",
+            "optical_clear_attempts": "807",
+            "diagnostic_count": "0",
+            "detect_count": "587",
+            "switch_count": "538",
+            "runtime": "3.165802100000292",
+            "config_hash": "2fa715e1dcfd6fc70fc744e5c9d93d446823ad806bed0b77d6bace9168105808"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 16,
+              "movement_distance": 82636.68211315207,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 7,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 325,
+              "optical_clear_attempts": 250,
+              "success": true
+            },
+            {
+              "channel": 10,
+              "movement_distance": 32927.968333438745,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 29,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 276,
+              "optical_clear_attempts": 186,
+              "success": true
+            },
+            {
+              "channel": 13,
+              "movement_distance": 28213.240131556242,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 26,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 282,
+              "optical_clear_attempts": 165,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "17",
+            "stress": "edge",
+            "variant": "P4_diagnostic_v1",
+            "total": "15",
+            "cleared": "15",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "935.3736319453295",
+            "distance": "50218.02239589969",
+            "fallback_count": "1",
+            "grid_points": "325",
+            "clear_attempts": "142",
+            "optical_clear_attempts": "128",
+            "diagnostic_count": "11",
+            "detect_count": "598",
+            "switch_count": "541",
+            "runtime": "4.086059400000522",
+            "config_hash": "20e64799f04f01d1fb1b5464620a5f79d1600c80ea31ba792e04019f6bab6949"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 11407.791645486373,
+              "num_direction_obs": 3,
+              "num_no_signal_obs": 30,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 15,
+              "movement_distance": 8279.898987322333,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 1,
+              "movement_distance": 5830.767042032959,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "17",
+            "stress": "edge",
+            "variant": "P4_diagnostic_v2",
+            "total": "15",
+            "cleared": "15",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "916.3958080866752",
+            "distance": "48819.685606500585",
+            "fallback_count": "1",
+            "grid_points": "325",
+            "clear_attempts": "142",
+            "optical_clear_attempts": "128",
+            "diagnostic_count": "10",
+            "detect_count": "597",
+            "switch_count": "541",
+            "runtime": "6.841736899999887",
+            "config_hash": "307bdde9bb28e4e31fe57181341b7fbf2ce954ab6927a71e683371dd70a5a695"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 11407.791645486373,
+              "num_direction_obs": 3,
+              "num_no_signal_obs": 30,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 15,
+              "movement_distance": 8279.898987322333,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 1,
+              "movement_distance": 5823.544195025625,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "17",
+            "stress": "edge",
+            "variant": "P4_route_only",
+            "total": "15",
+            "cleared": "15",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "941.666924319192",
+            "distance": "48310.019323939385",
+            "fallback_count": "5",
+            "grid_points": "1295",
+            "clear_attempts": "320",
+            "optical_clear_attempts": "310",
+            "diagnostic_count": "0",
+            "detect_count": "587",
+            "switch_count": "538",
+            "runtime": "3.0509677000009106",
+            "config_hash": "7137893ecb99cb1d66ea52c4632cb5aa1efd276b6882c4f93f74497d2cbdf232"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 11054.02065898302,
+              "num_direction_obs": 3,
+              "num_no_signal_obs": 30,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 15,
+              "movement_distance": 8979.898987322333,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 1,
+              "movement_distance": 5504.145306908306,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 12,
+      "stress": "random",
+      "variants": [
+        {
+          "metrics": {
+            "seed": "12",
+            "stress": "random",
+            "variant": "P4_current",
+            "total": "14",
+            "cleared": "14",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "3093.9703594384487",
+            "distance": "192957.9251606915",
+            "fallback_count": "3",
+            "grid_points": "729",
+            "clear_attempts": "455",
+            "optical_clear_attempts": "444",
+            "diagnostic_count": "0",
+            "detect_count": "562",
+            "switch_count": "521",
+            "runtime": "2.0252572999997938",
+            "config_hash": "2fa715e1dcfd6fc70fc744e5c9d93d446823ad806bed0b77d6bace9168105808"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 13,
+              "movement_distance": 87052.13497299353,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 12,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 308,
+              "optical_clear_attempts": 195,
+              "success": true
+            },
+            {
+              "channel": 18,
+              "movement_distance": 61749.724279208756,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 12,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 385,
+              "optical_clear_attempts": 233,
+              "success": true
+            },
+            {
+              "channel": 20,
+              "movement_distance": 14579.898987322333,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "12",
+            "stress": "random",
+            "variant": "P4_diagnostic_v1",
+            "total": "14",
+            "cleared": "14",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "891.9390968578822",
+            "distance": "45290.736780051746",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "14",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "5",
+            "detect_count": "567",
+            "switch_count": "524",
+            "runtime": "2.263045100000454",
+            "config_hash": "20e64799f04f01d1fb1b5464620a5f79d1600c80ea31ba792e04019f6bab6949"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 14579.898987322333,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 19,
+              "movement_distance": 12871.384248354363,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 2,
+              "movement_distance": 5808.880701040728,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 39,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "12",
+            "stress": "random",
+            "variant": "P4_diagnostic_v2",
+            "total": "14",
+            "cleared": "14",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "887.9401522939954",
+            "distance": "45010.810660579664",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "14",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "5",
+            "detect_count": "567",
+            "switch_count": "524",
+            "runtime": "3.4736038999999437",
+            "config_hash": "307bdde9bb28e4e31fe57181341b7fbf2ce954ab6927a71e683371dd70a5a695"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 14579.898987322333,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 19,
+              "movement_distance": 12871.384248354363,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 2,
+              "movement_distance": 5803.19240010945,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 39,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "12",
+            "stress": "random",
+            "variant": "P4_route_only",
+            "total": "14",
+            "cleared": "14",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "1060.392242227919",
+            "distance": "51972.45695595433",
+            "fallback_count": "3",
+            "grid_points": "729",
+            "clear_attempts": "364",
+            "optical_clear_attempts": "353",
+            "diagnostic_count": "0",
+            "detect_count": "562",
+            "switch_count": "521",
+            "runtime": "1.7477777999993123",
+            "config_hash": "7137893ecb99cb1d66ea52c4632cb5aa1efd276b6882c4f93f74497d2cbdf232"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 14579.898987322333,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 19,
+              "movement_distance": 12871.384248354363,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 18,
+              "movement_distance": 6315.723375500053,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 12,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 385,
+              "optical_clear_attempts": 278,
+              "success": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 53,
+      "stress": "edge",
+      "variants": [
+        {
+          "metrics": {
+            "seed": "53",
+            "stress": "edge",
+            "variant": "P4_current",
+            "total": "15",
+            "cleared": "15",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "2568.1118778993396",
+            "distance": "169578.39084244988",
+            "fallback_count": "4",
+            "grid_points": "565",
+            "clear_attempts": "412",
+            "optical_clear_attempts": "401",
+            "diagnostic_count": "0",
+            "detect_count": "564",
+            "switch_count": "520",
+            "runtime": "1.530210499999157",
+            "config_hash": "2fa715e1dcfd6fc70fc744e5c9d93d446823ad806bed0b77d6bace9168105808"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 122451.74415860297,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 7,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 272,
+              "optical_clear_attempts": 259,
+              "success": true
+            },
+            {
+              "channel": 18,
+              "movement_distance": 12095.410676497298,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 17,
+              "movement_distance": 6536.6249103995815,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "53",
+            "stress": "edge",
+            "variant": "P4_diagnostic_v1",
+            "total": "15",
+            "cleared": "15",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "792.3569792607133",
+            "distance": "42206.77344455348",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "15",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "5",
+            "detect_count": "569",
+            "switch_count": "524",
+            "runtime": "1.7808598000010534",
+            "config_hash": "20e64799f04f01d1fb1b5464620a5f79d1600c80ea31ba792e04019f6bab6949"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 18,
+              "movement_distance": 11489.949493661166,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 17,
+              "movement_distance": 6826.574404060748,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 19,
+              "movement_distance": 5092.0411098627255,
+              "num_direction_obs": 3,
+              "num_no_signal_obs": 17,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "53",
+            "stress": "edge",
+            "variant": "P4_diagnostic_v2",
+            "total": "15",
+            "cleared": "15",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "792.4460045036188",
+            "distance": "42213.450337771406",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "15",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "5",
+            "detect_count": "569",
+            "switch_count": "524",
+            "runtime": "2.9329556000011507",
+            "config_hash": "307bdde9bb28e4e31fe57181341b7fbf2ce954ab6927a71e683371dd70a5a695"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 18,
+              "movement_distance": 11489.949493661166,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 17,
+              "movement_distance": 6826.574404060748,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 19,
+              "movement_distance": 5092.0411098627255,
+              "num_direction_obs": 3,
+              "num_no_signal_obs": 17,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "53",
+            "stress": "edge",
+            "variant": "P4_route_only",
+            "total": "15",
+            "cleared": "15",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "899.1689448256758",
+            "distance": "46447.670861925675",
+            "fallback_count": "4",
+            "grid_points": "565",
+            "clear_attempts": "276",
+            "optical_clear_attempts": "265",
+            "diagnostic_count": "0",
+            "detect_count": "564",
+            "switch_count": "520",
+            "runtime": "1.5199248999997508",
+            "config_hash": "7137893ecb99cb1d66ea52c4632cb5aa1efd276b6882c4f93f74497d2cbdf232"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 18,
+              "movement_distance": 12078.510700608682,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 17,
+              "movement_distance": 6536.6249103995815,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 20,
+              "movement_distance": 5429.537229961751,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 7,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 272,
+              "optical_clear_attempts": 137,
+              "success": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 64,
+      "stress": "random",
+      "variants": [
+        {
+          "metrics": {
+            "seed": "64",
+            "stress": "random",
+            "variant": "P4_current",
+            "total": "13",
+            "cleared": "13",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "2508.962677822574",
+            "distance": "141567.5740584672",
+            "fallback_count": "2",
+            "grid_points": "336",
+            "clear_attempts": "254",
+            "optical_clear_attempts": "243",
+            "diagnostic_count": "0",
+            "detect_count": "593",
+            "switch_count": "550",
+            "runtime": "1.549864599999637",
+            "config_hash": "2fa715e1dcfd6fc70fc744e5c9d93d446823ad806bed0b77d6bace9168105808"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 18,
+              "movement_distance": 106047.86600140615,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 15,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 308,
+              "optical_clear_attempts": 235,
+              "success": true
+            },
+            {
+              "channel": 19,
+              "movement_distance": 14594.209884821163,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 1,
+              "movement_distance": 4035.650879006303,
+              "num_direction_obs": 3,
+              "num_no_signal_obs": 23,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "64",
+            "stress": "random",
+            "variant": "P4_diagnostic_v1",
+            "total": "13",
+            "cleared": "13",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "894.7646193238469",
+            "distance": "40154.70025605004",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "13",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "4",
+            "detect_count": "597",
+            "switch_count": "551",
+            "runtime": "1.6716351999984909",
+            "config_hash": "20e64799f04f01d1fb1b5464620a5f79d1600c80ea31ba792e04019f6bab6949"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 19,
+              "movement_distance": 14594.209884821163,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 18,
+              "movement_distance": 4642.058851461259,
+              "num_direction_obs": 3,
+              "num_no_signal_obs": 15,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 2,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 1,
+              "movement_distance": 4051.1814287725406,
+              "num_direction_obs": 3,
+              "num_no_signal_obs": 23,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "64",
+            "stress": "random",
+            "variant": "P4_diagnostic_v2",
+            "total": "13",
+            "cleared": "13",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "894.155587811725",
+            "distance": "40090.11320776213",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "13",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "5",
+            "detect_count": "598",
+            "switch_count": "551",
+            "runtime": "2.968509599999379",
+            "config_hash": "307bdde9bb28e4e31fe57181341b7fbf2ce954ab6927a71e683371dd70a5a695"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 19,
+              "movement_distance": 14594.209884821163,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 18,
+              "movement_distance": 4584.074695709335,
+              "num_direction_obs": 4,
+              "num_no_signal_obs": 15,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 3,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 1,
+              "movement_distance": 4044.5785362365505,
+              "num_direction_obs": 3,
+              "num_no_signal_obs": 23,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "64",
+            "stress": "random",
+            "variant": "P4_route_only",
+            "total": "13",
+            "cleared": "13",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "1017.8005540922749",
+            "distance": "44597.03601599785",
+            "fallback_count": "2",
+            "grid_points": "336",
+            "clear_attempts": "257",
+            "optical_clear_attempts": "246",
+            "diagnostic_count": "0",
+            "detect_count": "593",
+            "switch_count": "550",
+            "runtime": "1.5192377000003034",
+            "config_hash": "7137893ecb99cb1d66ea52c4632cb5aa1efd276b6882c4f93f74497d2cbdf232"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 19,
+              "movement_distance": 14594.209884821163,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 18,
+              "movement_distance": 9284.259200080547,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 15,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 308,
+              "optical_clear_attempts": 244,
+              "success": true
+            },
+            {
+              "channel": 1,
+              "movement_distance": 4035.650879006303,
+              "num_direction_obs": 3,
+              "num_no_signal_obs": 23,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 74,
+      "stress": "bias",
+      "variants": [
+        {
+          "metrics": {
+            "seed": "74",
+            "stress": "bias",
+            "variant": "P4_current",
+            "total": "11",
+            "cleared": "11",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "2497.9250404681716",
+            "distance": "115145.8772257493",
+            "fallback_count": "2",
+            "grid_points": "693",
+            "clear_attempts": "405",
+            "optical_clear_attempts": "396",
+            "diagnostic_count": "0",
+            "detect_count": "543",
+            "switch_count": "496",
+            "runtime": "1.7858713000005082",
+            "config_hash": "2fa715e1dcfd6fc70fc744e5c9d93d446823ad806bed0b77d6bace9168105808"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 8,
+              "movement_distance": 70513.84929416767,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 7,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 385,
+              "optical_clear_attempts": 234,
+              "success": true
+            },
+            {
+              "channel": 20,
+              "movement_distance": 14989.949493661166,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 15,
+              "movement_distance": 10789.949493661166,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "74",
+            "stress": "bias",
+            "variant": "P4_diagnostic_v1",
+            "total": "11",
+            "cleared": "11",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "1085.9591160096954",
+            "distance": "43262.751380533235",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "11",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "5",
+            "detect_count": "548",
+            "switch_count": "498",
+            "runtime": "2.0989895000002434",
+            "config_hash": "20e64799f04f01d1fb1b5464620a5f79d1600c80ea31ba792e04019f6bab6949"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 14989.949493661166,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 15,
+              "movement_distance": 10789.949493661166,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 1,
+              "movement_distance": 4535.818746956769,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "74",
+            "stress": "bias",
+            "variant": "P4_diagnostic_v2",
+            "total": "11",
+            "cleared": "11",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "1064.6128821999373",
+            "distance": "42113.70852099655",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "11",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "4",
+            "detect_count": "547",
+            "switch_count": "498",
+            "runtime": "3.295528299999205",
+            "config_hash": "307bdde9bb28e4e31fe57181341b7fbf2ce954ab6927a71e683371dd70a5a695"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 14989.949493661166,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 15,
+              "movement_distance": 10789.949493661166,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 1,
+              "movement_distance": 4535.871425791353,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "74",
+            "stress": "bias",
+            "variant": "P4_route_only",
+            "total": "11",
+            "cleared": "11",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "1332.929960439018",
+            "distance": "50051.147824145984",
+            "fallback_count": "2",
+            "grid_points": "693",
+            "clear_attempts": "473",
+            "optical_clear_attempts": "464",
+            "diagnostic_count": "0",
+            "detect_count": "543",
+            "switch_count": "496",
+            "runtime": "1.7361590000000433",
+            "config_hash": "7137893ecb99cb1d66ea52c4632cb5aa1efd276b6882c4f93f74497d2cbdf232"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 14989.949493661166,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 15,
+              "movement_distance": 10789.949493661166,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 8,
+              "movement_distance": 7742.254649898752,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 7,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 385,
+              "optical_clear_attempts": 302,
+              "success": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 37,
+      "stress": "edge",
+      "variants": [
+        {
+          "metrics": {
+            "seed": "37",
+            "stress": "edge",
+            "variant": "P4_current",
+            "total": "11",
+            "cleared": "11",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "2492.7779651484384",
+            "distance": "113972.78808316427",
+            "fallback_count": "1",
+            "grid_points": "294",
+            "clear_attempts": "261",
+            "optical_clear_attempts": "251",
+            "diagnostic_count": "0",
+            "detect_count": "644",
+            "switch_count": "601",
+            "runtime": "1.4252911000003223",
+            "config_hash": "2fa715e1dcfd6fc70fc744e5c9d93d446823ad806bed0b77d6bace9168105808"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 19,
+              "movement_distance": 83959.13863094898,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 39,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 294,
+              "optical_clear_attempts": 251,
+              "success": true
+            },
+            {
+              "channel": 18,
+              "movement_distance": 13337.031270682546,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 1,
+              "movement_distance": 4254.111427973997,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 15,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "37",
+            "stress": "edge",
+            "variant": "P4_diagnostic_v1",
+            "total": "11",
+            "cleared": "11",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "1133.540673287778",
+            "distance": "42894.737030827775",
+            "fallback_count": "1",
+            "grid_points": "8",
+            "clear_attempts": "14",
+            "optical_clear_attempts": "4",
+            "diagnostic_count": "1",
+            "detect_count": "645",
+            "switch_count": "601",
+            "runtime": "1.5199701999990793",
+            "config_hash": "20e64799f04f01d1fb1b5464620a5f79d1600c80ea31ba792e04019f6bab6949"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 18,
+              "movement_distance": 13337.031270682546,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 19,
+              "movement_distance": 12882.310204281233,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 39,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 1,
+              "optical_grid_points": 8,
+              "optical_clear_attempts": 4,
+              "success": true
+            },
+            {
+              "channel": 1,
+              "movement_distance": 4254.111427973997,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 15,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "37",
+            "stress": "edge",
+            "variant": "P4_diagnostic_v2",
+            "total": "11",
+            "cleared": "11",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "1135.5944209876386",
+            "distance": "43027.69315432012",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "11",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "2",
+            "detect_count": "646",
+            "switch_count": "601",
+            "runtime": "2.042886200000794",
+            "config_hash": "307bdde9bb28e4e31fe57181341b7fbf2ce954ab6927a71e683371dd70a5a695"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 18,
+              "movement_distance": 13337.031270682546,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 19,
+              "movement_distance": 12996.961844378373,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 40,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 2,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 1,
+              "movement_distance": 4254.111427973997,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 15,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "37",
+            "stress": "edge",
+            "variant": "P4_route_only",
+            "total": "11",
+            "cleared": "11",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "1127.0028545801692",
+            "distance": "42470.1570019093",
+            "fallback_count": "1",
+            "grid_points": "294",
+            "clear_attempts": "20",
+            "optical_clear_attempts": "10",
+            "diagnostic_count": "0",
+            "detect_count": "644",
+            "switch_count": "601",
+            "runtime": "1.3973846999997477",
+            "config_hash": "7137893ecb99cb1d66ea52c4632cb5aa1efd276b6882c4f93f74497d2cbdf232"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 18,
+              "movement_distance": 13337.031270682546,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 19,
+              "movement_distance": 12433.719665617267,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 39,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 294,
+              "optical_clear_attempts": 10,
+              "success": true
+            },
+            {
+              "channel": 1,
+              "movement_distance": 4254.111427973997,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 15,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 69,
+      "stress": "edge",
+      "variants": [
+        {
+          "metrics": {
+            "seed": "69",
+            "stress": "edge",
+            "variant": "P4_current",
+            "total": "10",
+            "cleared": "10",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "2393.3675492718676",
+            "distance": "96753.37746359328",
+            "fallback_count": "1",
+            "grid_points": "235",
+            "clear_attempts": "229",
+            "optical_clear_attempts": "220",
+            "diagnostic_count": "0",
+            "detect_count": "653",
+            "switch_count": "611",
+            "runtime": "1.599244799999724",
+            "config_hash": "2fa715e1dcfd6fc70fc744e5c9d93d446823ad806bed0b77d6bace9168105808"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 16,
+              "movement_distance": 63674.798633804814,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 27,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 235,
+              "optical_clear_attempts": 220,
+              "success": true
+            },
+            {
+              "channel": 19,
+              "movement_distance": 14977.220300585856,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 1,
+              "movement_distance": 3817.0970167747655,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "69",
+            "stress": "edge",
+            "variant": "P4_diagnostic_v1",
+            "total": "10",
+            "cleared": "10",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "1168.8415026620612",
+            "distance": "38757.075133103055",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "10",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "2",
+            "detect_count": "655",
+            "switch_count": "612",
+            "runtime": "1.781747399998494",
+            "config_hash": "20e64799f04f01d1fb1b5464620a5f79d1600c80ea31ba792e04019f6bab6949"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 19,
+              "movement_distance": 14579.898987322333,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 16,
+              "movement_distance": 5683.149045572353,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 28,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 2,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 1,
+              "movement_distance": 4909.765587780576,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "69",
+            "stress": "edge",
+            "variant": "P4_diagnostic_v2",
+            "total": "10",
+            "cleared": "10",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "1170.900286366424",
+            "distance": "38835.01431832119",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "10",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "3",
+            "detect_count": "656",
+            "switch_count": "612",
+            "runtime": "2.622054499999649",
+            "config_hash": "307bdde9bb28e4e31fe57181341b7fbf2ce954ab6927a71e683371dd70a5a695"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 19,
+              "movement_distance": 14579.898987322333,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 16,
+              "movement_distance": 5748.3258249764785,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 29,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 3,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 1,
+              "movement_distance": 4922.527993594586,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "69",
+            "stress": "edge",
+            "variant": "P4_route_only",
+            "total": "10",
+            "cleared": "10",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "1317.912667823212",
+            "distance": "42920.63339116059",
+            "fallback_count": "1",
+            "grid_points": "235",
+            "clear_attempts": "233",
+            "optical_clear_attempts": "224",
+            "diagnostic_count": "0",
+            "detect_count": "653",
+            "switch_count": "611",
+            "runtime": "1.442777099999148",
+            "config_hash": "7137893ecb99cb1d66ea52c4632cb5aa1efd276b6882c4f93f74497d2cbdf232"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 19,
+              "movement_distance": 14977.220300585856,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 16,
+              "movement_distance": 9842.054561372182,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 27,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 235,
+              "optical_clear_attempts": 224,
+              "success": true
+            },
+            {
+              "channel": 1,
+              "movement_distance": 3817.0970167747655,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 29,
+      "stress": "edge",
+      "variants": [
+        {
+          "metrics": {
+            "seed": "29",
+            "stress": "edge",
+            "variant": "P4_current",
+            "total": "16",
+            "cleared": "16",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "2215.6930410423124",
+            "distance": "153450.44328338522",
+            "fallback_count": "3",
+            "grid_points": "634",
+            "clear_attempts": "464",
+            "optical_clear_attempts": "451",
+            "diagnostic_count": "0",
+            "detect_count": "563",
+            "switch_count": "522",
+            "runtime": "1.487250000000131",
+            "config_hash": "2fa715e1dcfd6fc70fc744e5c9d93d446823ad806bed0b77d6bace9168105808"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 14,
+              "movement_distance": 87127.77653400246,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 7,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 335,
+              "optical_clear_attempts": 277,
+              "success": true
+            },
+            {
+              "channel": 3,
+              "movement_distance": 29506.369246787424,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 21,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 230,
+              "optical_clear_attempts": 159,
+              "success": true
+            },
+            {
+              "channel": 18,
+              "movement_distance": 10820.960085037144,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "29",
+            "stress": "edge",
+            "variant": "P4_diagnostic_v1",
+            "total": "16",
+            "cleared": "16",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "697.4454495253307",
+            "distance": "38590.635962026434",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "16",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "4",
+            "detect_count": "567",
+            "switch_count": "526",
+            "runtime": "1.7994939000000159",
+            "config_hash": "20e64799f04f01d1fb1b5464620a5f79d1600c80ea31ba792e04019f6bab6949"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 18,
+              "movement_distance": 10379.898987322333,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 20,
+              "movement_distance": 9541.924666030875,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 32,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 19,
+              "movement_distance": 3406.058291963042,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 9,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "29",
+            "stress": "edge",
+            "variant": "P4_diagnostic_v2",
+            "total": "16",
+            "cleared": "16",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "695.348254022494",
+            "distance": "38397.860321799504",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "16",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "5",
+            "detect_count": "568",
+            "switch_count": "526",
+            "runtime": "3.0264686999998958",
+            "config_hash": "307bdde9bb28e4e31fe57181341b7fbf2ce954ab6927a71e683371dd70a5a695"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 18,
+              "movement_distance": 10379.898987322333,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 20,
+              "movement_distance": 9541.924666030875,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 32,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 19,
+              "movement_distance": 3406.058291963042,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 9,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "29",
+            "stress": "edge",
+            "variant": "P4_route_only",
+            "total": "16",
+            "cleared": "16",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "689.3354577337387",
+            "distance": "37791.836618699075",
+            "fallback_count": "3",
+            "grid_points": "634",
+            "clear_attempts": "34",
+            "optical_clear_attempts": "21",
+            "diagnostic_count": "0",
+            "detect_count": "563",
+            "switch_count": "522",
+            "runtime": "1.5549145999993925",
+            "config_hash": "7137893ecb99cb1d66ea52c4632cb5aa1efd276b6882c4f93f74497d2cbdf232"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 18,
+              "movement_distance": 10820.960085037144,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            },
+            {
+              "channel": 20,
+              "movement_distance": 9992.77094880398,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 32,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 19,
+              "movement_distance": 3406.058291963042,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 9,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 52,
+      "stress": "random",
+      "variants": [
+        {
+          "metrics": {
+            "seed": "52",
+            "stress": "random",
+            "variant": "P4_current",
+            "total": "16",
+            "cleared": "16",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "1986.929103970308",
+            "distance": "137619.32831762466",
+            "fallback_count": "4",
+            "grid_points": "1395",
+            "clear_attempts": "580",
+            "optical_clear_attempts": "568",
+            "diagnostic_count": "0",
+            "detect_count": "423",
+            "switch_count": "380",
+            "runtime": "1.3649260999991384",
+            "config_hash": "2fa715e1dcfd6fc70fc744e5c9d93d446823ad806bed0b77d6bace9168105808"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 8,
+              "movement_distance": 55949.80832709108,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 3,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 385,
+              "optical_clear_attempts": 217,
+              "success": true
+            },
+            {
+              "channel": 2,
+              "movement_distance": 31172.166462094476,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 3,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 390,
+              "optical_clear_attempts": 149,
+              "success": true
+            },
+            {
+              "channel": 20,
+              "movement_distance": 12893.75597211678,
+              "num_direction_obs": 4,
+              "num_no_signal_obs": 34,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "52",
+            "stress": "random",
+            "variant": "P4_diagnostic_v1",
+            "total": "16",
+            "cleared": "16",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "714.3224995584582",
+            "distance": "44050.79996467665",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "16",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "8",
+            "detect_count": "431",
+            "switch_count": "384",
+            "runtime": "1.674250199999733",
+            "config_hash": "20e64799f04f01d1fb1b5464620a5f79d1600c80ea31ba792e04019f6bab6949"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 12893.75597211678,
+              "num_direction_obs": 4,
+              "num_no_signal_obs": 34,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 18,
+              "movement_distance": 11301.595546073697,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 36,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 1,
+              "movement_distance": 5710.842804863235,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "52",
+            "stress": "random",
+            "variant": "P4_diagnostic_v2",
+            "total": "16",
+            "cleared": "16",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "709.6228009050061",
+            "distance": "43674.82407240049",
+            "fallback_count": "0",
+            "grid_points": "0",
+            "clear_attempts": "16",
+            "optical_clear_attempts": "0",
+            "diagnostic_count": "8",
+            "detect_count": "431",
+            "switch_count": "384",
+            "runtime": "3.519874300000083",
+            "config_hash": "307bdde9bb28e4e31fe57181341b7fbf2ce954ab6927a71e683371dd70a5a695"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 12893.75597211678,
+              "num_direction_obs": 4,
+              "num_no_signal_obs": 34,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 18,
+              "movement_distance": 11301.595546073697,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 36,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 1,
+              "movement_distance": 5713.252533250416,
+              "num_direction_obs": 0,
+              "num_no_signal_obs": 45,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": false
+            }
+          ]
+        },
+        {
+          "metrics": {
+            "seed": "52",
+            "stress": "random",
+            "variant": "P4_route_only",
+            "total": "16",
+            "cleared": "16",
+            "clear_rate": "1.0",
+            "error": "",
+            "mean_time_per_source": "981.5961980889211",
+            "distance": "55767.69584711369",
+            "fallback_count": "4",
+            "grid_points": "1395",
+            "clear_attempts": "675",
+            "optical_clear_attempts": "663",
+            "diagnostic_count": "0",
+            "detect_count": "423",
+            "switch_count": "380",
+            "runtime": "1.3948335999994015",
+            "config_hash": "7137893ecb99cb1d66ea52c4632cb5aa1efd276b6882c4f93f74497d2cbdf232"
+          },
+          "largest_travel_targets": [
+            {
+              "channel": 20,
+              "movement_distance": 12893.75597211678,
+              "num_direction_obs": 4,
+              "num_no_signal_obs": 34,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 18,
+              "movement_distance": 11301.595546073697,
+              "num_direction_obs": 2,
+              "num_no_signal_obs": 36,
+              "fallback_trigger_reason": [],
+              "diagnostic_count": 0,
+              "optical_grid_points": 0,
+              "optical_clear_attempts": 0,
+              "success": true
+            },
+            {
+              "channel": 8,
+              "movement_distance": 5796.841263861707,
+              "num_direction_obs": 1,
+              "num_no_signal_obs": 3,
+              "fallback_trigger_reason": [
+                "consecutive_no_signal"
+              ],
+              "diagnostic_count": 0,
+              "optical_grid_points": 385,
+              "optical_clear_attempts": 258,
+              "success": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
