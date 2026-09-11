@@ -1,0 +1,77 @@
+% !TeX program = xelatex
+% 2026 CUMCM 电子版论文示例：电子版第一页必须是摘要专用页。
+% 编译：latexmk -xelatex cumcm.tex
+\documentclass[zihao=-4,a4paper,UTF8,fontset=none]{ctexart}
+
+% template
+\usepackage{cumcm2026}
+
+% set English and Number font
+\setmainfont{TimesNewRoman.ttf}[
+  Path=fonts/,
+  BoldFont=TimesNewRomanBold.ttf,
+  ItalicFont=TimesNewRomanItalic.ttf,
+  BoldItalicFont=TimesNewRomanBoldItalic.ttf
+]
+
+
+
+% set Chinese font
+\setCJKmainfont[
+  Path=fonts/,
+  BoldFont=SimHei.ttf
+]{SimSun.ttc}
+
+\setCJKfamilyfont{zhsong}[
+  Path=fonts/
+]{SimSun.ttc}
+
+\setCJKfamilyfont{zhhei}[
+  Path=fonts/
+]{SimHei.ttf}
+
+\providecommand{\songti}{}
+\providecommand{\heiti}{}
+\renewcommand{\songti}{\CJKfamily{zhsong}}
+\renewcommand{\heiti}{\CJKfamily{zhhei}}
+
+
+
+
+
+%--------------------------------------------------------------------
+%--------------------------------------------------------------------
+%以上不要动
+%标题与关键词（代码很特殊的写在document环境之前）
+
+% Preserve the supplied template's abstract appearance with standard aliases.
+\renewenvironment{abstract}{\begin{cumcmabstract}}{\end{cumcmabstract}}
+\newcommand{\keywords}[1]{\cumcmkeywords{#1}}
+\setCJKfamilyfont{paperhei}[Path=fonts/,BoldFont=SimHei.ttf]{SimHei.ttf}
+\renewcommand{\heiti}{\CJKfamily{paperhei}}
+\setCJKmonofont[Path=fonts/,BoldFont=SimHei.ttf]{SimSun.ttc}
+\setmonofont{Consolas}
+\usepackage{needspace}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.8}
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{4}
+\raggedbottom
+\title{基于热质耦合与随体收缩模型的药材烘干预测}
+\begin{document}
+\maketitle
+\begin{abstract}
+热风烘干中，药材内部升温与水分迁移存在不同时间尺度，含水率变化又会改变物性；半径收缩后，还需区分计算区域的几何积分和以干固体为分母的真实水质量。本文针对圆柱药材的预热、全程干燥及收缩过程，建立与题目四问对应的径向热质耦合模型，并对后期边界延续、运动描述和端面影响分别检验。
+
+对固定圆柱，以散度形式建立导热与含水率扩散方程，使用PCHIP构造附件观测区间内的空气边界。采用圆柱有限体积离散、隐式Picard迭代和非线性界面求积。对收缩圆柱，以规定半径构造随体归一化坐标，在均匀径向形变和独立干固体守恒假设下推导水分方程，将题目密度与比热容的乘积用于有效体积热容；4 h后推荐使用末一小时观测均值平台。
+
+问题一在1800 s时，中心与表面温度分别为33.5764和36.7861 $^\circ$C，表面干基含水率为1.5104 kg/kg。问题二在3 h时中心温度已为49.8494 $^\circ$C，但最大含水率仍为1.7662 kg/kg。问题三在附录3物性、固定半径和末点延续下，达标时间为57.1726 h；问题四在附录4物性、随体收缩和均值平台下，推荐时长为51.0913 h。问题四末点及名义平台分别得到50.8235和51.0899 h，作为边界情景保留。
+
+同物性、同平台的固定半径对照为129.8561 h，说明不能把问题三与四的差值全部归因于收缩。问题四网格由81增至161节点时，达标时间改变6.56 s；步长由1降至0.5 s时改变1.19 s。单参数试验表明扩散系数影响最强。轴对称端面对照未分辨出配对达标时差，但4 h平均含水率降低约3.11\%，故一维近似的适用性应按预测指标区分。本文结论适用于明确的经验物性、材料运动和空气边界假设。
+
+\keywords{圆柱药材；热风烘干；有限体积法；材料坐标；干基含水率}
+\end{abstract}
+\input{manuscript.tex}
+\end{document}

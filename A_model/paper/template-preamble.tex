@@ -1,0 +1,45 @@
+% !TeX program = xelatex
+% 2026 CUMCM 电子版论文示例：电子版第一页必须是摘要专用页。
+% 编译：latexmk -xelatex cumcm.tex
+\documentclass[zihao=-4,a4paper,UTF8,fontset=none]{ctexart}
+
+% template
+\usepackage{cumcm2026}
+
+% set English and Number font
+\setmainfont{TimesNewRoman.ttf}[
+  Path=fonts/,
+  BoldFont=TimesNewRomanBold.ttf,
+  ItalicFont=TimesNewRomanItalic.ttf,
+  BoldItalicFont=TimesNewRomanBoldItalic.ttf
+]
+
+
+
+% set Chinese font
+\setCJKmainfont[
+  Path=fonts/,
+  BoldFont=SimHei.ttf
+]{SimSun.ttc}
+
+\setCJKfamilyfont{zhsong}[
+  Path=fonts/
+]{SimSun.ttc}
+
+\setCJKfamilyfont{zhhei}[
+  Path=fonts/
+]{SimHei.ttf}
+
+\providecommand{\songti}{}
+\providecommand{\heiti}{}
+\renewcommand{\songti}{\CJKfamily{zhsong}}
+\renewcommand{\heiti}{\CJKfamily{zhhei}}
+
+
+
+
+
+%--------------------------------------------------------------------
+%--------------------------------------------------------------------
+%以上不要动
+%标题与关键词（代码很特殊的写在document环境之前）
