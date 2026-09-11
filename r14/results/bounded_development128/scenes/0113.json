@@ -1,0 +1,139 @@
+{
+  "schema_version": "scenario-v1",
+  "ruleset_version": "rules-v1",
+  "problem_no": 4,
+  "source": "practice_generated",
+  "dataset_version": null,
+  "generator_version": "practice-gen-v1",
+  "generator_seed_hex": "3e3dfdeeaec5cd356c927ec6677fae0a5699b6552b1847682608ba05152e8f0b",
+  "noise_seed_hex": "b9966679cdca8dea",
+  "generation_rules": {
+    "generator_rules_version": "practice-gen-rules-v1",
+    "target_area_radius_um": 1800000000,
+    "jammer_max_radius_um": 1770000000,
+    "outer_empty_ring_um": 30000000,
+    "jammer_count_min": 10,
+    "jammer_count_max": 16,
+    "channel_min": 1,
+    "channel_max": 20,
+    "max_receive_min_um": 1000000000,
+    "max_receive_max_um": 1500000000,
+    "position_distribution": "uniform_disk_area",
+    "max_receive_distribution": "uniform_integer_um",
+    "problem4_directional_count_mode": "uniform_integer_one_to_count"
+  },
+  "simulation_rules": {
+    "simulation_rules_version": "simulation-rules-v1",
+    "target_area_radius_um": 1800000000,
+    "near_distance_um": 5000000,
+    "clear_distance_um": 20000000,
+    "move_speed_um_per_s": 5000000,
+    "channel_switch_duration_us": 1000000,
+    "measure_duration_us": 5000000,
+    "clear_success_duration_us": 5000000,
+    "clear_failure_duration_us": 3000000,
+    "max_virtual_duration_us": 360000000000,
+    "directional_beam_width_udeg": 180000000,
+    "bearing_noise_model": "spatial-bearing-v1",
+    "bearing_noise_grid_um": 150000000,
+    "bearing_error_max_udeg": 1000000
+  },
+  "jammers": [
+    {
+      "channel": 1,
+      "x_um": 254080790,
+      "y_um": -997080681,
+      "max_receive_um": 1413151193,
+      "kind": "directional",
+      "direction_udeg": 266893176
+    },
+    {
+      "channel": 2,
+      "x_um": -694756526,
+      "y_um": 786191590,
+      "max_receive_um": 1085507576,
+      "kind": "directional",
+      "direction_udeg": 38699647
+    },
+    {
+      "channel": 3,
+      "x_um": -1290114367,
+      "y_um": -1151219248,
+      "max_receive_um": 1234066595,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 4,
+      "x_um": 71743431,
+      "y_um": -1353412542,
+      "max_receive_um": 1453133565,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 8,
+      "x_um": -695262720,
+      "y_um": 279798391,
+      "max_receive_um": 1215365003,
+      "kind": "directional",
+      "direction_udeg": 34491313
+    },
+    {
+      "channel": 12,
+      "x_um": 624393590,
+      "y_um": 1398694333,
+      "max_receive_um": 1295563013,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 14,
+      "x_um": -617100695,
+      "y_um": -433548440,
+      "max_receive_um": 1310831833,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 15,
+      "x_um": -1067821023,
+      "y_um": 1092026124,
+      "max_receive_um": 1119614901,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 16,
+      "x_um": 864903618,
+      "y_um": -1165417853,
+      "max_receive_um": 1410798978,
+      "kind": "directional",
+      "direction_udeg": 79406182
+    },
+    {
+      "channel": 17,
+      "x_um": -22636902,
+      "y_um": 525668616,
+      "max_receive_um": 1358746969,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 18,
+      "x_um": -246546423,
+      "y_um": 708418322,
+      "max_receive_um": 1213830706,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 20,
+      "x_um": 191856077,
+      "y_um": 755623584,
+      "max_receive_um": 1099670354,
+      "kind": "omni",
+      "direction_udeg": null
+    }
+  ]
+}
