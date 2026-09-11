@@ -16,8 +16,8 @@ class Solver:
         self.schedule = schedule
         self.diagnostic = diagnostic or {}
         self.clearance_point = self.diagnostic.get('clearance_point', 'mec_center')
-        if self.clearance_point not in ('mec_center', 'nccp'):
-            raise ValueError('clearance_point must be mec_center or nccp')
+        if self.clearance_point not in ('mec_center', 'nccp', 'segment_entry'):
+            raise ValueError('clearance_point must be mec_center, nccp or segment_entry')
         self.trace = {}
         self.tracks, self.cleared = {}, set()
         self.history = {c: [] for c in range(1,21)}
@@ -37,30 +37,79 @@ class Solver:
         landing point can alter future actions, so it is not a whole-run bound.
         Near-observation clears use their original zero-movement path instead.
         """
-        poly = self.tracks[c]['poly']
-        start = np.asarray(self.api.position, dtype=float).copy()
-        center = np.asarray(center, dtype=float)
+        from geometry import is_certified_clear_point, exact_squared_distance
+
+        def unavailable(reason):
+            self.target_trace(c).setdefault('certificate_failures', []).append(
+                dict(reason=reason, selector=self.clearance_point, time=self.api.virtual_time))
+            return False
+
+        try:
+            poly = np.asarray(self.tracks[c]['poly'], dtype=float)
+            start = np.asarray(self.api.position, dtype=float).copy()
+            center, radius = np.asarray(center, dtype=float), float(radius)
+        except (KeyError, TypeError, ValueError):
+            return unavailable('invalid_certificate_inputs')
         limit = 19.999
-        if not np.isfinite(radius) or radius > limit:
-            raise RuntimeError('Polygon clearance requires the existing MEC certificate')
-        if self.clearance_point == 'nccp':
-            from geometry import nearest_certified_clear_point
-            point, selection = nearest_certified_clear_point(
-                poly, start, clearance_radius=limit, mec_center=center, mec_radius=radius)
-        else:
-            point, selection = center, {'mode': 'mec_center', 'fallback': False}
-        point = np.asarray(point, dtype=float)
+        if poly.ndim != 2 or poly.shape[1] != 2 or not len(poly) or not np.isfinite(poly).all():
+            return unavailable('invalid_hard_polygon')
+        if start.shape != (2,) or not np.isfinite(start).all():
+            return unavailable('invalid_robot_position')
+        if not np.isfinite(radius) or not 0 <= radius <= limit:
+            return unavailable('invalid_mec_radius')
+        if not is_certified_clear_point(poly, center, radius):
+            return unavailable('invalid_mec_certificate')
+        mec_distance = float(np.linalg.norm(center-start))
+        if not np.isfinite(mec_distance):
+            return unavailable('invalid_mec_travel_distance')
+        baseline_squared = exact_squared_distance(start, center)
+
+        def checked_submission(candidate):
+            candidate = np.asarray(candidate, dtype=float)
+            if candidate.shape != (2,):
+                raise ValueError('Invalid selector point shape')
+            # Match Client.action's float -> JSON x/y -> parsed coordinate path.
+            wire = json.loads(json.dumps(dict(x=float(candidate[0]), y=float(candidate[1])), allow_nan=False))
+            point = np.array([wire['x'], wire['y']], dtype=float)
+            if (not is_certified_clear_point(poly, point, limit)
+                    or float(np.linalg.norm(point-start)) > mec_distance
+                    or exact_squared_distance(point, start) > baseline_squared):
+                raise ValueError('Submitted point failed strict clearance/travel audit')
+            return point
+
+        point, selection = center, {'mode': 'mec_center', 'fallback': False}
+        try:
+            if self.clearance_point != 'mec_center':
+                from geometry import nearest_certified_clear_point, segment_certified_clear_point
+                selector = nearest_certified_clear_point if self.clearance_point == 'nccp' else segment_certified_clear_point
+                point, selection = selector(poly, start, clearance_radius=limit, mec_center=center, mec_radius=radius)
+                if not isinstance(selection, dict):
+                    raise ValueError('Invalid selector metadata')
+            point = checked_submission(point)
+        except (TypeError, ValueError, ArithmeticError, np.linalg.LinAlgError, RuntimeError) as error:
+            if self.clearance_point == 'mec_center':
+                return unavailable('no_verified_submission_point')
+            selection = dict(mode='mec_fallback', fallback=True,
+                             fallback_reason=f'{type(error).__name__}: {error}')
+            # This capture ends before clear(): an unresolved HTTP operation
+            # must propagate, never be retried as another clearance action.
+            try:
+                point = checked_submission(center)
+            except (TypeError, ValueError, ArithmeticError):
+                return unavailable('no_verified_submission_point')
         worst = float(np.max(np.linalg.norm(poly-point, axis=1)))
         distance = float(np.linalg.norm(point-start))
-        mec_distance = float(np.linalg.norm(center-start))
-        if not np.isfinite(point).all() or worst > limit or distance > mec_distance:
-            raise RuntimeError('Clearance landing point failed strict distance audit')
         before = self.api.virtual_time
+        verification = ('MEC_FALLBACK' if selection.get('fallback') else
+                        'NCCP_CANDIDATE_VERIFIED' if self.clearance_point == 'nccp' else
+                        'SEGMENT_ENTRY_VERIFIED' if self.clearance_point == 'segment_entry' else 'MEC_CENTER_VERIFIED')
         event = dict(selector=self.clearance_point, start=start.tolist(), polygon=poly.tolist(),
                      mec_center=center.tolist(), mec_radius=float(radius), point=point.tolist(),
                      clearance_radius=limit, max_vertex_distance=worst, travel_m=distance,
                      mec_travel_m=mec_distance, same_state_saving_m=mec_distance-distance,
-                     zero_move=bool(distance == 0.), selection=selection, time_before=before)
+                     zero_move=bool(distance == 0.), selection=selection, time_before=before,
+                     verification_status=verification, submitted_position=dict(x=float(point[0]), y=float(point[1])),
+                     json_roundtrip_verified=True)
         self.target_trace(c).setdefault('certified_clearance_events', []).append(event)
         success = self.clear(c, point, certified=True)
         event.update(success=bool(success), time_after=self.api.virtual_time)
@@ -123,8 +172,7 @@ class Solver:
         while c in self.tracks:
             track = self.tracks[c]
             center, radius = mec(track['poly'])
-            if radius <= 19.999:
-                self.clear_certified_polygon(c, center, radius)
+            if radius <= 19.999 and self.clear_certified_polygon(c, center, radius):
                 return
             if self.policy == 'P0' or track['n'] >= 8 or track['negatives'] >= 3:
                 log = self.target_trace(c)

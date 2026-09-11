@@ -122,6 +122,8 @@ def nearest_certified_clear_point(poly, current, clearance_radius=19.999,
     returned points pass FP64 norm checks AND exact binary-rational squared-
     distance checks. Near-degenerate cases may therefore return the MEC centre
     rather than an uncertifiable numerical approximation to the optimum.
+    Enumerating O(m**2) boundary candidates and checking m vertices gives
+    O(m**3) worst-case arithmetic work, not O(m**2).
     """
     from fractions import Fraction
 
@@ -253,6 +255,121 @@ def nearest_certified_clear_point(poly, current, clearance_radius=19.999,
     if not certified(best) or float(np.linalg.norm(best-position)) > center_distance:
         best, best_mode, best_adjustment = center.copy(), 'mec_fallback', 0.
     return best, metadata(best, best_mode, best_adjustment, best_mode == 'mec_fallback')
+
+
+def exact_squared_distance(a, b):
+    """Squared distance between represented finite coordinates, without rounding."""
+    from fractions import Fraction
+    return sum((Fraction(float(x))-Fraction(float(y)))**2 for x, y in zip(a, b))
+
+
+def is_certified_clear_point(poly, point, radius=19.999):
+    """Strict FP64 AND exact squared-distance check; invalid input is false."""
+    from fractions import Fraction
+    try:
+        vertices, position = np.asarray(poly, dtype=float), np.asarray(point, dtype=float)
+        bound = float(radius)
+        if (vertices.ndim != 2 or vertices.shape[1] != 2 or not len(vertices)
+                or position.shape != (2,) or not np.isfinite(vertices).all()
+                or not np.isfinite(position).all() or not math.isfinite(bound) or bound < 0):
+            return False
+        if float(np.linalg.norm(vertices-position, axis=1).max()) > bound:
+            return False
+        return all(exact_squared_distance(vertex, position) <= Fraction(bound)**2 for vertex in vertices)
+    except (TypeError, ValueError, ArithmeticError):
+        return False
+
+
+def segment_certified_clear_point(poly, current, clearance_radius=19.999,
+                                 mec_center=None, mec_radius=None):
+    """Stop at the first safe position on the original current-to-MEC segment.
+
+    We parameterise backwards as q(s)=M+s*(current-M), so q(0)=M is
+    certified and the largest feasible s in [0,1] is sought. Each disk gives
+    one quadratic upper root. The stable root formula avoids cancellation
+    when its linear coefficient is positive. Construction and each final
+    feasibility check are O(m), with a fixed cap on inward repairs.
+
+    This is a conservatively verified FP64 segment point, not an exact claim
+    about the first real-valued intersection. Rounding may move the point
+    inward or force MEC fallback. Clearance is strict for represented output
+    coordinates; the ideal fixed-next-waypoint two-leg theorem additionally
+    assumes exact collinearity (FP64 interpolation has rounding residual).
+    """
+    import json
+
+    vertices, position = np.asarray(poly, dtype=float), np.asarray(current, dtype=float)
+    radius = float(clearance_radius)
+    if (vertices.ndim != 2 or vertices.shape[1] != 2 or not len(vertices)
+            or not np.isfinite(vertices).all() or position.shape != (2,)
+            or not np.isfinite(position).all() or not math.isfinite(radius) or radius < 0):
+        raise ValueError('Expected finite non-empty polygon, position and nonnegative clearance radius')
+    if (mec_center is None) != (mec_radius is None):
+        raise ValueError('MEC centre and radius must be supplied together')
+    if mec_center is None:
+        mec_center, mec_radius = mec(vertices)
+    center, certificate_radius = np.asarray(mec_center, dtype=float), float(mec_radius)
+    if (not math.isfinite(certificate_radius) or not 0 <= certificate_radius <= radius
+            or not is_certified_clear_point(vertices, center, certificate_radius)):
+        raise ValueError('Invalid MEC certificate')
+    mec_distance = float(np.linalg.norm(position-center))
+    if not math.isfinite(mec_distance):
+        raise ValueError('Travel distance is not finite')
+
+    def finish(point, mode, s, reason=None):
+        return point.copy(), {
+            'mode': mode, 'fallback': mode == 'mec_fallback', 'fallback_reason': reason,
+            'max_vertex_distance': float(np.linalg.norm(vertices-point, axis=1).max()),
+            'distance_to_current': float(np.linalg.norm(point-position)),
+            'mec_distance': mec_distance, 'clearance_radius': radius,
+            'mec_certificate_radius': certificate_radius,
+            'segment_parameter_from_current': 1.-s,
+            'certification': 'FP64 norms and exact binary-rational squared distances after JSON roundtrip',
+        }
+
+    if is_certified_clear_point(vertices, position, radius):
+        return finish(position, 'already_certified', 1.)
+    delta = position-center
+    quadratic = float(delta@delta)
+    if quadratic == 0 or not math.isfinite(quadratic):
+        return finish(center, 'mec_fallback', 0., 'degenerate_segment')
+    s = 1.
+    for vertex in vertices:
+        offset = center-vertex
+        linear = float(delta@offset)
+        # The exact verified centre is inside: a positive computed constant
+        # here can only be rounding. Clamping it to zero is conservative.
+        constant = min(0., float(offset@offset-radius*radius))
+        discriminant = linear*linear-quadratic*constant
+        if not math.isfinite(discriminant) or discriminant < 0:
+            return finish(center, 'mec_fallback', 0., 'unresolved_quadratic')
+        root_term = math.sqrt(discriminant)
+        if linear >= 0:
+            denominator = root_term+linear
+            root = -constant/denominator if denominator else 0.
+        else:
+            root = (root_term-linear)/quadratic
+        if not math.isfinite(root) or root < 0:
+            return finish(center, 'mec_fallback', 0., 'unresolved_root')
+        s = min(s, root)
+    if s == 0:
+        return finish(center, 'mec_fallback', 0., 'segment_entry_is_mec')
+
+    baseline_squared = exact_squared_distance(position, center)
+    # ponytail: fixed inward repair cap, not a second optimisation algorithm.
+    for repair in (0., *(2.**exponent for exponent in range(-48, 1, 4))):
+        inward_s = s*(1.-repair)
+        point = center.copy() if inward_s == 0 else center+inward_s*delta
+        point = np.asarray(json.loads(json.dumps(point.tolist(), allow_nan=False)), dtype=float)
+        if (is_certified_clear_point(vertices, point, radius)
+                and float(np.linalg.norm(point-position)) <= mec_distance
+                and exact_squared_distance(point, position) <= baseline_squared):
+            mode = 'segment_entry' if inward_s > 0 else 'mec_fallback'
+            result, details = finish(point, mode, inward_s,
+                                     'inward_repair_to_mec' if inward_s == 0 else None)
+            details['inward_repair_fraction'] = repair
+            return result, details
+    return finish(center, 'mec_fallback', 0., 'no_verified_segment_candidate')
 
 
 def contains(poly, points, tolerance=1e-7):
