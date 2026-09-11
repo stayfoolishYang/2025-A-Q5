@@ -1,0 +1,155 @@
+{
+  "schema_version": "scenario-v1",
+  "ruleset_version": "rules-v1",
+  "problem_no": 4,
+  "source": "practice_generated",
+  "dataset_version": null,
+  "generator_version": "practice-gen-v1",
+  "generator_seed_hex": "b1cbf965d3b3c0c9cbe8033a2ce00df71ab4e2d9d82915c34c51f81a1325eed9",
+  "noise_seed_hex": "67bc8e983229098c",
+  "generation_rules": {
+    "generator_rules_version": "practice-gen-rules-v1",
+    "target_area_radius_um": 1800000000,
+    "jammer_max_radius_um": 1770000000,
+    "outer_empty_ring_um": 30000000,
+    "jammer_count_min": 10,
+    "jammer_count_max": 16,
+    "channel_min": 1,
+    "channel_max": 20,
+    "max_receive_min_um": 1000000000,
+    "max_receive_max_um": 1500000000,
+    "position_distribution": "uniform_disk_area",
+    "max_receive_distribution": "uniform_integer_um",
+    "problem4_directional_count_mode": "uniform_integer_one_to_count"
+  },
+  "simulation_rules": {
+    "simulation_rules_version": "simulation-rules-v1",
+    "target_area_radius_um": 1800000000,
+    "near_distance_um": 5000000,
+    "clear_distance_um": 20000000,
+    "move_speed_um_per_s": 5000000,
+    "channel_switch_duration_us": 1000000,
+    "measure_duration_us": 5000000,
+    "clear_success_duration_us": 5000000,
+    "clear_failure_duration_us": 3000000,
+    "max_virtual_duration_us": 360000000000,
+    "directional_beam_width_udeg": 180000000,
+    "bearing_noise_model": "spatial-bearing-v1",
+    "bearing_noise_grid_um": 150000000,
+    "bearing_error_max_udeg": 1000000
+  },
+  "jammers": [
+    {
+      "channel": 1,
+      "x_um": 729260215,
+      "y_um": 915138169,
+      "max_receive_um": 1242206756,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 2,
+      "x_um": 36068490,
+      "y_um": 1287354958,
+      "max_receive_um": 1050907402,
+      "kind": "directional",
+      "direction_udeg": 172237763
+    },
+    {
+      "channel": 3,
+      "x_um": -1581304307,
+      "y_um": 711363576,
+      "max_receive_um": 1069905587,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 6,
+      "x_um": -1138599606,
+      "y_um": 755393170,
+      "max_receive_um": 1136792528,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 7,
+      "x_um": -1356225591,
+      "y_um": 663734937,
+      "max_receive_um": 1096507764,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 9,
+      "x_um": 239196662,
+      "y_um": -457269620,
+      "max_receive_um": 1498198306,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 10,
+      "x_um": -260525650,
+      "y_um": 422449381,
+      "max_receive_um": 1003473812,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 11,
+      "x_um": 1718990189,
+      "y_um": -100553351,
+      "max_receive_um": 1004692824,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 13,
+      "x_um": 272918907,
+      "y_um": -425766118,
+      "max_receive_um": 1178961950,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 14,
+      "x_um": 211762444,
+      "y_um": -993062280,
+      "max_receive_um": 1301188598,
+      "kind": "directional",
+      "direction_udeg": 234826931
+    },
+    {
+      "channel": 16,
+      "x_um": 1406359403,
+      "y_um": -642333034,
+      "max_receive_um": 1226929764,
+      "kind": "directional",
+      "direction_udeg": 276706165
+    },
+    {
+      "channel": 17,
+      "x_um": 1568644769,
+      "y_um": 69240395,
+      "max_receive_um": 1095148808,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 19,
+      "x_um": -1292178116,
+      "y_um": -517905834,
+      "max_receive_um": 1143453559,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 20,
+      "x_um": -341168519,
+      "y_um": -308154668,
+      "max_receive_um": 1308924124,
+      "kind": "omni",
+      "direction_udeg": null
+    }
+  ]
+}
