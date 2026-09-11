@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 from scipy.optimize import linprog
 from geometry import clip, disk, wedge, intersect_disk, diameter, mec, next_view
+from q2_scoring import stable_legacy_next_view
 
 
 def solve_q1(observations, error=1., arena_radius=None):
@@ -44,7 +45,7 @@ def q2_example(out):
     poly=intersect_disk(wedge(disk(),s0,bearing),s0,1500)
     a=np.deg2rad(bearing); basis=np.array([[np.cos(a),-np.sin(a)],[np.sin(a),np.cos(a)]])
     pts=np.array([(x,y) for x in np.arange(0,1501,50) for y in np.arange(-600,601,40)])@basis.T
-    _,records=next_view(poly,s0,candidates=pts,safe_only=True)
+    _,records=stable_legacy_next_view(poly,s0,candidates=pts,safe_only=True)
     fields=['x','y','worst_sampled_diameter_m','action_time_s','safe']
     with (out/'q2_candidates.csv').open('w',newline='',encoding='utf-8-sig') as f:
         writer=csv.writer(f);writer.writerow(fields)
