@@ -20,7 +20,7 @@ class Solver:
             raise ValueError('clearance_point must be mec_center, nccp or segment_entry')
         self.discovery_route = self.diagnostic.get('discovery_route', 'legacy')
         self.discovery_channels = self.diagnostic.get('discovery_channels', 'legacy')
-        if self.discovery_route not in ('legacy', 'refresh_after_localize'):
+        if self.discovery_route not in ('legacy', 'refresh_after_localize', 'workload_after_localize'):
             raise ValueError('Unknown discovery_route')
         if self.discovery_channels not in ('legacy', 'unknown_first'):
             raise ValueError('Unknown discovery_channels')
@@ -236,6 +236,10 @@ class Solver:
                 if nodes and self.discovery_route == 'refresh_after_localize':
                     from discovery import refresh_remaining_route
                     nodes = refresh_remaining_route(nodes, self.api.position)
+                if nodes and self.discovery_route == 'workload_after_localize':
+                    from discovery import workload_remaining_route
+                    nodes, event = workload_remaining_route(nodes, self.api.position, self.tracks)
+                    self.target_trace(local[1]).setdefault('discovery_refresh_events', []).append(event)
                 continue
             p = nodes.pop(0)
             channels = [self.api.channel]+[c for c in range(1,21) if c != self.api.channel]
