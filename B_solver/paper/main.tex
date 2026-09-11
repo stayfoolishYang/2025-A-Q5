@@ -1,0 +1,37 @@
+% !TeX program = xelatex
+% Q1/Q2 section review only. User-supplied CUMCM template style is unchanged.
+\documentclass[zihao=-4,a4paper,UTF8,fontset=none]{ctexart}
+\usepackage{cumcm2026}
+% Reuse the supplied fonts without duplicating the original template directory.
+\newcommand{\TemplateFontPath}{../../downloads/cumcm-latex-template-original-20260911/fonts/}
+\setmainfont{TimesNewRoman.ttf}[
+ Path=\TemplateFontPath,
+ BoldFont=TimesNewRomanBold.ttf,
+ ItalicFont=TimesNewRomanItalic.ttf,
+ BoldItalicFont=TimesNewRomanBoldItalic.ttf
+]
+\setCJKmainfont[Path=\TemplateFontPath,BoldFont=SimHei.ttf]{SimSun.ttc}
+\setCJKfamilyfont{zhsong}[Path=\TemplateFontPath]{SimSun.ttc}
+\setCJKfamilyfont{zhhei}[Path=\TemplateFontPath,BoldFont=SimHei.ttf]{SimHei.ttf}
+\setCJKmonofont[Path=\TemplateFontPath,BoldFont=SimHei.ttf]{SimSun.ttc}
+\providecommand{\songti}{}
+\providecommand{\heiti}{}
+\renewcommand{\songti}{\CJKfamily{zhsong}}
+\renewcommand{\heiti}{\CJKfamily{zhhei}}
+\title{无线电干扰源的快速自动定位与清除：问题一、二章节审阅稿}
+\widowpenalty=10000
+\clubpenalty=10000
+\begin{document}
+% This wrapper deliberately contains no full-paper abstract or Q3/Q4 sections.
+\begin{center}
+ {\heiti\zihao{3} 无线电干扰源的快速自动定位与清除}\par
+ \vspace{0.4em}
+ {\heiti 问题一、二章节审阅稿}
+\end{center}
+\input{q1_model}
+\clearpage
+\input{q2_model}
+\clearpage
+\bibliographystyle{gbt7714-numerical}
+\bibliography{references}
+\end{document}
