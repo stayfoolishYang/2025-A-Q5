@@ -50,7 +50,7 @@ def freeze():
             raw=generate_document(seed_hex=seed,problem=4,format='native');h=bench.physical_hash(raw)
             assert h not in used,'Scene collision: do not silently replace'
             used.add(h);idx=len(records);file=f'scenes/{idx:04d}.json';rb.save(out/file,raw)
-            records.append(dict(id=idx,cohort=cohort,file=file,seed_hex=seed,physical_hash=h,
+            records.append(dict(id=idx,cohort=cohort,family="native_unconditioned",file=file,seed_hex=seed,physical_hash=h,
                 scene_hash=rb.digest(raw),total=len(raw['jammers'])))
     rb.save(out/'manifest.json',dict(records=records,configs=[dict(cfg,name='R12',study_modules=[])],
         source_hashes=bench.fingerprints(SIM),research_hashes=hashes(),official_calls=0,
@@ -60,7 +60,7 @@ def freeze():
 def worker(job):
     index=job;out=ROOT/'results/prediction';m=json.loads((out/'manifest.json').read_bytes())
     assert hashes()==m['research_hashes']
-    Collector.instances.clear();previous=phase_audit.TaggedSolver;phase_audit.TaggedSolver=Collector
+    Collector.instances.clear();StudySolver.instances.clear();previous=phase_audit.TaggedSolver;phase_audit.TaggedSolver=Collector
     try:row=bench.run_case((str(out),str(SIM),index,'R12',False))
     finally:phase_audit.TaggedSolver=previous
     s=Collector.instances[-1]
