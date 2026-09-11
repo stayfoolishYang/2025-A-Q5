@@ -273,6 +273,7 @@ def report(root, output):
 
 def package(evidence, destination):
     """Package explicit Q2 paths only; verify every archive member after writing."""
+    evidence, destination = evidence.resolve(), destination.resolve()
     if destination.exists():
         raise FileExistsError(destination)
     source_files = ['q2_scoring.py','q2_visibility.py','q2_continuous_search.py','q2_outer_report.py',
