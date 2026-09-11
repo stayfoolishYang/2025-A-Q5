@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B题 · Q4效果对比与案例检查</title>
+<style>
+:root{--ink:#172b3d;--muted:#596a78;--blue:#174f84;--line:#dbe3e8;--paper:#f3f6f8;--good:#176647;--bad:#a64835}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;line-height:1.7;font-size:15px}a{color:var(--blue);text-underline-offset:3px}button,input,select{font:inherit}button,a,input,select{touch-action:manipulation}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #98c6ed;outline-offset:3px}
+header{background:#142d43;color:#fff;padding:38px max(24px,calc((100vw - 1200px)/2)) 30px}.eyebrow{color:#bdd2e2;font-size:12px;letter-spacing:.14em;text-transform:uppercase}h1{font-size:34px;line-height:1.35;margin:12px 0 13px;letter-spacing:.02em}header p{max-width:880px;color:#d7e3ec;margin:10px 0}header a{color:#c4e1fa}.status{display:inline-block;font-size:12px;border:1px solid #638099;border-radius:30px;padding:2px 12px;margin-left:10px}
+nav{display:flex;gap:24px;flex-wrap:wrap;margin-top:22px;font-size:14px}nav a{text-decoration:none}main{max-width:1248px;margin:auto;padding:28px 24px 50px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card,.panel{background:white;border:1px solid var(--line);border-radius:10px}.card{padding:20px}.card span{color:var(--muted);font-size:13px}.card strong{display:block;font-size:32px;line-height:1.25;margin:8px 0;color:var(--blue);font-variant-numeric:tabular-nums}.card small{color:var(--muted);font-size:12px}.panel{margin-top:24px;padding:25px 28px}h2{font-size:23px;line-height:1.4;margin:0 0 14px}h3{font-size:17px;margin:18px 0 8px}p{margin:12px 0}.subtle{color:var(--muted);font-size:13px}.notice{border-left:3px solid #91acc1;padding:10px 16px;background:#f0f5f9;margin:18px 0}.decision{background:#eaf2f9;border-color:#c4d8e8}.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}th{background:#edf2f6;color:#41586c;font-size:12px;white-space:nowrap;font-weight:600}th,td{padding:12px 13px;border-bottom:1px solid #e4eaef;text-align:right;white-space:nowrap}td:first-child,th:first-child{text-align:left}tbody tr:last-child td{border-bottom:0}tbody tr.v1{background:#f0f6fc;font-weight:600}.good{color:var(--good)}.bad{color:var(--bad)}figure{margin:20px 0 8px}figure svg{max-width:100%;height:auto;display:block;margin:auto}figcaption{font-size:12px;color:var(--muted);margin-top:8px}.columns{display:grid;grid-template-columns:1fr 1fr;gap:22px}.metricline{font-size:14px;border-bottom:1px solid var(--line);padding:8px 0}.metricline strong{float:right}.controls{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;padding:12px 0 18px}.controls label{display:grid;gap:4px;font-size:12px;color:var(--muted)}input,select{background:white;border:1px solid #b8c6d1;border-radius:5px;padding:8px 10px;color:var(--ink);font-size:14px}input{width:200px}button,.button{border:1px solid #b8c6d1;background:white;color:var(--blue);border-radius:5px;padding:6px 12px;text-decoration:none;font-size:13px}button:hover,.button:hover{background:#edf4fa}button:disabled{opacity:.4;cursor:default}.rowbutton{border:0;background:transparent;padding:0;font-weight:600;text-decoration:underline;text-underline-offset:3px}.pager{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:15px 0}.pager span{font-size:13px;color:var(--muted)}.focuscases{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.detail{margin-top:20px;border:1px solid #cbdbe7;padding:20px;background:#f9fbfd;border-radius:6px}.detail code{display:block;overflow-wrap:anywhere;font-size:12px;color:#586b7b}.detail h3{margin-top:0}.files{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 3px}.smalltable td,.smalltable th{padding:8px 11px}footer{text-align:center;font-size:12px;color:var(--muted);padding:0 24px 28px}details summary{cursor:pointer;color:var(--blue)}ol{padding-left:22px}li{margin:7px 0}.nowrap{white-space:nowrap}
+@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}.panel{padding:20px 16px}h1{font-size:28px}main{padding:20px 12px}.card{padding:16px}.card strong{font-size:28px}.pager{flex-wrap:wrap}nav{gap:15px}}
+@media print{body{background:white;font-size:11px}header{padding:20px;color:#172b3d;background:white}header p,.eyebrow{color:#41586c}nav,.controls,.pager,.files,.focuscases,.noprint,#cases{display:none}main{max-width:none;padding:0}.panel{break-inside:avoid;border:0;border-top:1px solid #bccbd6;border-radius:0;margin-top:15px;padding:15px 0}h1{font-size:26px}h2{font-size:18px}.card strong{font-size:24px}.card{padding:12px}.cards{gap:10px}.columns{gap:16px}figure{margin:8px 0}table{font-size:11px}th,td{padding:7px}.subtle,figcaption{font-size:10px}footer{padding:10px}a{color:#172b3d}}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">2026 CUMCM · PROBLEM B / Q4 <span class="status">已有实验全部完成</span></div>
+  <h1>Q4效果对比与案例检查</h1>
+  <p>同一批519个种子，基线 → 仅路线重排 → 诊断v1。看总体收益，也看少数回退和下一步瓶颈。</p>
+  <div class="subtle" style="color:#bdd2e2">求解代码 3c4e844 · 证据提交 a3d94ff · 还原演练引擎 / 本地运行 · 正式测试 0 次</div>
+  <nav aria-label="报告导航"><a href="#results">主对照</a><a href="#stages">阶段账本</a><a href="#cases">逐种子检查</a><a href="#versions">网格与CUDA</a><a href="#evidence">证据范围</a><a href="README.md">给GPT的文字版 ↗</a></nav>
+</header>
+<main>
+  <div class="cards">
+    <div class="card"><span>诊断v1 · 全清除</span><strong>519 / 519</strong><small>基线与仅路线也均全部清除</small></div>
+    <div class="card"><span>v1平均耗时</span><strong>900.17</strong><small>虚拟秒 / 源，不是程序运行秒数</small></div>
+    <div class="card"><span>相对基线 · 均值下降</span><strong>31.43%</strong><small>P99下降73.24%</small></div>
+    <div class="card"><span>相对仅路线 · 均值下降</span><strong>6.59%</strong><small>不能把全部收益归给诊断</small></div>
+  </div>
+  <section class="panel decision">
+    <h2>当前判断：保留v1，下一步查发现扫描</h2>
+    <p>基线的光学搜索长尾已明显压缩。v1的发现扫描占全体耗时<strong>82.54%</strong>，自身最慢5%案例中占<strong>85.27%</strong>；后续更值得检查45个覆盖节点上的位置—频道调度。该调度升级尚未实现或验证。</p>
+    <p class="subtle">本轮只整理已经完成的实验。默认求解入口仍保留基线；v1对应显式配置 q4_p4_diag_v1_grid_v1.yaml。</p>
+  </section>
+  <section class="panel" id="results">
+    <h2>01 / 收益有多大</h2>
+    <p class="subtle">三方案同519个场景、同grid_v1。每例总虚拟时间除以该场景总源数，再对案例等权统计；分位数为本组描述统计。</p>
+    <div class="scroll"><table><thead><tr><th>方案</th><th>全清除</th><th>均值 s/源</th><th>中位数</th><th>P95</th><th>P99</th><th>最大</th></tr></thead><tbody id="summary"></tbody></table></div>
+    <figure aria-label="总体和尾部耗时对比">{{q4_effect}}<figcaption>三方案均全清除，收益体现为耗时下降。P95/P99表示95%/99%的本组案例不超过该耗时。</figcaption></figure>
+    <div class="columns">
+      <div><h3>v1 对基线</h3><div class="metricline">平均节省 <strong>412.58 秒/源</strong></div><div class="metricline">同种子胜 / 负 / 平 <strong>264 / 26 / 229</strong></div><div class="metricline">最大回退 <strong>+10.89 秒/源 · seed 455</strong></div></div>
+      <div><h3>v1 对仅路线</h3><div class="metricline">平均节省 <strong>63.52 秒/源</strong></div><div class="metricline">同种子胜 / 负 / 平 <strong>273 / 17 / 229</strong></div><div class="metricline">最大回退 <strong>+13.65 秒/源 · seed 105</strong></div></div>
+    </div>
+    <div class="notice">基线 → 仅路线先节省349.06秒/源，加入诊断再节省63.52秒/源。整体提升中，路线贡献更大；这是配置之间的描述性分解，不是独立因果效应。</div>
+    <details><summary>展开：完整519例经验分布</summary><figure>{{q4_distribution}}<figcaption>累积比例越早达到100%，代表本组最大耗时越低。种子为结构压力集合，不添加iid置信带。</figcaption></figure></details>
+  </section>
+  <section class="panel" id="stages">
+    <h2>02 / 时间省在哪，成本转到哪</h2>
+    <figure aria-label="三方案平均阶段成本">{{q4_stages}}<figcaption>同一批519例，先按每例源数归一化再平均。各阶段加总等于主表均值；移动时间记入发起动作的阶段，切换成本已包含在阶段内。</figcaption></figure>
+    <div class="scroll"><table class="smalltable"><thead><tr><th>平均阶段成本 s/源</th><th>基线</th><th>仅路线</th><th>v1</th><th>v1−基线</th><th>v1−仅路线</th></tr></thead><tbody id="stage-table"></tbody></table></div>
+    <p>v1比仅路线多付约15.25秒/源的诊断成本，光学兜底平均成本则降低81.83秒/源；发现扫描成本基本没变。当前v1最慢26例均未触发光学兜底。</p>
+    <div class="scroll"><table class="smalltable"><thead><tr><th>动作与路程</th><th>基线</th><th>仅路线</th><th>v1</th></tr></thead><tbody>
+      <tr><td>平均路程 km</td><td>67.34</td><td>44.05</td><td>41.81</td></tr>
+      <tr><td>触发兜底的案例</td><td>290 / 519</td><td>290 / 519</td><td>31 / 519</td></tr>
+      <tr><td>兜底轮次 / 519例总计</td><td>574</td><td>570</td><td>33</td></tr>
+      <tr><td>光学清除尝试 / 总计</td><td>61,753</td><td>69,513</td><td>260</td></tr>
+      <tr><td>诊断测量 / 总计</td><td>0</td><td>0</td><td>1,000</td></tr>
+    </tbody></table></div>
+    <p class="subtle">仅路线减少了路程，但光学尝试次数增加。三方案后续观测和点集会随轨迹变化。上文82.54%按原始总秒数占比计算；与本图平均阶段成本的比例（82.90%）分母不同。不能混算，不能据占比推断全部成本可消除。</p>
+  </section>
+  <section class="panel" id="cases">
+    <h2>03 / 逐个检查种子</h2>
+    <p>默认按v1最慢排序。Δ = v1 − 参照，负数省时、正数回退。点击seed可看三方案阶段账本；索引对应本次冻结清单，完整种子保留在详情和CSV中。</p>
+    <div class="focuscases"><button data-case="366">366 · 最大收益</button><button data-case="455">455 · 对基线最大回退</button><button data-case="105">105 · 对仅路线最大回退</button><button data-case="283">283 · v1最慢</button><a class="button" href="CASE_NOTES.md">四例逐动作解释 ↗</a></div>
+    <div class="controls">
+      <label>比较参照<select id="reference"><option value="base">基线</option><option value="route">仅路线重排</option></select></label>
+      <label>筛选<select id="filter"><option value="all">全部519例</option><option value="loss">只看v1回退</option><option value="win">只看v1更快</option><option value="tie">只看持平</option><option value="tail">v1最慢5%（26例）</option><option value="directional">全定向场景（32例）</option></select></label>
+      <label>排序<select id="sort"><option value="worst">v1耗时：高到低</option><option value="loss">回退：大到小</option><option value="win">节省：大到小</option><option value="seed">seed：小到大</option></select></label>
+      <label>查找seed或种子十六进制<input id="search" placeholder="例如 455" autocomplete="off"></label>
+    </div>
+    <div class="scroll"><table><thead><tr><th>seed</th><th>总源 / 定向</th><th>基线 s/源</th><th>仅路线</th><th>v1</th><th>Δ所选参照</th><th>v1诊断 / 兜底</th></tr></thead><tbody id="case-table"></tbody></table></div>
+    <div class="pager"><span id="case-count" aria-live="polite"></span><div><button id="previous">上一页</button> <button id="next">下一页</button></div><a href="paired_519.csv" download>下载全部519例CSV</a></div>
+    <div class="detail" id="detail" aria-live="polite"></div>
+  </section>
+  <section class="panel" id="versions">
+    <h2>04 / 旧网格和CUDA会改变结论吗</h2>
+    <div class="columns"><div><h3>网格：相同100个种子</h3><div class="scroll"><table class="smalltable"><thead><tr><th>平均 s/源</th><th>grid_v0</th><th>grid_v1</th><th>新−旧</th></tr></thead><tbody id="grid-table"></tbody></table></div><p>旧网格中v1比旧基线仍省<strong>33.88%</strong>。v1均值新旧几乎一致；新网格增加了基线的部分边界搜索成本。</p><p class="subtle">grid_v1用于数值稳定，不能宣称它提速。这里只比较相同100例，不能与519例总体直接相减。</p></div>
+    <div><h3>CUDA：相同20个种子 × 3方案</h3><p><strong>60 / 60 全清除，关键结果与CPU逐例一致。</strong></p><p>虚拟时间、路程、兜底轮次、清除尝试、测量、切换和诊断计数均完全相同。</p><p class="subtle">没有将虚拟耗时当GPU执行时间；本次只证明结果一致，未证明GPU加速或8卡部署。</p></div></div>
+  </section>
+  <section class="panel" id="evidence">
+    <h2>05 / 交接证据和适用范围</h2>
+    <ol>
+      <li><strong>Q4主实验：</strong>519种子 × 3方案 = 1557次；旧网格追加300次，CUDA追加60次，Q4合计1917次。加上Q3的519次，共2436次完整运行。后两组复用种子，不增加独立样本数。</li>
+      <li><strong>本地还原演练引擎：</strong>不是官方正式场景，也不是历史518种子回执的完整复跑。冻结集合包含6个字节模式、256个单比特、256个SHA256派生种子和1个附带全定向种子。</li>
+      <li><strong>验收可信性：</strong>预期配对齐全、无重复，主Q4没有失败、超时、异常或协议错误。失败不能因早退成为时间胜利；accept仅代表证据完整且全部完成。</li>
+      <li><strong>适用边界：</strong>结构压力集合不是iid抽样；519/519不意味着任意合法场景都能在预算内完成。报告不混入A题和旧合成引擎统计。</li>
+      <li><strong>完整轨迹：</strong>本目录保留4个重点seed的三方案完整轨迹、场景和结果行；其余轨迹位于已归档的2436次完整证据包。没有启动官方App或任何正式测试。</li>
+    </ol>
+    <div class="files"><a class="button" href="README.md">文字结论</a><a class="button" href="CASE_NOTES.md">四例动作审计</a><a class="button" href="paired_519.csv" download>配对CSV</a><a class="button" href="source/primary_acceptance.json">原始验收</a><a class="button" href="provenance.json">来源与SHA256</a><a class="button" href="source/EVIDENCE_AUDIT.json">全部轨迹审计</a></div>
+    <p class="subtle">网页内嵌全部统计数据与图形，可离线打开。PNG和可编辑SVG在figures目录；原始CSV和manifest在source目录。给GPT审阅建议同时提供README.md、CASE_NOTES.md和paired_519.csv。</p>
+  </section>
+</main>
+<footer>B题 Q4 · 冻结求解代码 3c4e844 · 本报告只读取已完成证据 · 正式测试 0 次</footer>
+<script type="application/json" id="review-data">{{DATA}}</script>
+<script>
+'use strict';
+const D = JSON.parse(document.getElementById('review-data').textContent);
+const $ = id => document.getElementById(id);
+const fmt = v => Number(v).toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:2});
+const signed = v => Math.abs(v)<=1e-6 ? '0.00' : (v>0?'+':'−')+fmt(Math.abs(v));
+const cls = v => v < -1e-6 ? 'good' : v > 1e-6 ? 'bad' : '';
+$('summary').innerHTML=D.summaries.map((s,i)=>`<tr class="${i===2?'v1':''}"><td>${D.labels[i]}</td><td>519 / 519</td>${['mean','median','P95','P99','max'].map(k=>`<td>${fmt(s[k])}</td>`).join('')}</tr>`).join('');
+$('stage-table').innerHTML=D.stage_labels.map((label,j)=>`<tr><td>${label}</td>${D.stage_means.map(m=>`<td>${fmt(m[j])}</td>`).join('')}${[0,1].map(i=>{const v=D.stage_means[2][j]-D.stage_means[i][j];return `<td class="${cls(v)}">${signed(v)}</td>`}).join('')}</tr>`).join('');
+$('grid-table').innerHTML=D.legacy.map((v,i)=>`<tr><td>${D.labels[i]}</td><td>${fmt(v.old.mean)}</td><td>${fmt(v.new.mean)}</td><td>${signed(v.new.mean-v.old.mean)}</td></tr>`).join('');
+let page=0; const pageSize=15;
+function renderCases(){
+  const ref=$('reference').value, mode=$('filter').value, order=$('sort').value, search=$('search').value.trim().toLowerCase();
+  const delta=c=>ref==='base'?c.delta_base:c.delta_route;
+  let rows=D.cases.filter(c=>{
+    if(search && (/^\d{1,3}$/.test(search) ? c.seed!==Number(search) : !c.seed_hex.includes(search))) return false;
+    if(mode==='loss')return delta(c)>1e-6;
+    if(mode==='win')return delta(c)<-1e-6;
+    if(mode==='tie')return Math.abs(delta(c))<=1e-6;
+    if(mode==='tail')return c.times[2]>=D.p95;
+    if(mode==='directional')return c.total===c.directional;
+    return true;
+  });
+  rows.sort((a,b)=>(order==='seed'?a.seed-b.seed:order==='loss'?delta(b)-delta(a):order==='win'?delta(a)-delta(b):b.times[2]-a.times[2])||a.seed-b.seed);
+  page=Math.min(page,Math.max(0,Math.ceil(rows.length/pageSize)-1));
+  $('case-table').innerHTML=rows.slice(page*pageSize,(page+1)*pageSize).map(c=>`<tr><td><button class="rowbutton" data-case="${c.seed}" aria-label="查看seed ${c.seed}详情">${c.seed}</button></td><td>${c.total} / ${c.directional}</td>${c.times.map(t=>`<td>${fmt(t)}</td>`).join('')}<td class="${cls(delta(c))}">${signed(delta(c))}</td><td>${c.diagnostic[2]} / ${c.fallback[2]}</td></tr>`).join('') || '<tr><td colspan="7">没有符合条件的案例</td></tr>';
+  $('case-count').textContent=`匹配 ${rows.length} / 519 例 · 第 ${rows.length?page*pageSize+1:0}–${Math.min((page+1)*pageSize,rows.length)} 例 · 负Δ省时，正Δ回退`;
+  $('previous').disabled=page===0; $('next').disabled=(page+1)*pageSize>=rows.length;
+}
+const notes={366:'基线最贵的光学搜索案例。v1相对基线大幅省时，但该例仍保留少量光学兜底。',455:'最大对基线回退：基线两次光学搜索都很快命中，v1的诊断与新增证书清除成本没有完全赚回。',105:'最大对仅路线回退：后续发现观测因清除位置和行动顺序而改变，不能把差值全解释成诊断本身无效。',283:'v1最慢：发现扫描约占83.27%，45个节点仍被访问；重点看末个源直到约12126秒才首次发现。'};
+function showDetail(seed){
+  const c=D.cases.find(c=>c.seed===Number(seed)); if(!c)return;
+  const proof=Object.hasOwn(notes,seed)?`<p class="subtle">${notes[seed]} 原始场景：<a href="case_evidence/q4_${String(seed).padStart(4,'0')}.json">查看JSON</a>。逐动作账本见 <a href="CASE_NOTES.md">CASE_NOTES.md</a>。</p>`:'';
+  $('detail').innerHTML=`<h3>seed ${c.seed} · ${c.total}个源 / ${c.directional}个定向源</h3><code>${c.seed_hex}</code>${proof}<div class="scroll"><table class="smalltable"><thead><tr><th>同一案例的成本</th>${D.labels.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${D.stage_labels.map((label,j)=>`<tr><td>${label} s/源</td>${c.stages.map(a=>`<td>${fmt(a[j])}</td>`).join('')}</tr>`).join('')}<tr><td><strong>总计 s/源</strong></td>${c.times.map(t=>`<td><strong>${fmt(t)}</strong></td>`).join('')}</tr>${[['路程 km','distance_km'],['诊断测量','diagnostic'],['兜底轮次','fallback'],['光学清除尝试','optical_clear_attempts'],['全部清除尝试','clear_attempts']].map(([label,key])=>`<tr><td>${label}</td>${c[key].map(x=>`<td>${key==='distance_km'?fmt(x):x}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+for(const id of ['reference','filter','sort'])$(id).addEventListener('change',()=>{page=0;renderCases()});
+$('search').addEventListener('input',()=>{page=0;renderCases()});
+$('previous').addEventListener('click',()=>{page--;renderCases()});
+$('next').addEventListener('click',()=>{page++;renderCases()});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-case]');if(b)showDetail(b.dataset.case)});
+renderCases();showDetail(283);
+</script>
+</body>
+</html>
