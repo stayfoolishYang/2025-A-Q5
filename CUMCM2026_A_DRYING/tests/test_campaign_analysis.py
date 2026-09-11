@@ -75,6 +75,47 @@ def test_missing_measured_error_never_prepares_margin_or_exports(flow):
     assert not any("prepare" in k or "certify" in k or "export" in k for k in flow.calls)
 
 
+def test_explicit_cpu_chain_keeps_numerics_but_never_certifies_or_exports(flow, monkeypatch):
+    original_load = analysis._load_run
+    def load(*args, **kwargs):
+        path, cfg, manifest, system, tr = original_load(*args, **kwargs)
+        cfg.linear_backend = "CPU_REFERENCE"
+        cfg.execution_backend = "LOCAL_DEV"
+        cfg.execution_purpose = "FRAMEWORK_INTEGRATION"
+        cfg.production_eligible = False
+        manifest = deepcopy(manifest)
+        manifest["execution"] = {"execution_backend": "LOCAL_DEV",
+            "execution_purpose": "FRAMEWORK_INTEGRATION", "production_eligible": False, "device": "CPU_REFERENCE",
+            "attempts": [{"linear_backend": {"backend": "CPU_REFERENCE", "gpu_used": False,
+                "dtype": "float64", "purpose": "EXPLICIT_NONPRODUCTION_REFERENCE_NOT_FALLBACK"}}]}
+        return path, cfg, manifest, system, tr
+    monkeypatch.setattr(analysis, "_load_run", load)
+    def forbidden(*args, **kwargs):
+        raise AssertionError("CPU development must not certify or export")
+    monkeypatch.setattr(analysis, "certify_strict_report", forbidden)
+    monkeypatch.setattr(analysis, "_export_action", forbidden)
+    flow.context.update(development_cpu=True, export_requested=False)
+    result = analysis.analyze_case(flow.context)
+    assert result["status"] == "CPU_REPORT_CANDIDATE_READY"
+    assert result["certificate"]["issued"] is False
+    assert result["production_eligible"] is False
+    assert any(key.endswith("/refresh_error_evidence") for key in flow.calls)
+    assert any(key.endswith("/balances") for key in flow.calls)
+    assert not any(key.endswith("/certify") or key.endswith("/export") for key in flow.calls)
+    flow.context["export_requested"] = True
+    rejected = analysis.analyze_case(flow.context)
+    assert rejected["status"] == "ANALYSIS_FAILED"
+    assert "CPU_DEVELOPMENT_CANNOT_REQUEST_FORMAL_EXPORT" in rejected["issues"]
+
+
+@pytest.mark.parametrize("value", ["true", 1, None])
+def test_development_cpu_flag_must_be_boolean(flow, value):
+    flow.context["development_cpu"] = value
+    result = analysis.analyze_case(flow.context)
+    assert result["status"] == "ANALYSIS_FAILED"
+    assert not flow.calls
+
+
 def test_changed_refreshed_margin_repeats_and_stops_at_finite_budget(flow, monkeypatch):
     sequence = iter([deepcopy(flow.evidence), dict(flow.evidence, eC=2e-5), dict(flow.evidence, eC=3e-5)])
     monkeypatch.setattr(analysis, "build_error_evidence", lambda *a, **k: next(sequence))

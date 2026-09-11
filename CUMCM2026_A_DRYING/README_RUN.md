@@ -1,4 +1,8 @@
-# CUMCM2026 A 药材烘干：GPU服务器运行说明
+# CUMCM2026 A 药材烘干：CPU 全量测试与 GPU 服务器运行
+
+**CPU 求解/全量开发测试已发布：** 运行入口为 `python -m drying.cpu_campaign`，保留 67 个主配置、14 组比较及 A26-04-v2 数学模型。无需 NVIDIA GPU；CPU 依赖、Linux/Windows 启动和恢复命令见 [CPU_FULL_RUN.md](CPU_FULL_RUN.md)。2026-09-11 的本机适用测试为 258 passed、13 个 CUDA 用例 deselected；全量数值运行仍在进行，未宣称最终通过。
+
+本次发布修订为 **A26-06-CPU-FULL-v1**。下文保留 GPU 运行合同及此前 A26-06-FULL-v1 交接记录；其中“尚未执行”描述该 GPU 修订的历史交接状态，不能用于否定本次 CPU 实测，也不能把 CPU 测试当成当前 GPU 测试。当前 CPU 发布证据见 [cpu_publication_checks.json](workspace/evidence/cpu_publication_checks.json)。
 
 项目全貌、阶段进度和证据边界见 [项目总结与服务器交接](PROJECT_SUMMARY.md)。
 
@@ -7,7 +11,7 @@
 
 这是 **A26-04-v2 / Stage06 / CUDA_REQUIRED** 的求解代码。当前GPU修订尚未执行数值测试，须在服务器先通过GPU预检和对照测试。B 为径向主线兼基准，C 为真正的轴对称二维参考；P 保留，H 未启用。Stage07、Stage08 尚未执行，所有本地计算均为开发证据。代码的可运行性、开发测试通过、某个物理时间窗口完成、严格达标以及模型独立验证是不同状态。
 
-用户最新指示：**数值运行交给服务器，本地不再启动求解或数值测试。** 以下命令供用户在服务器执行；上传本代码不代表任务已远程提交。之前产生的本地记录保留为历史开发记录。
+执行范围：用户已于 2026-09-11 明确授权本机 CPU 全量开发测试及发布；CPU 启动方法见上方专用文档。以下 GPU 命令仍供服务器执行；上传代码本身不代表远程任务已启动。
 
 ## 1. Linux 服务器首次运行
 

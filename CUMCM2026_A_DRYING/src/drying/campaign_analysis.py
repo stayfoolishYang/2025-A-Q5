@@ -120,12 +120,37 @@ def _strict_margin(evidence):
     return max(2 * max(values), 64 * sys.float_info.epsilon)
 
 
-def _q1_field_evidence(reference_run, category_runs, *, data_dir=None, comparison_options=None):
+def _require_analysis_backend(config, manifest, development_cpu=False):
+    """CPU development is explicit and cannot issue a CUDA certificate."""
+    if not development_cpu:
+        return _require_cuda_evidence(config, manifest)
+    if (config.linear_backend != "CPU_REFERENCE" or config.execution_backend != "LOCAL_DEV"
+            or config.execution_purpose != "FRAMEWORK_INTEGRATION"
+            or config.production_eligible or config.test_case is not None):
+        raise CampaignAnalysisError("CPU_DEVELOPMENT_IDENTITY_REQUIRED")
+    execution = manifest.get("execution", {})
+    if execution.get("device") != "CPU_REFERENCE":
+        raise CampaignAnalysisError("CPU_DEVELOPMENT_MANIFEST_DEVICE_MISMATCH")
+    for name in ("execution_backend", "execution_purpose", "production_eligible"):
+        if execution.get(name) != getattr(config, name):
+            raise CampaignAnalysisError("CPU_DEVELOPMENT_MANIFEST_MISMATCH")
+    records = [attempt.get("linear_backend", {}) for attempt in execution.get("attempts", [])]
+    if execution.get("linear_backend"):
+        records.append(execution["linear_backend"])
+    if not records or any(record.get("backend") != "CPU_REFERENCE" or
+            record.get("gpu_used") is not False or record.get("dtype") != "float64" or
+            record.get("purpose") != "EXPLICIT_NONPRODUCTION_REFERENCE_NOT_FALLBACK"
+            for record in records):
+        raise CampaignAnalysisError("CPU_DEVELOPMENT_TELEMETRY_REQUIRED")
+
+
+def _q1_field_evidence(reference_run, category_runs, *, data_dir=None, comparison_options=None,
+                       development_cpu=False):
     """Q1 has no critical drying event; measure every applicable field category."""
     ref, cfg, manifest, _, trajectory = _load_run(reference_run, data_dir)
     if cfg.question != 1 or cfg.test_case is not None or trajectory.start_time != 0 or trajectory.end_time < 1800:
         raise CampaignAnalysisError("Q1_COVERAGE_UNRESOLVED: formal 0..1800 s trajectory required")
-    _require_cuda_evidence(cfg, manifest)
+    _require_analysis_backend(cfg, manifest, development_cpu)
     required = {"radial", "time", "newton", "dense"}
     if cfg.route == "C":
         required |= {"axial", "joint"}
@@ -146,7 +171,7 @@ def _q1_field_evidence(reference_run, category_runs, *, data_dir=None, compariso
             configs, manifests = [a[1] for a in actual], [a[2] for a in actual]
             _validate_category(category, configs, manifests)
             for _, c, m, _, tr in actual:
-                _require_cuda_evidence(c, m)
+                _require_analysis_backend(c, m, development_cpu)
                 if (c.test_case is not None or any(getattr(c, k) != getattr(cfg, k) for k in REFERENCE_FIELDS) or
                         m["identity"]["input"] != manifest["identity"]["input"] or
                         _core_hashes(m) != _core_hashes(manifest) or tr.start_time != 0 or tr.end_time < 1800):
@@ -187,6 +212,9 @@ def _q1_field_evidence(reference_run, category_runs, *, data_dir=None, compariso
         result["checks_passed"] = not result["issues"]
         if result["checks_passed"]:
             result["status"] = "Q1_FIELD_ERROR_EVIDENCE_READY"
+    if development_cpu:
+        result.update(scope="LOCAL_CPU_DEVELOPMENT_UNCERTIFIED", production_eligible=False,
+                      formal_certificate_issued=False)
     result["evidence_fingerprint"] = fingerprint(result)
     return result
 
@@ -312,17 +340,32 @@ def analyze_case(context):
         _, cfg, manifest, system, trajectory = _load_run(source, data_dir)
         if cfg.test_case is not None or manifest.get("refinement"):
             raise CampaignAnalysisError("ANALYSIS_INPUT_INVALID: unmodified formal global run required")
-        _require_cuda_evidence(cfg, manifest)
+        development_cpu = context.get("development_cpu", False)
+        if not isinstance(development_cpu, bool):
+            raise CampaignAnalysisError("development_cpu must be an explicit boolean")
+        _require_analysis_backend(cfg, manifest, development_cpu)
+        if development_cpu:
+            if context.get("export_requested", False):
+                raise CampaignAnalysisError("CPU_DEVELOPMENT_CANNOT_REQUEST_FORMAL_EXPORT")
+            for paths in categories.values():
+                for path in paths:
+                    _, dependency_config, dependency_manifest, _, _ = _load_run(path, data_dir)
+                    _require_analysis_backend(dependency_config, dependency_manifest, True)
+            result.update(scope="LOCAL_CPU_DEVELOPMENT_UNCERTIFIED", production_eligible=False,
+                          certificate_status="NOT_APPLICABLE_CPU_DEVELOPMENT",
+                          export_status="NOT_REQUESTED_CPU_DEVELOPMENT")
         result.update(question=cfg.question, route=cfg.route, reference_run=source, final_run=source,
                       source_identity=manifest["identity"],
                       common_reference_checked=False, structural_validation="NOT_RUN")
         prefix = str(context["case_id"]) + "/analysis/"
         options = _comparison_options(limits)
-        export_requested = bool(context.get("export_requested", cfg.route == "B")) and cfg.route == "B"
+        export_requested = (not development_cpu and
+                            bool(context.get("export_requested", cfg.route == "B")) and cfg.route == "B")
         if cfg.question == 1:
             evidence = _action(context, prefix+"q1_fields", lambda work: _write_new(
                 Path(work)/"q1_error_evidence.json", _q1_field_evidence(source, categories,
-                    data_dir=data_dir, comparison_options=options)))
+                    data_dir=data_dir, comparison_options=options,
+                    **({"development_cpu": True} if development_cpu else {}))))
             result["error_evidence"] = evidence
             if not evidence.get("checks_passed"):
                 return _stop(result, evidence.get("status", "ERROR_BUDGET_UNRESOLVED"))
@@ -340,7 +383,8 @@ def analyze_case(context):
                     _export_action(result["final_run"], work, data_dir, 1, q1_accepted=True))
                 if result["export"].get("status") != "CANDIDATE_EXPORTED":
                     return _stop(result, result["export"].get("status", "OUTPUT_UNRESOLVED"))
-            result.update(status="Q1_CANDIDATE_EXPORTED" if export_requested else "Q1_NUMERICS_READY", exit_code=0)
+            result.update(status="CPU_Q1_NUMERICS_READY" if development_cpu else
+                          "Q1_CANDIDATE_EXPORTED" if export_requested else "Q1_NUMERICS_READY", exit_code=0)
             return result
 
         nominal = scan_events(system, trajectory)
@@ -450,6 +494,15 @@ def analyze_case(context):
             if not balances.get("checks_passed"):
                 return _stop(result, balances.get("status", "DIAGNOSTICS_UNRESOLVED"))
             final_run = result["final_run"]
+            if development_cpu:
+                # All preceding numerical refinement, preparation and balance
+                # work is real; formal certification remains CUDA-only.
+                _, final_config, final_manifest, _, _ = _load_run(final_run, data_dir)
+                _require_analysis_backend(final_config, final_manifest, True)
+                result.update(status="CPU_REPORT_CANDIDATE_READY", exit_code=0,
+                              certificate={"status": "NOT_APPLICABLE_CPU_REFERENCE", "issued": False},
+                              formal_certificate_issued=False, common_reference_checked=False)
+                return result
             certificate = _action(context, key+"certify", lambda work:
                 certify_strict_report(final_run, refreshed, candidate, Path(work)/"certificate.json",
                     data_dir=data_dir, reference_critical_time=context.get("reference_critical_time")))

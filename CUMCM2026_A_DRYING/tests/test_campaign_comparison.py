@@ -181,7 +181,10 @@ def test_same_route_q4_fixed_moving_actual_radius_sensitivity(monkeypatch, tmp_p
     result = campaign.compare_campaign_runs("left", "right")
     assert result["resolved"]
     assert result["main_window"]["common_radius_min_m"] == pytest.approx(.01)
-    assert result["differences"] == {"T": 0., "C": 0., "G": 0.}
+    # Physical-coordinate interpolation can leave roundoff for a constant
+    # field on different radii. Require machine-scale agreement, not bitwise 0.
+    for metric, scale in (("T", 324.), ("C", 2.55), ("G", 2.55)):
+        assert result["differences"][metric] == pytest.approx(0., rel=0., abs=64*np.finfo(float).eps*scale)
 
 
 def test_unknown_event_classification_is_not_treated_as_no_event(monkeypatch, tmp_path):

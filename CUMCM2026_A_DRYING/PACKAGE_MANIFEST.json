@@ -1,10 +1,15 @@
 {
-  "scope": "SERVER_FULL_GPU_PACKAGE_STATIC_CHECK_ONLY",
-  "implementation_revision": "A26-06-FULL-v1",
+  "scope": "CPU_FULL_DEVELOPMENT_PACKAGE_WITH_GPU_ENTRY_RETAINED",
+  "implementation_revision": "A26-06-CPU-FULL-v1",
   "model_version": "A26-04-v2",
-  "gpu_tests": "NOT_RUN",
-  "campaign_execution": "NOT_RUN",
-  "file_count": 102,
+  "generated_at": "2026-09-11T04:49:51.404299+00:00",
+  "gpu_tests": "NOT_RUN_FOR_THIS_REVISION",
+  "campaign_execution": "CPU_LOCAL_DEVELOPMENT_RUNNING_NOT_COMPLETE_AT_PUBLICATION_CHECK",
+  "publication_checks": "workspace/evidence/cpu_publication_checks.json",
+  "production_eligible_cpu": false,
+  "stage07": "NOT_RUN",
+  "stage08": "NOT_RUN",
+  "file_count": 107,
   "files": [
     {
       "path": ".gitattributes",
@@ -13,8 +18,28 @@
     },
     {
       "path": ".gitignore",
-      "bytes": 85,
-      "sha256": "4111a00e9926876b835621b1b26e24f5943a6f0a1c3302bfc3611ac86cb6a3e2"
+      "bytes": 110,
+      "sha256": "b54bf7aacb6bd0960be1d134b54c704611aa3de481bf39e0ced25dc8d3f14da6"
+    },
+    {
+      "path": "CPU_FULL_RUN.md",
+      "bytes": 6298,
+      "sha256": "74b5f8316665bd640dcec226331aebfbd5cb834a3348848116dac361ea2aa875"
+    },
+    {
+      "path": "FULL_RUN.md",
+      "bytes": 8516,
+      "sha256": "5499ee345604215923b26bfea13d914c1961c55d9a2cdae0ca8966f43b35f95c"
+    },
+    {
+      "path": "PROJECT_SUMMARY.md",
+      "bytes": 17859,
+      "sha256": "c45986110f4613dbe871c3ac9e20882f4617106d1437f81b7d5fe1d48260af90"
+    },
+    {
+      "path": "README_RUN.md",
+      "bytes": 13823,
+      "sha256": "9f97756695943481ee26265fe543708f04ed37e38268fc6404a6c7b655e9cc39"
     },
     {
       "path": "configs/B_Q1.json",
@@ -122,24 +147,14 @@
       "sha256": "86e9300ffa3d30c43de895ea6723da943e85b8740b137bcae5af7107f076eeac"
     },
     {
-      "path": "FULL_RUN.md",
-      "bytes": 8516,
-      "sha256": "5499ee345604215923b26bfea13d914c1961c55d9a2cdae0ca8966f43b35f95c"
-    },
-    {
-      "path": "PROJECT_SUMMARY.md",
-      "bytes": 17859,
-      "sha256": "c45986110f4613dbe871c3ac9e20882f4617106d1437f81b7d5fe1d48260af90"
-    },
-    {
       "path": "pyproject.toml",
       "bytes": 631,
       "sha256": "366bd3add30aaa9ddb3ccb7482a32e8833062a5fcd87b0d209cab07ce7dedb97"
     },
     {
-      "path": "README_RUN.md",
-      "bytes": 13040,
-      "sha256": "9e3885e77d52e54e25bc3944633cb525bb8f1a8d40d1602e235bf6535b24742e"
+      "path": "requirements-cpu.txt",
+      "bytes": 170,
+      "sha256": "755ccb8b821e3d72320dab8554873f7b49c17a112ee9a09916535972f4b6697a"
     },
     {
       "path": "requirements.txt",
@@ -163,8 +178,8 @@
     },
     {
       "path": "src/drying/campaign_analysis.py",
-      "bytes": 27364,
-      "sha256": "4696421f1bb0f5cc13d9a85c1fc6c01547ac53e3188cb342cfc6803ecf51c16f"
+      "bytes": 30869,
+      "sha256": "2bbe9606b2e392e090a1e52c0de534035eb0acb0770f51b6f15b3aae9cd2e587"
     },
     {
       "path": "src/drying/campaign_comparison.py",
@@ -185,6 +200,11 @@
       "path": "src/drying/config.py",
       "bytes": 6992,
       "sha256": "771a7d0b59d092872b219849510cfdf9161e7e6e6b36d7c72c5220b504645cd5"
+    },
+    {
+      "path": "src/drying/cpu_campaign.py",
+      "bytes": 11991,
+      "sha256": "3828e7db5b309d1055b2414523653c6a30539cba9dd3873b34558f8c1b3a0316"
     },
     {
       "path": "src/drying/cuda_backend.py",
@@ -278,18 +298,23 @@
     },
     {
       "path": "tests/test_campaign_analysis.py",
-      "bytes": 16166,
-      "sha256": "bb0d872ca201f1d258b0fe9fe545c3394b72b838fbbd0e1ccfb9f1808b3134be"
+      "bytes": 18371,
+      "sha256": "cf21baf00c4136dd77aacdd54ff5fe199b69d120b27ade7b9fdbbf916757d70c"
     },
     {
       "path": "tests/test_campaign_comparison.py",
-      "bytes": 11181,
-      "sha256": "81c970f68cde06f421039cf135159e09ca85118d8159045a235a92f5eec62682"
+      "bytes": 11445,
+      "sha256": "f1a19ef68b1bb241ce7e814c5f47da61fd880ac61f1e14482309c5309b32f1cd"
     },
     {
       "path": "tests/test_campaign_plan.py",
       "bytes": 10811,
       "sha256": "8e65b9f8e8af19e2321cb96045f4afce459a5ecb76ef03e936041e0a8b65f568"
+    },
+    {
+      "path": "tests/test_cpu_campaign.py",
+      "bytes": 3083,
+      "sha256": "a1d2a5c52e7f2c6e16f288c4eea37c277da453807094eb824ea24d72ef0ee6b2"
     },
     {
       "path": "tests/test_cuda_backend.py",
@@ -395,6 +420,11 @@
       "path": "workspace/data_inventory.md",
       "bytes": 10584,
       "sha256": "9aa154f68e9d25896da169ed797c2e7ba302cbbeabc3c945df7e5e737af4fa55"
+    },
+    {
+      "path": "workspace/evidence/cpu_publication_checks.json",
+      "bytes": 16701,
+      "sha256": "618ea9cb300f107aa5f07c285d2d3b5c11dfed7ec2c39591ef87322e03f23724"
     },
     {
       "path": "workspace/evidence/stage05_presolve_checks.json",
