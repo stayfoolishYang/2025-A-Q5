@@ -18,12 +18,17 @@ class Solver:
         self.schedule = schedule
         self.diagnostic = diagnostic or {}
         self.stop_after_public_max_clear = self.diagnostic.get('stop_after_public_max_clear', False)
+        self.finish_after_public_max_known = self.diagnostic.get('finish_after_public_max_known', False)
+        if type(self.finish_after_public_max_known) is not bool:
+            raise ValueError('finish_after_public_max_known must be boolean')
+        self.confirmed = set()
+        self.known16_trigger = None
         self.discovery_coverage = self.diagnostic.get('discovery_coverage', 'legacy45')
         if type(self.stop_after_public_max_clear) is not bool:
             raise ValueError('stop_after_public_max_clear must be boolean')
-        if self.discovery_coverage not in ('legacy45', 'certified37'):
+        if self.discovery_coverage not in ('legacy45', 'certified37', 'certified25'):
             raise ValueError('Unknown discovery_coverage')
-        if (self.stop_after_public_max_clear or self.discovery_coverage != 'legacy45') and (not mixed or policy != 'P4'):
+        if (self.finish_after_public_max_known or self.stop_after_public_max_clear or self.discovery_coverage != 'legacy45') and (not mixed or policy != 'P4'):
             raise ValueError('Public-max and coverage experiments require mixed Q4/P4')
         self.clearance_point = self.diagnostic.get('clearance_point', 'mec_center')
         if self.clearance_point not in ('mec_center', 'nccp', 'segment_entry'):
@@ -47,6 +52,20 @@ class Solver:
         if self.stop_after_public_max_clear and len(self.cleared) == PUBLIC_MAX_SOURCES and self.tracks:
             raise RuntimeError('Uncleared observed source contradicts the public source maximum')
         return self.stop_after_public_max_clear and len(self.cleared) == PUBLIC_MAX_SOURCES
+
+    def confirm_channel(self, c):
+        self.confirmed.add(c)
+        if self.finish_after_public_max_known and len(self.confirmed) > PUBLIC_MAX_SOURCES:
+            raise RuntimeError('Confirmed channels exceed public maximum')
+        if self.finish_after_public_max_known and len(self.confirmed) == PUBLIC_MAX_SOURCES and self.known16_trigger is None:
+            self.known16_trigger = dict(time_s=self.api.virtual_time, cleared=len(self.cleared),
+                                       unresolved=len(self.confirmed-self.cleared), channels=sorted(self.confirmed))
+
+    def release_discovery(self, nodes):
+        if self.known16_trigger is not None:
+            nodes.clear()
+            if not self.tracks and len(self.cleared) < PUBLIC_MAX_SOURCES:
+                raise RuntimeError('Known16 but unresolved channels have no tracks')
 
     def target_trace(self, c):
         return self.trace.setdefault(c, dict(channel=int(c), first_seen_position=None, first_seen_time=None,
@@ -153,6 +172,7 @@ class Solver:
         log['clear_time'] += self.api.virtual_time-before
         if response['clear_result'] == 'success':
             self.cleared.add(c)
+            self.confirm_channel(c)
             self.tracks.pop(c, None)
             self.certified += int(certified)
             log['success'] = True
@@ -168,6 +188,10 @@ class Solver:
         log = self.target_trace(c)
         log['movement_distance'] += float(np.linalg.norm(p-self.api.position))
         response = self.api.action('/measure', p, int(c))
+        if response.get('accepted') is not True:
+            raise RuntimeError('Rejected measure response')
+        if response.get('measure_result') in ('direction', 'near'):
+            self.confirm_channel(c)
         result, angle = response['measure_result'], response.get('svd_deg')
         log['num_'+result+'_obs'] += 1
         log['candidate_choices'].append(dict(point=p.tolist(), result=result, time=self.api.virtual_time))
@@ -245,6 +269,7 @@ class Solver:
         self.api.action('/enter')
         nodes = list(route(coverage(self.mixed, version=self.discovery_coverage), self.api.position))
         while (nodes or self.tracks) and not self.public_max_complete():
+            self.release_discovery(nodes)
             # Candidate clearing/localization costs compete with the next discovery sweep.
             choices = []
             for c, track in self.tracks.items():
@@ -258,6 +283,7 @@ class Solver:
                 self.localize(local[1], one_step=self.policy in ('P3','P4'))
                 if self.public_max_complete():
                     break
+                self.release_discovery(nodes)
                 if nodes and self.discovery_route == 'refresh_after_localize':
                     from discovery import refresh_remaining_route
                     nodes = refresh_remaining_route(nodes, self.api.position)
@@ -277,12 +303,16 @@ class Solver:
                 self.measure(c, p)
                 if self.public_max_complete():
                     break
+                if self.known16_trigger is not None:
+                    self.release_discovery(nodes)
+                    break
                 if c in self.tracks and self.policy in ('P0','P1','P2'):
                     self.localize(c)
             if self.public_max_complete():
                 break
             if nodes and self.policy in ('P3','P4'):
                 nodes = list(route(np.asarray(nodes), self.api.position))
+        self.release_discovery(nodes)
         self.api.action('/exit')
         return dict(policy=self.policy, mixed=self.mixed, cleared=len(self.cleared),
                     virtual_time_s=self.api.virtual_time,

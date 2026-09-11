@@ -391,11 +391,16 @@ def sample_poly(poly, count, rng):
 
 
 def coverage(mixed=False, ring=1130., *, version='legacy45'):
-    if version not in ('legacy45', 'certified37') or (not mixed and version != 'legacy45'):
+    if version not in ('legacy45', 'certified37', 'certified25') or (not mixed and version != 'legacy45'):
         raise ValueError('Invalid discovery coverage version')
     if not mixed:
         a = np.arange(6) * np.pi / 3
         return np.vstack(([0., 0.], ring * np.c_[np.cos(a), np.sin(a)]))
+    if version == 'certified25':
+        a, b, r = 970., 1870., np.sqrt(3.)
+        return np.array([(a*(i+j/2), a*r*j/2) for i in range(-2, 3) for j in range(-2, 3)
+                         if max(abs(i), abs(j), abs(i+j)) <= 2] +
+                        [(b*r/2,b/2),(0.,b),(-b*r/2,b/2),(-b*r/2,-b/2),(0.,-b),(b*r/2,-b/2)])
     return np.array([(x, y) for x in range(-2100, 2101, 700) for y in range(-2100, 2101, 700)
                      if x*x + y*y <= 2800**2 and
                      (version == 'legacy45' or abs(x)+abs(y) <= 2800)], dtype=float)

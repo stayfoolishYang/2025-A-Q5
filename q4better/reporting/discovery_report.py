@@ -48,12 +48,32 @@ def quantiles(values):
 
 def point_in_convex_polygon_exact(point, polygon):
     """Use exact rationals for the stored polygon and the native integer source."""
-    vertices = [[Fraction(float(x)) for x in v] for v in polygon]
-    if not vertices or any(not min(v[k] for v in vertices) <= point[k] <= max(v[k] for v in vertices) for k in (0, 1)):
+    raw = [tuple(Fraction(float(x)) for x in v) for v in polygon]
+    vertices = sorted(set(raw))
+    if not vertices:
         return False
-    signs = [(b[0]-a[0])*(point[1]-a[1])-(b[1]-a[1])*(point[0]-a[0])
-             for a, b in zip(vertices, vertices[1:]+vertices[:1])]
-    return bool(signs) and (all(x >= 0 for x in signs) or all(x <= 0 for x in signs))
+    # A conservative convex set is represented by its vertex hull. Clipping can
+    # emit almost coincident vertices in slightly non-convex floating order.
+    # Exact hull construction avoids a tolerance and preserves every vertex.
+    def cross(a,b,c):
+        return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0])
+    if len(vertices)==1:return tuple(point)==vertices[0]
+    lower=[];upper=[]
+    for sequence,hull in ((vertices,lower),(vertices[::-1],upper)):
+        for v in sequence:
+            while len(hull)>=2 and cross(hull[-2],hull[-1],v)<=0:hull.pop()
+            hull.append(v)
+    hull=lower[:-1]+upper[:-1]
+    def area2(v):
+        return abs(sum(a[0]*b[1]-a[1]*b[0] for a,b in zip(v,v[1:]+v[:1])))
+    scale=max(1.,max(abs(float(x)) for v in raw for x in v))
+    roundoff_bound=Fraction(64*np.finfo(float).eps*len(raw)*scale*scale)
+    if abs(area2(hull)-area2(raw)) > roundoff_bound:
+        return False  # Materially malformed vertex ordering is not a convex set.
+    if len(hull)==2:
+        return cross(hull[0],hull[1],point)==0 and all(min(v[k] for v in hull)<=point[k]<=max(v[k] for v in hull) for k in (0,1))
+    return all(cross(a,b,point)>=0 for a,b in zip(hull,hull[1:]+hull[:1]))
+
 
 
 def audit_trace(trace, row, scene, config):
@@ -69,9 +89,14 @@ def audit_trace(trace, row, scene, config):
     first_index, clear_times, discovery = {}, [], []
     measure_count = switch_count = clear_count = 0
     public_complete_index = None
+    known_complete_index = None
+    confirmed = set()
     version = config.get('discovery_coverage', 'legacy45')
-    require(version in ('legacy45', 'certified37'), 'Unknown coverage version')
+    require(version in ('legacy45', 'certified37', 'certified25'), 'Unknown coverage version')
     nodes = NODES if version == 'legacy45' else {p for p in NODES if abs(p[0])+abs(p[1]) <= 2800}
+    if version == 'certified25':
+        from geometry import coverage
+        nodes = set(map(tuple, coverage(True, version=version)))
     for index, action in enumerate(actions):
         response = action['response']
         after = response['virtual_time_s']
@@ -99,6 +124,8 @@ def audit_trace(trace, row, scene, config):
                 switch_count += switched
                 known = c in first
                 if action['stage'] == 'discovery':
+                    if known_complete_index is not None:
+                        failures.append('blind discovery after known16')
                     if not groups or groups[-1]['point'] != point:
                         ordered = [channel]+[x for x in range(1, 21) if x != channel]
                         if flags(config)[1]:
@@ -128,6 +155,10 @@ def audit_trace(trace, row, scene, config):
                         public_complete_index = index
                     if config.get('stop_after_public_max_clear') and len(cleared) > 16:
                         failures.append('public source maximum contradicted')
+            if response.get('accepted') is True and (response.get('measure_result') in ('direction','near') or response.get('clear_result') == 'success'):
+                confirmed.add(c)
+                if config.get('finish_after_public_max_known') and len(confirmed) == 16 and known_complete_index is None:
+                    known_complete_index = index
             position = point
         time_before = after
     for i, group in enumerate(groups):
@@ -138,12 +169,15 @@ def audit_trace(trace, row, scene, config):
                 and actions[public_complete_index-1]['stage'] == 'discovery'
                 and actions[public_complete_index-1]['response'].get('measure_result') == 'near'):
             expected = expected[:len(group['channels'])]
+        if (known_complete_index is not None and i == len(groups)-1
+                and actions[known_complete_index]['stage'] == 'discovery'):
+            expected = expected[:len(group['channels'])]
         if group['channels'] != expected:
             failures.append(f'node {group["point"]}: missing/repeated/channel-order mismatch')
     visited = [g['point'] for g in groups]
     if len(visited) != len(set(visited)) or not set(visited) <= nodes:
         failures.append('duplicate or unknown coverage node')
-    if public_complete_index is None and (len(groups) != len(nodes) or set(visited) != nodes):
+    if public_complete_index is None and known_complete_index is None and (len(groups) != len(nodes) or set(visited) != nodes):
         failures.append('selected coverage node set/count mismatch')
     if public_complete_index is not None and (actions[-1]['response'].get('exit_reason') != 'user_exit'
             or public_complete_index != len(actions)-2 or len(cleared) != 16):
