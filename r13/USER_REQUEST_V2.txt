@@ -1,0 +1,1251 @@
+你现在继续维护 2026 高教社杯数学建模 B 题
+《无线电干扰源的快速自动定位与清除》。
+
+本轮研究对象仅为：
+
+Q4 冻结 R12（7228633）上的路径规划与外层调度优化。
+
+当前工作分支：
+
+codex/q4-r13-routing-study
+
+当前最新提交：
+
+344b455
+
+当前状态：
+
+- 519/519 严格动作回放通过；
+- 提交位置逐浮点一致；
+- 粒子 RNG 状态一致；
+- 最终虚拟时间一致；
+- 官方接口调用 0；
+- 正式测试 0；
+- 捕获 13,108 个 D1 refresh 快照；
+- 路线 gap：
+  mean ≈ 2.1601%
+  median ≈ 0.1141%
+  P95 ≈ 8.7683%
+  P99 ≈ 12.6559%
+  max ≈ 24.5246%
+
+其中：
+
+- remaining nodes <=16 时使用 Held–Karp open-path DP 数值最优参考；
+- 更大集合使用 multistart + 2-opt 收敛 + relocate 的更强启发式参考；
+- 大集合 reference 不是全局最优证明；
+- 不得把 13,108 个相关快照当独立场景；
+- 不得把 snapshot saving 直接累加成整局收益。
+
+当前已正式决定：
+
+PROCEED_R13A_IMPLEMENTATION
+
+但：
+R12 仍是默认主方案；
+R13-A 尚未有端到端改善证据。
+
+==================================================
+一、这一轮允许更积极探索，但必须守住三条边界
+==================================================
+
+第一条：
+
+所有安全保证继续冻结。
+
+不得修改：
+
+certified25
+bounded bearing
+hard feasible polygon
+MEC certificate
+diagnostic v1
+optical fallback
+no_signal 语义
+公开 N<=16 上界逻辑
+
+第二条：
+
+任何新策略只能优化：
+
+- mandatory nodes 的访问顺序；
+- local / explore / clear 的调度时机；
+- confirmed16 后 optional support node 的利用；
+- 对下一步或短视野 future cost 的估计。
+
+第三条：
+
+允许探索新的路径/调度小变体，
+但必须满足：
+
+- 有明确机制动机；
+- 能与 R12 做干净消融；
+- 不偷偷改变保证层；
+- 不直接针对 holdout 调参；
+- 不为了跑出正结果大规模扫超参数。
+
+==================================================
+二、先完成 R13-A，但允许比“一个 StrongRoute”多做一步
+==================================================
+
+当前 route gap 已经证明纯路线层存在可见空间。
+
+因此实现：
+
+R13-A0：
+Frozen R12 route
+NN + 最多3轮2-opt
+
+R13-A1：
+StrongRoute
+
+建议包含：
+
+- multi-start nearest-neighbour
+- 2-opt until convergence
+- relocate / Or-opt
+- swap
+- limited 3-opt（如果实现简单且确定性）
+- 保留原 R12 route 作为候选，保证不返回更长路线
+
+固定起点；
+开放路径；
+必须访问同一 mandatory node 集合；
+终点自由；
+不回起点。
+
+对于 |S| 小的状态：
+
+继续使用 exact DP 作为审计参考。
+
+对于在线执行：
+
+不要每次都跑昂贵 exact DP，
+除非状态规模和墙钟允许。
+
+--------------------------------
+额外允许一个 R13-A2
+--------------------------------
+
+如果 A1 实现后发现：
+
+route quality 仍明显依赖初始 seed/order，
+允许实现一个轻量 R13-A2：
+
+例如：
+
+- deterministic geometric seed set；
+- farthest-insertion seed；
+- angular sweep seed；
+- convex-hull-aware seed；
+
+再进入同一个 local-search kernel。
+
+限制：
+
+最多增加一个额外 seed-generation 变体。
+
+不得变成几十种 construction heuristic 扫描。
+
+目标是回答：
+
+“更好的初始路线是否还能显著改善 StrongRoute？”
+
+==================================================
+三、R13-B：End-State-Aware Cost-to-Go
+==================================================
+
+当前外层代理只看眼前 local / explore 成本，
+没有充分考虑：
+
+动作结束以后机器狗停在哪里。
+
+实现：
+
+Q(a)
+=
+C_immediate(a)
++
+C_tail(p_end(a))
+
+其中：
+
+C_tail(p)
+=
+当前剩余 mandatory nodes
+从 p 出发的 route length / 5
+
+第一版必须只使用确定可知结束位置。
+
+允许：
+
+1.
+已 MEC-certified 的 clear 动作：
+p_end = 实际证书清除位置
+
+2.
+前往 discovery node：
+p_end = 该节点
+
+3.
+普通主动定位：
+只有当当前代码在决策前已经明确 next measurement point，
+才可用该点
+
+禁止：
+
+把所有 localize 的结束点都近似成 MEC center。
+
+因为：
+
+- 普通 active measurement 是 Hypotheses.next；
+- diagnostic 可能多步；
+- fallback 可能连续多动作。
+
+对于 diagnostic / fallback：
+
+第一版 B 可以保持原 R12 代理，
+不要虚构 endpoint。
+
+--------------------------------
+允许 B-lite / B-full 两级
+--------------------------------
+
+B-lite：
+仅对 clear-certified 与 discovery action 使用 end-state tail。
+
+B-full：
+若后续审计证明普通 active-measure endpoint 在决策前可靠可知，
+再把普通 active measurement 纳入。
+
+开发阶段可比较 B-lite 与 B-full，
+但最终只保留一个。
+
+==================================================
+四、R13-C：Certified Future Scan Credit
+==================================================
+
+只对：
+
+R_MEC <= 19.999 m
+
+的频道考虑“现在清除带来的未来扫描义务减少”。
+
+严禁把未认证目标的“可能清除”加入 deterministic credit。
+
+必须复用真实扫描行为：
+
+- 当前频道优先；
+- 其余频道按真实代码顺序；
+- 已清频道跳过；
+- 当前频道 measure = 5 s；
+- 换频道后 measure = 1 + 5 s；
+- clear 不改变当前测量频道。
+
+不得统一写成：
+
+6 × remaining_nodes
+
+已经保存约 8053 条 certified state，
+先在这些状态上做纯离线审计。
+
+对频道 c 定义：
+
+credit(c)
+=
+future scan cost with c uncleared
+-
+future scan cost after c cleared
+
+只在“未来 mandatory discovery nodes 不变”的局部反事实下定义。
+
+必须明确：
+
+这是 deterministic scan-obligation credit，
+不是整局实际节省，
+不包含未来观测导致的路线变化。
+
+--------------------------------
+允许探索两个接法
+--------------------------------
+
+C1：
+只把 credit 作为 local-vs-explore tie-breaking / secondary term
+
+C2：
+直接进入一阶 cost-to-go：
+
+Q_clear
+=
+immediate clear cost
++
+remaining route cost
++
+future scan cost without c
+
+Q_explore
+=
+next discovery action
++
+remaining route cost
++
+future scan cost with c
+
+若 C1 明显没有信息量，
+可停止 C1。
+
+不得给 credit 再乘自由 beta 做大范围扫描。
+
+==================================================
+五、R13-D：known16 Soft Release
+==================================================
+
+这是本轮重点方向之一。
+
+现有状态证据：
+
+68 个16源场景中，
+65 个在 known16 release 时仍有剩余节点。
+
+当前 R12：
+
+confirmed == 16
+→ remaining mandatory nodes 清空
+
+安全上合法。
+
+但这些剩余 certified25 nodes
+可能仍然是对已知未清目标有价值的支持测点。
+
+新策略：
+
+mandatory nodes
+→ optional support nodes
+
+确认：
+
+这些点不再承担发现义务，
+因此：
+不需要全部访问。
+
+--------------------------------
+D1：单点 receding support
+--------------------------------
+
+每次只考虑：
+
+直接处理已知目标
+
+vs
+
+访问一个 optional support node
+
+访问以后立刻重新决策。
+
+禁止一次规划多个 optional support node 链。
+
+--------------------------------
+D2：支持节点价值
+--------------------------------
+
+优先复用：
+
+- 当前 hypotheses；
+- 当前 diagnostic continuation estimator；
+- 当前 fallback cost estimator；
+- hard geometry state。
+
+不要创造一个完全新的黑盒分数。
+
+对每个 optional q：
+
+J_support(q)
+=
+detour/action cost
++
+estimated continuation after observing at q
+
+J_direct
+=
+direct continuation estimate
+
+只有：
+
+J_support(q) < J_direct
+
+时才能访问。
+
+使用纯数值 tie tolerance，
+不能调一个经验收益 margin。
+
+--------------------------------
+允许一个 D-extra 探索变体
+--------------------------------
+
+如果既有 continuation estimator
+对 optional certified25 node 明显失真，
+
+允许实现一个非常小的：
+
+support-value surrogate
+
+但必须：
+
+1.
+基于已有 hypothesis split / predicted signal-no_signal branches；
+2.
+不替代 hard geometry；
+3.
+只在 development 使用；
+4.
+单独命名；
+5.
+单独消融。
+
+不得把 D 变成新的大型 planner。
+
+==================================================
+六、R13-E：Short-Horizon Rollout
+==================================================
+
+只做小视野。
+
+不要上：
+
+RL
+MCTS
+Transformer
+full POMDP
+
+候选动作：
+
+- 当前最好 local action；
+- 若干 discovery nodes；
+- confirmed16 后 optional support node（如果 D 已启用）。
+
+默认 development 起点：
+
+K = 6
+H = 2
+
+允许在 development 比较：
+
+H=2
+H=3
+
+前提：
+
+计算开销低，
+且实验计划中提前写明。
+
+不要再扫 K=3...10。
+
+--------------------------------
+尾部价值
+--------------------------------
+
+必须明确：
+
+rollout prefix
++
+R12/R13 当前 tail estimate
+
+不能用隐藏真值。
+
+不能把真实未来 signal
+作为规划输入。
+
+--------------------------------
+允许一个探索自由度
+--------------------------------
+
+若简单“route tail + local proxy”
+明显不足以区分候选，
+
+允许测试一个：
+
+hybrid tail
+
+例如：
+
+route cost
++
+deterministic future scan cost
++
+current best continuation estimate
+
+但必须作为 E2 单独变体。
+
+最多一个。
+
+==================================================
+七、允许 Codex 提出最多两个新增探索候选
+==================================================
+
+这轮边界适当放宽。
+
+如果在实现 A–E 过程中发现：
+
+某个明确的结构性问题，
+当前候选都没有覆盖，
+
+可以新增：
+
+R13-X1
+R13-X2
+
+最多两个。
+
+新增前必须先写：
+
+R13_EXPLORATORY_PROPOSAL_X.md
+
+包含：
+
+1.
+已观察到的具体问题；
+
+2.
+证据来源：
+哪个 snapshot / 哪类 state / 哪个统计；
+
+3.
+为什么 A–E 没有覆盖；
+
+4.
+新方案只改变什么；
+
+5.
+为什么不会破坏保证；
+
+6.
+预期收益从哪里来；
+
+7.
+如何与 R12 做最小消融；
+
+8.
+停止门槛。
+
+禁止新增：
+
+- 神经网络；
+- RL；
+- 全局大参数优化；
+- 改 certified25；
+- 改定位误差模型；
+- 改清除证书。
+
+新增方案必须是：
+“低维、可解释、可独立关闭”的机制。
+
+==================================================
+八、不要急着用519调算法
+==================================================
+
+519 已经用于：
+
+- R12验证；
+- D1 gap审计；
+- known16状态挖掘；
+- scan credit状态提取。
+
+因此：
+
+519 不再是新的 development。
+
+它只能做：
+
+- regression；
+- compatibility；
+- failure mechanism inspection。
+
+现在必须建立新的 Development。
+
+==================================================
+九、新 Development 集
+==================================================
+
+先检查已有所有 seed manifest。
+
+排除：
+
+- paired100
+- 20-seed审计
+- NCCP
+- D1/D2
+- Q4 known16
+- 519
+- 官方演练
+- 任何历史参数扫描
+
+选择新的 seed range。
+
+生成：
+
+development256
+
+推荐：
+
+256 个独立场景。
+
+如果运行成本过高，
+允许先：
+
+development128
+
+但必须运行前决定，
+不要根据结果改变样本量。
+
+保持原生成器分层：
+
+random
+edge/outward
+extreme bearing
+clustered
+等
+
+如果当前正式 frozen generator
+还有其他类别，
+以源码为准。
+
+所有候选用完全相同的场景。
+
+==================================================
+十、Development 第一轮：单模块全集
+==================================================
+
+运行：
+
+R12
+
+R13-A1
+R13-A2（若实现）
+
+R13-B-lite
+R13-B-full（若资格满足）
+
+R13-C1
+R13-C2
+
+R13-D
+R13-D-extra（若有）
+
+R13-E-H2
+R13-E-H3（若预注册）
+
+R13-X1/X2（若通过 proposal gate）
+
+这一轮目的是：
+
+机制筛选。
+
+不是立刻选最终 winner。
+
+==================================================
+十一、第一轮筛选指标
+==================================================
+
+必须100%全清。
+
+任何：
+
+certificate violation
+coverage violation
+protocol failure
+exception
+
+直接淘汰。
+
+主要排序：
+
+mean s/source
+
+同时强制报告：
+
+P50
+P95
+P99
+max
+normalized variance
+CV
+
+paired vs R12：
+
+mean delta
+median delta
+wins/ties/losses
+max regression
+
+动作：
+
+distance
+measure
+switch
+diagnostic
+fallback
+
+路径：
+
+route compute
+decision compute
+
+N=10...16 分层。
+
+==================================================
+十二、第一轮不要太早用1%硬砍掉探索
+==================================================
+
+为了保留探索可能性，
+development 第一轮采用较宽松分级：
+
+A类：
+mean improvement >= 1.0%
+且 tail 不明显恶化
+
+→ 强候选
+
+B类：
+0.3% <= mean improvement < 1.0%
+但以下至少一项明显改善：
+
+- P95
+- P99
+- max
+- CV
+- N=16 regressions
+- compute cost
+
+→ 保留研究候选
+
+C类：
+mean improvement < 0.3%
+且没有明显tail/稳定性价值
+
+→ STOP
+
+D类：
+平均更快但 P95/P99/max 明显恶化
+
+→ RISKY，不进入主候选，
+除非后续机制分析表明可做非常小的安全修复。
+
+这一步故意比以前1%门槛稍宽松，
+避免错过“均值小收益但显著修尾”的方案。
+
+==================================================
+十三、单模块分析后再组合
+==================================================
+
+不要全组合。
+
+从 development 结果中：
+
+选最多3个互补模块。
+
+“互补”要求修改不同机制。
+
+例如：
+
+StrongRoute
++
+CertifiedScanCredit
+
+或：
+
+StrongRoute
++
+Known16SoftRelease
+
+或：
+
+EndStateCostToGo
++
+Known16SoftRelease
+
+不得组合：
+
+两个本质相同的 future-cost proxy。
+
+最多设计：
+
+Combo-A
+Combo-B
+Combo-C
+
+三个。
+
+组合前写：
+
+R13_COMBINATION_PLAN.md
+
+说明：
+
+为什么这些模块可能互补，
+是否存在重复计价。
+
+==================================================
+十四、特别防止 future-cost double counting
+==================================================
+
+如果组合：
+
+B + C
+B + E
+C + E
+
+必须检查是否重复计入：
+
+remaining route
+future scan
+local continuation
+
+每个 cost component
+只能在统一 Q 函数中出现一次。
+
+生成：
+
+R13_COST_ACCOUNTING_AUDIT.md
+
+列：
+
+immediate travel
+immediate measure
+immediate switch
+clear
+remaining route
+future mandatory scan
+continuation localization
+
+每个方案哪些项使用，
+哪些项未使用。
+
+这是组合方案进入holdout前的硬gate。
+
+==================================================
+十五、新 Holdout
+==================================================
+
+Development 完成后：
+
+冻结全部候选：
+
+commit
+config
+SHA256
+
+然后生成全新：
+
+holdout256
+
+不得修改算法。
+
+运行：
+
+R12
+
+所有入围单模块
+
+最多3个组合
+
+所有结果 paired。
+
+==================================================
+十六、Holdout采用门槛
+==================================================
+
+安全：
+
+100% full clear
+
+0 exceptions
+
+0 certificate violation
+
+0 coverage obligation violation
+
+0 protocol failure
+
+性能：
+
+最终推荐主方案优先要求：
+
+mean improvement >= 1%
+
+但允许一个例外：
+
+如果 mean improvement 在：
+
+0.5%–1.0%
+
+同时满足：
+
+P95明显改善
+P99明显改善
+max改善
+CV改善
+N=16回退显著减少
+
+则可以标：
+
+STABILITY_CANDIDATE
+
+但不得声称它是“速度明显提升”。
+
+若：
+
+mean <0.5%
+
+则除非它解决明确严重尾部风险，
+否则 KEEP_R12。
+
+==================================================
+十七、R13-A额外必须回答的问题
+==================================================
+
+StrongRoute若端到端收益明显小于snapshot route gap，
+必须解释：
+
+为什么路线长度改善没有兑现。
+
+统计：
+
+每次route生成后，
+实际执行了几个node
+就被下一次localization / event打断。
+
+定义：
+
+route_survival_nodes
+
+route_survival_time
+
+fraction_of_planned_route_executed
+
+并分析：
+
+gap大的route
+是否往往在兑现前就失效。
+
+这可能成为非常重要的论文结论。
+
+==================================================
+十八、R13-C额外分析
+==================================================
+
+对8053条certified state：
+
+画：
+
+scan credit分布
+
+scan credit vs remaining nodes
+
+scan credit vs current channel
+
+scan credit vs actual local/explore decision
+
+然后在端到端实验看：
+
+理论credit高
+是否真的对应更早clear和更少measure。
+
+不得因为离线credit高就直接宣称策略有效。
+
+==================================================
+十九、R13-D额外分析
+==================================================
+
+68个N=16场景重点报告：
+
+confirmed16时：
+
+remaining nodes
+
+remaining targets
+
+distance from optional nodes
+
+estimated support value
+
+最终：
+
+support visits
+measurements
+diagnostic savings
+fallback savings
+detour distance
+time confirmed16→complete
+
+同时单列当前16个历史R12 regression cases。
+
+但禁止针对这16个调参。
+
+==================================================
+二十、R13-E额外分析
+==================================================
+
+报告：
+
+decision wall-clock
+
+P50
+P95
+P99
+max
+
+冷启动和稳定态分开。
+
+同时报告：
+
+rollout选择与R12单步选择
+有多少比例不同：
+
+decision_disagreement_rate
+
+以及：
+
+这些不同决策中：
+
+多少更快
+多少更慢
+
+==================================================
+二十一、失败挖掘
+==================================================
+
+每个候选都保存：
+
+10个最大改善
+10个最大回退
+
+最大回退至少输出：
+
+完整trajectory
+stage time delta
+movement
+measure
+switch
+diagnostic
+fallback
+confirmed16
+last source first detection
+route refresh count
+route survival
+
+不要只看总时间。
+
+==================================================
+二十二、最终汇总表
+==================================================
+
+生成：
+
+R13_ALL_METHODS_COMPARISON.csv
+
+列：
+
+method
+development_or_holdout
+full_clear
+mean_s_per_source
+improvement_pct
+P50
+P95
+P99
+max
+normalized_variance
+CV
+movement_km
+measure_count
+switch_count
+diagnostic_count
+fallback_count
+confirmed16_s
+last_detection_s
+route_compute_ms_p95
+decision_compute_ms_p95
+wins
+ties
+losses
+max_regression
+N16_mean
+N16_P95
+N16_max
+
+==================================================
+二十三、最终图
+==================================================
+
+全部中文，使用 nature-figure 风格。
+
+至少生成：
+
+1.
+所有单模块 mean/P95/P99 forest plot
+
+2.
+paired delta ECDF
+
+3.
+route gap vs realized saving
+
+4.
+planned route survival ratio
+
+5.
+N=10–16 分层改善
+
+6.
+movement vs measure tradeoff
+
+7.
+scan credit distribution
+
+8.
+known16→completion comparison
+
+9.
+decision compute cost
+
+10.
+winner vs R12典型路径
+
+11.
+最大回退case瀑布图
+
+12.
+最终方案雷达/矩阵式证据总结
+不要用花哨雷达图，优先矩阵/点图。
+
+==================================================
+二十四、最终结论必须允许“没有新赢家”
+==================================================
+
+允许最终结果为：
+
+KEEP_R12
+
+也允许：
+
+R13-A only
+
+R13-D only
+
+Combo-AD
+
+或其他经过证据支持的组合。
+
+不能为了这轮研发投入很多
+就必须换掉R12。
+
+最终结论必须分别回答：
+
+1.
+静态open-route到底还能省多少？
+
+2.
+这些静态route improvement
+有多少真正兑现到整局？
+
+3.
+动作结束位置是否值得进入outer schedule？
+
+4.
+提前clear的未来scan credit是否有实效？
+
+5.
+known16硬释放是否是16源退化主因？
+
+6.
+soft release能否改善16源而不伤其他N？
+
+7.
+短视野rollout值不值得计算开销？
+
+8.
+哪个模块独立贡献最大？
+
+9.
+哪些模块是互补的？
+
+10.
+是否出现：
+均值更快但尾部更差？
+
+11.
+最终是否值得替换7228633 R12？
+
+==================================================
+二十五、Git与可复现性
+==================================================
+
+继续使用：
+
+codex/q4-r13-routing-study
+
+不要重开新分支。
+
+每个机制独立commit。
+
+任何实验计划先commit再运行。
+
+当前：
+
+344b455
+
+作为阶段审计锚点。
+
+最终输出：
+
+commit map
+
+config hashes
+
+result hashes
+
+dirty status
+
+push status
+
+official_calls
+
+formal_test_count
+
+必须明确：
+
+official_calls = 0
+formal_test_count = 0
+
+==================================================
+二十六、现在开始下一阶段
+==================================================
+
+执行顺序：
+
+1.
+实现并冻结 R13-A1；
+2.
+如有必要实现 A2；
+3.
+完成 B/C/D/E；
+4.
+提出最多两个有证据支持的 X 候选；
+5.
+生成 fresh development；
+6.
+全部单模块paired比较；
+7.
+做failure mining；
+8.
+选最多3个互补组合；
+9.
+冻结；
+10.
+fresh holdout；
+11.
+最后519 regression；
+12.
+输出最终KEEP/ADOPT决定。
+
+不要在中途使用官方接口。
