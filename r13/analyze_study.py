@@ -27,6 +27,7 @@ def analyze(cohort):
         benefit|=int((n16.fallback_count>0).sum())<int((bn16.fallback_count>0).sum())
         risky=tail(.95)>2 or tail(.99)>2 or tail(1)>5
         decision='BASELINE' if method=='R12' else 'REJECT' if not safe else 'RISKY' if improvement>0 and risky else 'STRONG' if improvement>=1 and not risky else 'RETAIN' if improvement>=.3 and benefit else 'STOP'
+        if cohort=='regression':decision='REGRESSION_ONLY'
         s=dict(method=method,development_or_holdout=cohort,runs=n,full_clear=int((g.run_status=='FULL_CLEAR').sum()),safety_pass=safe,
             mean_s_per_source=x.mean(),improvement_pct=improvement,P50=qi(x,.5),P95=qi(x,.95),P99=qi(x,.99),max=x.max(),
             normalized_variance=float(np.var(x/x.mean(),ddof=1)),CV=cv,movement_km=g.distance.mean()/1000,

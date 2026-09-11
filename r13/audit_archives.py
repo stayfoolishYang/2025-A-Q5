@@ -1,8 +1,9 @@
 """Supplement exclusion audit: manifests/scenes inside historical zip packages."""
 from run_study import ROOT,bench
 from pathlib import Path
-import os,json,zipfile,hashlib,re
-m=json.loads((ROOT/'DEVELOPMENT_MANIFEST.json').read_bytes());fresh={r['physical_hash'] for r in m['records']};seeds={r['seed_hex'] for r in m['records']}
+import os,json,zipfile,hashlib,re,sys
+cohort=sys.argv[1] if len(sys.argv)>1 else 'development'
+m=json.loads((ROOT/(cohort.upper()+'_MANIFEST.json')).read_bytes());fresh={r['physical_hash'] for r in m['records']};seeds={r['seed_hex'] for r in m['records']}
 seen=set();records=[];errors=[];overlap=[]
 for root in ['J:/2026B_runs','J:/2026B_experiments','I:/GithubRick/2025-A-Q5/交付包','I:/GithubRick/2025-A-Q5/B_solver/results']:
     for folder,dirs,files in os.walk(root):
@@ -27,6 +28,7 @@ for root in ['J:/2026B_runs','J:/2026B_experiments','I:/GithubRick/2025-A-Q5/交
                         records.append(dict(zip=str(p),member=item.filename,physical_hash=h))
             except Exception as e:errors.append(dict(path=str(p),error=str(e)))
 report=dict(zip_packages=len(seen),members=len(records),overlap=overlap,errors=errors,records=records,limitation='Nested zip members and unavailable official source truths remain unverified.',official_calls=0)
-(ROOT/'HISTORICAL_ARCHIVE_EXCLUSION.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+(ROOT/('HISTORICAL_ARCHIVE_EXCLUSION.json' if cohort=='development' else 'HISTORICAL_ARCHIVE_EXCLUSION_'+cohort.upper()+'.json')).write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
 assert not overlap,overlap
 print('Historical zip exclusion',len(seen),len(records),'overlap',len(overlap),'errors',len(errors),flush=True)
+
