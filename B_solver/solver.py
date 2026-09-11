@@ -18,6 +18,14 @@ class Solver:
         self.clearance_point = self.diagnostic.get('clearance_point', 'mec_center')
         if self.clearance_point not in ('mec_center', 'nccp', 'segment_entry'):
             raise ValueError('clearance_point must be mec_center, nccp or segment_entry')
+        self.discovery_route = self.diagnostic.get('discovery_route', 'legacy')
+        self.discovery_channels = self.diagnostic.get('discovery_channels', 'legacy')
+        if self.discovery_route not in ('legacy', 'refresh_after_localize'):
+            raise ValueError('Unknown discovery_route')
+        if self.discovery_channels not in ('legacy', 'unknown_first'):
+            raise ValueError('Unknown discovery_channels')
+        if (not mixed or policy != 'P4') and (self.discovery_route != 'legacy' or self.discovery_channels != 'legacy'):
+            raise ValueError('Discovery scheduling experiments require mixed Q4/P4')
         self.trace = {}
         self.tracks, self.cleared = {}, set()
         self.history = {c: [] for c in range(1,21)}
@@ -225,9 +233,15 @@ class Solver:
                 explore = float('inf')
             if local[1] is not None and (not nodes or local[0] <= explore):
                 self.localize(local[1], one_step=self.policy in ('P3','P4'))
+                if nodes and self.discovery_route == 'refresh_after_localize':
+                    from discovery import refresh_remaining_route
+                    nodes = refresh_remaining_route(nodes, self.api.position)
                 continue
             p = nodes.pop(0)
             channels = [self.api.channel]+[c for c in range(1,21) if c != self.api.channel]
+            if self.discovery_channels == 'unknown_first':
+                from discovery import unknown_first
+                channels = unknown_first(channels, self.tracks)
             for c in channels:
                 if c in self.cleared:
                     continue
