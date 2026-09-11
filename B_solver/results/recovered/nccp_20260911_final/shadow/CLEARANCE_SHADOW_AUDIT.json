@@ -1,0 +1,631 @@
+{
+  "schema": "clearance-shadow-report-v1",
+  "passed": true,
+  "policy_change_recommended": false,
+  "input_directory": "J:\\2026B_experiments\\nccp_20260911\\shadow",
+  "expected_cases": 42,
+  "cases": 42,
+  "actions": 14607,
+  "states": 772,
+  "source_sha256": {
+    "SUMMARY.json": "e47632f6488e1f5404aaba3209fc6e32c043598cb16f4f06873590bfcd968a5f",
+    "RUN_MANIFEST.json": "a99131e9a96db6d688094874e6a0dcd732c2cf9ca1e4774c2c94dd358a0594ae",
+    "STATES.csv": "b9912e9cd3db77c149792ccb7049cde29d69c5e7535b8797cf5663da4c803040",
+    "CANDIDATES.csv": "28d8ea6e6ec7787864a6e91033ee846a67fea22b29e30d3b6842d6e600128a34",
+    "../SHADOW_PLAN.json": "59446b532fa2e79d286833d5f4fcd357f5c1f0e76ee6f1ba62807358160444ae",
+    "cases/q3_0000_P3_current_grid_v1.json.gz": "05b9263ed0f3e5981f7de16b74d70f5f49e4e229d60eaceeaa64fb5572a0f195",
+    "cases/q3_0000_P3_current_grid_v1_nccp.json.gz": "1d03ddedd024da0b9d0da5bfe8edf4df6f7858b9313e5ba07fb71e12f97205c2",
+    "cases/q3_0001_P3_current_grid_v1.json.gz": "5761ff9a05cdd968706723f9e006ec1fda474b845830c2363e2fdfd4c23210d5",
+    "cases/q3_0001_P3_current_grid_v1_nccp.json.gz": "4a4474d59abe09647dcd6b6b2619de7ff9b1d757c4f5105e69140f69ab45e621",
+    "cases/q3_0002_P3_current_grid_v1.json.gz": "0a11a1b8b6580e98435f00f8b9a2fabb6fd2a42678030cd592c3b1669e0dd759",
+    "cases/q3_0002_P3_current_grid_v1_nccp.json.gz": "7c10471c68bd2b679b828aebc28ed04734dab2b6d651bbe03d07b39b95998889",
+    "cases/q3_0003_P3_current_grid_v1.json.gz": "3e27550d68b39c817e5078773eb3925a7c5e2f2270f44f78d61bdde8a2cec2c0",
+    "cases/q3_0003_P3_current_grid_v1_nccp.json.gz": "24851b2c8d712a5d5018dcaecf7330410f6c614e86a32ffd87e4df55ffa168a4",
+    "cases/q3_0004_P3_current_grid_v1.json.gz": "bcc63595666b5ddfa1cddd434dd4a764ac32c47730a84195b8bb36870821976c",
+    "cases/q3_0004_P3_current_grid_v1_nccp.json.gz": "14c507be467a33b4428f8a6db5e5ec51586fbf237dc284a8714c8c766133f704",
+    "cases/q3_0005_P3_current_grid_v1.json.gz": "d629dc4ddd63c44702ba5d7a2570530dfa5d83fef9b56fa6f32d7545ac679402",
+    "cases/q3_0005_P3_current_grid_v1_nccp.json.gz": "0b73725013f5c1b2ebed5889d8fd29ecd06ad4bc8329e9569caf875d271c0bd8",
+    "cases/q3_0006_P3_current_grid_v1.json.gz": "d81ae72fc52c7d85ca09423dd031e3ecbe736a3ff160164fda87adc56be728bf",
+    "cases/q3_0006_P3_current_grid_v1_nccp.json.gz": "c8a1d2728db8f221ff318bbeb7df47186684b2fe62fcf1ec16c0fefa0c3d8b9c",
+    "cases/q3_0007_P3_current_grid_v1.json.gz": "5eba6af412f7619b478b2d64e04f96a5592c1833c603edb1e9f8b8cee1d0d5ac",
+    "cases/q3_0007_P3_current_grid_v1_nccp.json.gz": "0d15398e61834298a3d71892a7f8588673e1c588b204d44bc7b4306b3dbbc83a",
+    "cases/q3_0046_P3_current_grid_v1.json.gz": "588601daf61f50c05c9c092f392f309c203dd4cff69852bb52a318fbabdd2c10",
+    "cases/q3_0046_P3_current_grid_v1_nccp.json.gz": "4cefdeb0ce135574a72c4c14089789a3472c2430f5ee48fca2e811c0becb5336",
+    "cases/q3_0064_P3_current_grid_v1.json.gz": "1f7dfd97bcae77a443515263fbdb50bb72a56d599afa90d6cfdf1c27bc58f338",
+    "cases/q3_0064_P3_current_grid_v1_nccp.json.gz": "e12420a382e0b19f27ddcb7374327306c60c775f7208399fc300b4dcf639e88c",
+    "cases/q4_0000_P4_diagnostic_v1_grid_v1.json.gz": "4658a22e0cf975b5793c251fae29dbe5b168f5f69b2b551549f24d2be8092ea1",
+    "cases/q4_0000_P4_diagnostic_v1_grid_v1_nccp.json.gz": "0d9bb7f8a69b676cd4ea214fd171ac3943e4b426e6b52ef0a96cea9d30e97742",
+    "cases/q4_0001_P4_diagnostic_v1_grid_v1.json.gz": "491378dfba5f322cf90fdbf6e3973bc640ab65a0c24571e1c7fd38a148d117c0",
+    "cases/q4_0001_P4_diagnostic_v1_grid_v1_nccp.json.gz": "7170453b5ed642eb8a768bdea47051f803fb4044f5da976099cae2fe3d478b75",
+    "cases/q4_0002_P4_diagnostic_v1_grid_v1.json.gz": "555c967d155e09f2344c37bbb4bb87aba5b291d75d64c6b279f2c233692fc2b7",
+    "cases/q4_0002_P4_diagnostic_v1_grid_v1_nccp.json.gz": "f9554281668b3711dade0f7ab92bd9190e021c6d03968d5e2bca882450055ae7",
+    "cases/q4_0003_P4_diagnostic_v1_grid_v1.json.gz": "163741fac4e15ab6d3995f05327031a306a2c98aca8c2602e91bd9af18c87254",
+    "cases/q4_0003_P4_diagnostic_v1_grid_v1_nccp.json.gz": "21ff9390a1f53d9b3e41c93372bdb804b05a3b9c15def03f413725a58477f70f",
+    "cases/q4_0004_P4_diagnostic_v1_grid_v1.json.gz": "262d8785f90b5d07cdc03b009e6023d0cd1ea41eab8fcd1a0f3b2fde4f6b3b4c",
+    "cases/q4_0004_P4_diagnostic_v1_grid_v1_nccp.json.gz": "528644be5d094920c8ed40e1d4b9a3afe8c267548c1256f3673a0f60eaedb78b",
+    "cases/q4_0005_P4_diagnostic_v1_grid_v1.json.gz": "86e4292ebf06942f53b86c150b9e7dd96c7984135f6abae74946058893f9284a",
+    "cases/q4_0005_P4_diagnostic_v1_grid_v1_nccp.json.gz": "2affefebeb9dd38871c3873ab0e5c2a248181efe465d497951edb53d315892a1",
+    "cases/q4_0006_P4_diagnostic_v1_grid_v1.json.gz": "ce4d25307780007e8a6b261517d56df22186925a0a242efa60e402850ca5fce0",
+    "cases/q4_0006_P4_diagnostic_v1_grid_v1_nccp.json.gz": "35a22277922ad26ed73f8985701f32ae2f356bea398cbbd1366c3c0ed00806f2",
+    "cases/q4_0007_P4_diagnostic_v1_grid_v1.json.gz": "bc71b52312ca3fe19d9dc001b7e748d62d82896f176a346de539d34dc04477a9",
+    "cases/q4_0007_P4_diagnostic_v1_grid_v1_nccp.json.gz": "9ab4e4ff5c564eddbe4ab7380cca1e6ca2772493e703d372f46858615090ef26",
+    "cases/q4_0042_P4_diagnostic_v1_grid_v1.json.gz": "22b006c5825e38b7c80441a01c914e481e36b4b2dbf57d51eebc4121b416c3c2",
+    "cases/q4_0042_P4_diagnostic_v1_grid_v1_nccp.json.gz": "3f3eb31e6c68d171fa136927695c1f3683190478c8db4db46754f1489f85e2a1",
+    "cases/q4_0061_P4_diagnostic_v1_grid_v1.json.gz": "01ce0e95144cf14abff4560ef9e03baddcf3a0905bce339463eeec46a9b11800",
+    "cases/q4_0061_P4_diagnostic_v1_grid_v1_nccp.json.gz": "2479c77b5667dd4caf70a8189b2680251c5af9c67f005f03b52d7959e13e9a9d",
+    "cases/q4_0072_P4_diagnostic_v1_grid_v1.json.gz": "5a5bd043ddef59469d7bbd02b9777a165f7e69164cb626a068f8a13e5580fea8",
+    "cases/q4_0072_P4_diagnostic_v1_grid_v1_nccp.json.gz": "9327a0ffe0073392cb73373804d5678bb9a54866dd277976b0ae8c095d172e4c"
+  },
+  "report_script_sha256": "6fb63548e1f69ae6360123c841fb78d81d38ccc8c59818e5d12ca3655e035424",
+  "plan_sha256": "59446b532fa2e79d286833d5f4fcd357f5c1f0e76ee6f1ba62807358160444ae",
+  "runtime_source_hashes": {
+    "ablations.py": "1b8164f317cab44218e78cb79814bfb1599484c166ade80ed2d1609f97be539b",
+    "audit_logs.py": "ac0a3321a25ff7606c8fbcb3cbb838603c8e578ed660911b0d7019d6996d2c60",
+    "build_report.py": "4420b1728527d83395a8d452b9f2156af6095ce7601d49f0937e8fe1e19a2e62",
+    "diagnostic_report.py": "8b24caeb294bb53fcabe441c75471a312db3b98eb718a89902eac7d5454b0fc4",
+    "evaluation.py": "080b74c607950735e7837f9b5f99561f052c0265b69397a4d12d0a0dfbb2222c",
+    "experiments.py": "4a8307adba6b13cd2fe80264e15497a16d777a691b3f6e0a2a1083631aaf194b",
+    "failure_mining.py": "11bbc5fb228d4f825841dcb733d5b4ff0a4a60eaba1610a6306f393da7fe8595",
+    "geometry.py": "5db1c02fb2d706a59135d77ddc77aaff754375e153361e5fe311d91c3134ed70",
+    "make_figures.py": "44c90da4c66a748bde8bbc08232ebfa904f13fde9211d682e223a50ba5a7a978",
+    "multi_gpu.py": "5608bd83abb0d1ece2d789763ed437987251693128ce63495bfb3ca05eb25c16",
+    "paired_multi_gpu.py": "29af712653f18e47c124cbcc88eaacbd80881b2ec009a2f0086c0fda28cbc3bb",
+    "paired_q4.py": "166a433a2dad8026b9685017b49e55ec38b8fd13c909ad12270d368517f35fc1",
+    "particles.py": "5d3b51ec3c9469b1be41d36d43751f32b0648c215482221ca5b806b0322a497e",
+    "phase_audit.py": "979c329afbd1289ac6a65feeda82c6f248f91cacb5708395d29bfd4654f5fdb5",
+    "questions.py": "df1c981d30bd722e77be1adc1789b3077cf842e917118e8e768d336b4450d557",
+    "recovered_benchmark.py": "d15445e83f7e4456f3bf2bc131c8be3814e2f9d25d0941b30514e1e2cd4c769c",
+    "simulator.py": "9008b52014d71b2c62b43484c6f511953908f7831f109e47efa3cf5d225117e6",
+    "solver.py": "c93e2dc37201bf09d1e09cbdc330ef28f8c344bff87af094f823218b08231543",
+    "directional\\diagnostic_candidates.py": "41c6ccefe5a38caee004c92c6ca2af0e2c233074ee2babcc30eddf8766b041d5",
+    "directional\\diagnostic_recovery.py": "d51bf3b9e0d9516fb01c66d984effac457e68a7e36de58073ae9d1464472d130",
+    "directional\\fallback_cost.py": "a65a1b8101220f7a29ce88366e2778945949cff83ba66d33f61eba8fa993941d",
+    "directional\\__init__.py": "97158de657eecc3dd760e91b223d1dabb68f8f40233fb5a14fd4d9ff03914fb6",
+    "experiments\\clearance_shadow.py": "ab77cfb8dd8706cde503af14e1e1c1e9c5d86f6a45a2b8d78e7e3730010bc785"
+  },
+  "csv_exactly_matches_gzip": {
+    "states": 772,
+    "candidates": 13050
+  },
+  "groups": {
+    "q3_active": {
+      "states": 347,
+      "cases": 20,
+      "candidates": 5205,
+      "actual_score_candidates": 5205,
+      "missing_score_candidates": 0,
+      "no_signal_candidates": 186,
+      "no_signal_states": 82,
+      "invalid_posterior_candidates": 0,
+      "invalid_posterior_outcomes": 0,
+      "gap_degenerate": {
+        "numerator": 13,
+        "denominator": 347,
+        "rate": 0.037463976945244955
+      },
+      "all_candidates_no_signal_possible": {
+        "numerator": 0,
+        "denominator": 347,
+        "rate": 0.0
+      },
+      "all_candidate_G_equals_current": {
+        "numerator": 0,
+        "denominator": 347,
+        "rate": 0.0
+      },
+      "g_vs_move_index_different": {
+        "numerator": 190,
+        "denominator": 347,
+        "rate": 0.547550432276657
+      },
+      "g_vs_move_top_sets_disjoint": {
+        "numerator": 190,
+        "denominator": 347,
+        "rate": 0.547550432276657
+      },
+      "g_vs_planner_index_different": {
+        "numerator": 184,
+        "denominator": 347,
+        "rate": 0.5302593659942363
+      },
+      "planner_outside_g_top": {
+        "numerator": 184,
+        "denominator": 347,
+        "rate": 0.5302593659942363
+      },
+      "g_vs_actual_measure_point_different": {
+        "numerator": 184,
+        "denominator": 347,
+        "rate": 0.5302593659942363
+      },
+      "actual_measure_outside_g_top": {
+        "numerator": 184,
+        "denominator": 347,
+        "rate": 0.5302593659942363
+      },
+      "original_plan_accepted": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "executed_planned_measurement": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "execution_override_detected": {
+        "numerator": 0,
+        "denominator": 347,
+        "rate": 0.0
+      },
+      "actual_measurements": 347,
+      "actual_measure_outside_candidates": 0,
+      "ranks": {
+        "D_worst": {
+          "common_candidates": 5205,
+          "candidate_pairs": 36435,
+          "concordant": 33918,
+          "discordant": 2336,
+          "both_tied": 5,
+          "current_only_tied": 0,
+          "shadow_only_tied": 176,
+          "states_with_common_support": 347,
+          "states_with_two_common_candidates": 347,
+          "top_sets_overlap": {
+            "numerator": 255,
+            "denominator": 347,
+            "rate": 0.7348703170028819
+          },
+          "strict_pair_inversion_rate": 0.06443426932200584
+        },
+        "R_worst": {
+          "common_candidates": 5205,
+          "candidate_pairs": 36435,
+          "concordant": 33919,
+          "discordant": 2337,
+          "both_tied": 5,
+          "current_only_tied": 0,
+          "shadow_only_tied": 174,
+          "states_with_common_support": 347,
+          "states_with_two_common_candidates": 347,
+          "top_sets_overlap": {
+            "numerator": 255,
+            "denominator": 347,
+            "rate": 0.7348703170028819
+          },
+          "strict_pair_inversion_rate": 0.06445829655781112
+        },
+        "G_worst": {
+          "common_candidates": 5205,
+          "candidate_pairs": 36435,
+          "concordant": 25763,
+          "discordant": 1325,
+          "both_tied": 5,
+          "current_only_tied": 0,
+          "shadow_only_tied": 9342,
+          "states_with_common_support": 347,
+          "states_with_two_common_candidates": 347,
+          "top_sets_overlap": {
+            "numerator": 317,
+            "denominator": 347,
+            "rate": 0.9135446685878963
+          },
+          "strict_pair_inversion_rate": 0.04891464855286474
+        },
+        "sampled_cert_score": {
+          "common_candidates": 5205,
+          "candidate_pairs": 36435,
+          "concordant": 18288,
+          "discordant": 4256,
+          "both_tied": 5,
+          "current_only_tied": 0,
+          "shadow_only_tied": 13886,
+          "states_with_common_support": 347,
+          "states_with_two_common_candidates": 347,
+          "top_sets_overlap": {
+            "numerator": 262,
+            "denominator": 347,
+            "rate": 0.7550432276657061
+          },
+          "strict_pair_inversion_rate": 0.18878637331440737
+        },
+        "certified_completion_cost": {
+          "common_candidates": 1837,
+          "candidate_pairs": 9173,
+          "concordant": 6017,
+          "discordant": 3069,
+          "both_tied": 0,
+          "current_only_tied": 0,
+          "shadow_only_tied": 87,
+          "states_with_common_support": 184,
+          "states_with_two_common_candidates": 181,
+          "top_sets_overlap": {
+            "numerator": 38,
+            "denominator": 184,
+            "rate": 0.20652173913043478
+          },
+          "strict_pair_inversion_rate": 0.33777239709443097
+        },
+        "estimated_completion_cost": {
+          "common_candidates": 0,
+          "candidate_pairs": 0,
+          "concordant": 0,
+          "discordant": 0,
+          "both_tied": 0,
+          "current_only_tied": 0,
+          "shadow_only_tied": 0,
+          "states_with_common_support": 0,
+          "states_with_two_common_candidates": 0,
+          "top_sets_overlap": {
+            "numerator": 0,
+            "denominator": 0,
+            "rate": null
+          },
+          "strict_pair_inversion_rate": null
+        }
+      }
+    },
+    "q4_active": {
+      "states": 329,
+      "cases": 22,
+      "candidates": 4907,
+      "actual_score_candidates": 4907,
+      "missing_score_candidates": 0,
+      "no_signal_candidates": 4318,
+      "no_signal_states": 329,
+      "invalid_posterior_candidates": 0,
+      "invalid_posterior_outcomes": 0,
+      "gap_degenerate": {
+        "numerator": 134,
+        "denominator": 329,
+        "rate": 0.4072948328267477
+      },
+      "all_candidates_no_signal_possible": {
+        "numerator": 122,
+        "denominator": 329,
+        "rate": 0.3708206686930091
+      },
+      "all_candidate_G_equals_current": {
+        "numerator": 134,
+        "denominator": 329,
+        "rate": 0.4072948328267477
+      },
+      "g_vs_move_index_different": {
+        "numerator": 119,
+        "denominator": 329,
+        "rate": 0.3617021276595745
+      },
+      "g_vs_move_top_sets_disjoint": {
+        "numerator": 109,
+        "denominator": 329,
+        "rate": 0.331306990881459
+      },
+      "g_vs_planner_index_different": {
+        "numerator": 245,
+        "denominator": 329,
+        "rate": 0.7446808510638298
+      },
+      "planner_outside_g_top": {
+        "numerator": 239,
+        "denominator": 329,
+        "rate": 0.7264437689969605
+      },
+      "g_vs_actual_measure_point_different": {
+        "numerator": 245,
+        "denominator": 329,
+        "rate": 0.7446808510638298
+      },
+      "actual_measure_outside_g_top": {
+        "numerator": 239,
+        "denominator": 329,
+        "rate": 0.7264437689969605
+      },
+      "original_plan_accepted": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "executed_planned_measurement": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "execution_override_detected": {
+        "numerator": 0,
+        "denominator": 329,
+        "rate": 0.0
+      },
+      "actual_measurements": 329,
+      "actual_measure_outside_candidates": 0,
+      "ranks": {
+        "D_worst": {
+          "common_candidates": 4907,
+          "candidate_pairs": 34153,
+          "concordant": 3329,
+          "discordant": 3211,
+          "both_tied": 652,
+          "current_only_tied": 8,
+          "shadow_only_tied": 26953,
+          "states_with_common_support": 329,
+          "states_with_two_common_candidates": 329,
+          "top_sets_overlap": {
+            "numerator": 156,
+            "denominator": 329,
+            "rate": 0.47416413373860183
+          },
+          "strict_pair_inversion_rate": 0.49097859327217125
+        },
+        "R_worst": {
+          "common_candidates": 4907,
+          "candidate_pairs": 34153,
+          "concordant": 3329,
+          "discordant": 3213,
+          "both_tied": 652,
+          "current_only_tied": 8,
+          "shadow_only_tied": 26951,
+          "states_with_common_support": 329,
+          "states_with_two_common_candidates": 329,
+          "top_sets_overlap": {
+            "numerator": 156,
+            "denominator": 329,
+            "rate": 0.47416413373860183
+          },
+          "strict_pair_inversion_rate": 0.4911342097217976
+        },
+        "G_worst": {
+          "common_candidates": 4907,
+          "candidate_pairs": 34153,
+          "concordant": 3203,
+          "discordant": 3103,
+          "both_tied": 652,
+          "current_only_tied": 8,
+          "shadow_only_tied": 27187,
+          "states_with_common_support": 329,
+          "states_with_two_common_candidates": 329,
+          "top_sets_overlap": {
+            "numerator": 172,
+            "denominator": 329,
+            "rate": 0.5227963525835866
+          },
+          "strict_pair_inversion_rate": 0.49207104345068187
+        },
+        "sampled_cert_score": {
+          "common_candidates": 4907,
+          "candidate_pairs": 34153,
+          "concordant": 21024,
+          "discordant": 5877,
+          "both_tied": 640,
+          "current_only_tied": 20,
+          "shadow_only_tied": 6592,
+          "states_with_common_support": 329,
+          "states_with_two_common_candidates": 329,
+          "top_sets_overlap": {
+            "numerator": 146,
+            "denominator": 329,
+            "rate": 0.44376899696048633
+          },
+          "strict_pair_inversion_rate": 0.21846771495483439
+        },
+        "certified_completion_cost": {
+          "common_candidates": 176,
+          "candidate_pairs": 236,
+          "concordant": 102,
+          "discordant": 134,
+          "both_tied": 0,
+          "current_only_tied": 0,
+          "shadow_only_tied": 0,
+          "states_with_common_support": 68,
+          "states_with_two_common_candidates": 44,
+          "top_sets_overlap": {
+            "numerator": 38,
+            "denominator": 68,
+            "rate": 0.5588235294117647
+          },
+          "strict_pair_inversion_rate": 0.5677966101694916
+        },
+        "estimated_completion_cost": {
+          "common_candidates": 0,
+          "candidate_pairs": 0,
+          "concordant": 0,
+          "discordant": 0,
+          "both_tied": 0,
+          "current_only_tied": 0,
+          "shadow_only_tied": 0,
+          "states_with_common_support": 0,
+          "states_with_two_common_candidates": 0,
+          "top_sets_overlap": {
+            "numerator": 0,
+            "denominator": 0,
+            "rate": null
+          },
+          "strict_pair_inversion_rate": null
+        }
+      }
+    },
+    "diagnostic_v1": {
+      "states": 96,
+      "cases": 14,
+      "candidates": 2938,
+      "actual_score_candidates": 384,
+      "missing_score_candidates": 2554,
+      "no_signal_candidates": 2527,
+      "no_signal_states": 96,
+      "invalid_posterior_candidates": 0,
+      "invalid_posterior_outcomes": 0,
+      "gap_degenerate": {
+        "numerator": 32,
+        "denominator": 96,
+        "rate": 0.3333333333333333
+      },
+      "all_candidates_no_signal_possible": {
+        "numerator": 31,
+        "denominator": 96,
+        "rate": 0.3229166666666667
+      },
+      "all_candidate_G_equals_current": {
+        "numerator": 32,
+        "denominator": 96,
+        "rate": 0.3333333333333333
+      },
+      "g_vs_move_index_different": {
+        "numerator": 52,
+        "denominator": 96,
+        "rate": 0.5416666666666666
+      },
+      "g_vs_move_top_sets_disjoint": {
+        "numerator": 48,
+        "denominator": 96,
+        "rate": 0.5
+      },
+      "g_vs_planner_index_different": {
+        "numerator": 88,
+        "denominator": 96,
+        "rate": 0.9166666666666666
+      },
+      "planner_outside_g_top": {
+        "numerator": 88,
+        "denominator": 96,
+        "rate": 0.9166666666666666
+      },
+      "g_vs_actual_measure_point_different": {
+        "numerator": 88,
+        "denominator": 96,
+        "rate": 0.9166666666666666
+      },
+      "actual_measure_outside_g_top": {
+        "numerator": 88,
+        "denominator": 96,
+        "rate": 0.9166666666666666
+      },
+      "original_plan_accepted": {
+        "numerator": 96,
+        "denominator": 96,
+        "rate": 1.0
+      },
+      "executed_planned_measurement": {
+        "numerator": 96,
+        "denominator": 96,
+        "rate": 1.0
+      },
+      "execution_override_detected": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "actual_measurements": 96,
+      "actual_measure_outside_candidates": 0,
+      "ranks": {
+        "D_worst": {
+          "common_candidates": 384,
+          "candidate_pairs": 576,
+          "concordant": 57,
+          "discordant": 17,
+          "both_tied": 0,
+          "current_only_tied": 0,
+          "shadow_only_tied": 502,
+          "states_with_common_support": 96,
+          "states_with_two_common_candidates": 96,
+          "top_sets_overlap": {
+            "numerator": 87,
+            "denominator": 96,
+            "rate": 0.90625
+          },
+          "strict_pair_inversion_rate": 0.22972972972972974
+        },
+        "R_worst": {
+          "common_candidates": 384,
+          "candidate_pairs": 576,
+          "concordant": 57,
+          "discordant": 17,
+          "both_tied": 0,
+          "current_only_tied": 0,
+          "shadow_only_tied": 502,
+          "states_with_common_support": 96,
+          "states_with_two_common_candidates": 96,
+          "top_sets_overlap": {
+            "numerator": 87,
+            "denominator": 96,
+            "rate": 0.90625
+          },
+          "strict_pair_inversion_rate": 0.22972972972972974
+        },
+        "G_worst": {
+          "common_candidates": 384,
+          "candidate_pairs": 576,
+          "concordant": 55,
+          "discordant": 17,
+          "both_tied": 0,
+          "current_only_tied": 0,
+          "shadow_only_tied": 504,
+          "states_with_common_support": 96,
+          "states_with_two_common_candidates": 96,
+          "top_sets_overlap": {
+            "numerator": 87,
+            "denominator": 96,
+            "rate": 0.90625
+          },
+          "strict_pair_inversion_rate": 0.2361111111111111
+        },
+        "sampled_cert_score": {
+          "common_candidates": 384,
+          "candidate_pairs": 576,
+          "concordant": 306,
+          "discordant": 82,
+          "both_tied": 0,
+          "current_only_tied": 0,
+          "shadow_only_tied": 188,
+          "states_with_common_support": 96,
+          "states_with_two_common_candidates": 96,
+          "top_sets_overlap": {
+            "numerator": 70,
+            "denominator": 96,
+            "rate": 0.7291666666666666
+          },
+          "strict_pair_inversion_rate": 0.211340206185567
+        },
+        "certified_completion_cost": {
+          "common_candidates": 15,
+          "candidate_pairs": 4,
+          "concordant": 4,
+          "discordant": 0,
+          "both_tied": 0,
+          "current_only_tied": 0,
+          "shadow_only_tied": 0,
+          "states_with_common_support": 11,
+          "states_with_two_common_candidates": 4,
+          "top_sets_overlap": {
+            "numerator": 11,
+            "denominator": 11,
+            "rate": 1.0
+          },
+          "strict_pair_inversion_rate": 0.0
+        },
+        "estimated_completion_cost": {
+          "common_candidates": 384,
+          "candidate_pairs": 576,
+          "concordant": 537,
+          "discordant": 39,
+          "both_tied": 0,
+          "current_only_tied": 0,
+          "shadow_only_tied": 0,
+          "states_with_common_support": 96,
+          "states_with_two_common_candidates": 96,
+          "top_sets_overlap": {
+            "numerator": 84,
+            "denominator": 96,
+            "rate": 0.875
+          },
+          "strict_pair_inversion_rate": 0.06770833333333333
+        }
+      }
+    }
+  },
+  "formal_runs": 0,
+  "rates_are_population_estimates": false,
+  "rank_ties": "exact floating-point equality; no arbitrary tie breaking in rank comparisons",
+  "gap_degeneracy_tolerance_m": [
+    1e-08
+  ],
+  "scope": "Q3 active next_view; Q4 active Hypotheses.next; Q4 diagnostic v1 depth=1. Both original variants. No parameter tuning or policy substitution.",
+  "selection_rule": "Fixed first eight local development indices per problem; add Q3 observed extreme benefit/regression 46,64; add Q4 maximum diagnostic count 42, maximum regression 61, second-highest diagnostic count 72. Descriptive case-enriched audit; not independent performance validation or population estimate."
+}
