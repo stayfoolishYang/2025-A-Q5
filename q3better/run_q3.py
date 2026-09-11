@@ -1,4 +1,4 @@
-"""Run the seven-point Q3 candidate against a supplied offline engine."""
+"""Run validated Q3 revision D against a supplied offline engine."""
 import argparse
 import json
 from pathlib import Path
@@ -8,6 +8,7 @@ BASE = Path(__file__).resolve().parent
 sys.path.insert(0, str(BASE/'B_solver'))
 sys.path.insert(0, str(BASE/'B_solver/experiments'))
 from phase_audit import TaggedSolver
+from active_failure import ActiveFailureSolver
 from recovered_benchmark import EngineAdapter
 from q3_stop16_pilot import CONFIG, audit
 
@@ -30,14 +31,15 @@ def main():
         p.error('Only Q3 scenarios are supported')
     engine = Engine(scenario)
     api = EngineAdapter(engine)
-    solver = TaggedSolver(api, False, 'P3', diagnostic=CONFIG)
+    cls = TaggedSolver if a.baseline else ActiveFailureSolver
+    solver = cls(api, False, 'P3', diagnostic=dict(CONFIG, local_order=not a.baseline))
     if not a.baseline:
         solver.discovery_route = 'refresh_after_localize'
     result = solver.run()
     audit(api.log, False)
     assert not solver.tracks
     assert engine.cleared == {j.channel for j in engine.scenario.jammers}
-    result.update(variant='A' if a.baseline else 'B', audit_passed=True,
+    result.update(variant='A' if a.baseline else 'D', audit_passed=True,
                   execution_backend='LOCAL_DEV', execution_purpose='FRAMEWORK_INTEGRATION',
                   production_eligible=False)
     a.output.parent.mkdir(parents=True, exist_ok=True)

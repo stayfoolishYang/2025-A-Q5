@@ -1,60 +1,66 @@
-# q3better：保留七点，定位后刷新发现路线
+# q3better：七点重排、蛇形兜底与主动失败计数修复
 
-本目录交付 Q3 七点路线候选及可复核的离线实验。32 场配对结果中，平均每源节省 **31.293833 秒**，平均整局节省 **380.916200 秒（9.52%）**。这不是六点布局，也没有启用清除 16 源提前退出。
+默认入口现使用 **D版**：保留7个发现点，定位结束后重排剩余路线；光学网格采用已有蛇形顺序；仅主动定位的无信号消耗连续失败次数。发现扫描的无信号保留在历史中，但不提前触发兜底。
 
-| 指标 | A 原版 | B 定位后刷新 |
-| --- | ---: | ---: |
-| 平均整局时间 | 4001.830718 s | 3620.914518 s |
-| 每场秒/源的算术平均 | 326.654411 s | 295.360578 s |
-| 秒/源 P95 | 407.332189 s | 354.290440 s |
-| 秒/源 P99 | 412.675447 s | 409.724875 s |
-| 全清 | 32/32 | 32/32 |
-| 光学兜底总次数 | 1 | 5 |
+**64场配对结果：平均每源节约47.28秒（14.15%），修复版平均286.77秒/源；128次运行全部全清并通过审计。** 这是已完成实验的结果，此次发布按用户要求没有再次运行测试。
 
-**28 场变快、3 场变慢、1 场持平。最大退步为 1232.146439 秒，最大节省为 959.895606 秒。** 本目录提供可运行候选，不代表已确认的生产默认方案。数据是复用 32 个探索场景的真实离线计算，不是官方测试成绩或独立留出集。
+| 集合 | 原版A秒/源 | 修复版D秒/源 | 平均每源节省 | 胜/负/平 |
+|---|---:|---:|---:|---:|
+| 旧32场 | 326.65 | 287.53 | 39.13秒 | 29/2/1 |
+| 新增32场 | 341.44 | 286.00 | 55.44秒 | 30/1/1 |
+| 全部64场 | 334.05 | 286.77 | 47.28秒 | 59/3/2 |
 
-## 改动原理
+平均整局4079.65→3511.44秒，省568.22秒。每源节省的中位数为36.47秒；新增场景50单局省7687.96秒，拉高了均值。三场退步分别为场景21慢12.90秒、场景29慢11.37秒、场景42慢15.17秒，均全清。不存在逐场必胜保证。
 
-原版扫完发现点后已经重排，但定位改变实际位置后未立即重排。候选构造相同 Q3/P3 求解器后仅设置：
+## 使用
 
-```python
-solver.discovery_route = 'refresh_after_localize'
-```
-
-复用 `discovery.refresh_remaining_route`，保留全部七点和各点尚未清除频道的扫描义务。从同一当前位置比较剩余完整开放路线，选择更短者。局部路线变短不保证完整任务逐场变快，因为观测和定位过程也随访问顺序改变。
-
-`run_q3.py` 是本目录专用离线入口，默认使用候选 B；`--baseline` 运行 A。仓库其他入口和默认配置没有修改。源码快照保留已有构造器限制，不能把该参数直接塞进旧 Q3 构造配置，须使用这里展示的实例设置方式。
-
-## 安装与单场运行
-
-从仓库根目录执行：
+从仓库根目录运行：
 
 ```powershell
 python -m pip install -r q3better/requirements.txt
 python q3better/run_q3.py --sim-root 'D:\桌面\2026国赛\b模拟器\Jammers-Offline-Windows' --output q3better/runs/candidate_000.json
-python q3better/run_q3.py --sim-root 'D:\桌面\2026国赛\b模拟器\Jammers-Offline-Windows' --baseline --output q3better/runs/baseline_000.json
 ```
 
-请将 `--sim-root` 改为自己的指定离线模拟器目录，其中应有 `engine.py`、`scenario_io.py`、`recovered_generator.py`。原实验使用 Windows 1.2.0 / practice-gen-v1。模拟器不随包上传；不使用目录内的自建 `simulator.LocalSimulator` 生成本报告成绩，也不连接官方服务。只运行本 Q3 路径需要 NumPy、SciPy，不需要 Torch 或 GPU。
+默认运行D版。加 `--baseline` 运行最初原版A；用 `--scene <场景.json>` 选择Q3场景。默认场景为随包场景000；输出文件必须不存在。
 
-默认使用随包场景 000；用 `--scene <场景.json>` 选择其他 Q3 场景。输出文件必须不存在。单场入口会验证七点扫描、整数微秒账本、正常退出和全清，真实源信息只用于运行后的评价。
+`--sim-root` 应指向自己的离线模拟器目录，内含 `engine.py`、`scenario_io.py`、`recovered_generator.py`。原实验为 Windows 1.2.0 / practice-gen-v1，仅使用离线Engine，不连接官方账户或接口。Q3执行路径需要NumPy和SciPy，不需要Torch或GPU。
 
-## 复现完整 32 场配对
+## 最小改动
+
+策略实现见 [active_failure.py](active_failure.py)，内容与64场实验执行版本逐字节相同。入口按以下方式构造候选：
+
+```python
+solver = ActiveFailureSolver(api, False, 'P3', diagnostic=dict(CONFIG, local_order=True))
+solver.discovery_route = 'refresh_after_localize'
+```
+
+发现无信号不增加或清空主动失败计数；任何方向观测仍清零该计数并累计方向次数；主动定位连续3次无信号或累计8次方向观测仍进入完整光学网格。没有删除兜底，没有改变7点、频道扫描义务、MEC清除规则或停止条件，没有启用stop16。
+
+64场D恰好未触发光学兜底。之前已通过另外的强制分支检查，确认3次主动失败和8次方向观测两种兜底仍可执行。该逻辑检查与真实场景实验分开记录。
+
+## 结果与来源
+
+- [64场完整报告](results/active_failure_64_01/REPORT.md)
+- [逐场配对结果](results/active_failure_64_01/pairs.csv) · [分组汇总](results/active_failure_64_01/aggregate.json)
+- `results/active_failure_64_01/scenes/`：64个冻结场景。
+- 同目录128份压缩轨迹及 `manifest.json`、`artifact_verification.json`：执行过程、种子与文件指纹。
+- `results/active_failure_64_01/executed/`：原实验脚本和候选源码的未改动副本、计数回归及强制兜底检查脚本与历史检查记录。它们保留原实验工作区路径，用于审计。
+- `history/seven_route_32/`：上一发布版的入口、说明和打包清单；原 `B_solver/results/` 下的历史证据继续保留。
+- `B_solver/*.py` 和 `B_solver/directional/*.py`：原始执行模块快照保持不变，其中历史工具并非本次新增策略。新策略在快照之外通过小子类实现。
+- `package_manifest.json`：本次发布的文件SHA-256；`package_verification.json`记录既有验证来源和此次未重测的边界。
+
+报告中“未推送GitHub”等表述记录实验完成时的状态；这些历史报告现在随本次更新发布。
+
+## 复现已有64场
 
 ```powershell
-python q3better/B_solver/experiments/q3_seven_route_probe.py --sim-root 'D:\桌面\2026国赛\b模拟器\Jammers-Offline-Windows' --output q3better/runs/paired_repeat_01
+python q3better/experiments/replay64.py q3better/runs/replay64_01 'D:\桌面\2026国赛\b模拟器\Jammers-Offline-Windows'
 ```
 
-输出目录必须不存在。脚本重跑 A、B，检查 A 完整动作日志与随包历史基线精确一致，并校验源码、场景和引擎指纹。若引擎版本不同，指纹检查会拒绝将其冒充原实验复现。可用 `--count 2` 做短验证；完整结果需要默认 32 场。
+输出目录必须不存在。此包装脚本直接使用已保存的64场，核对源码/引擎指纹，并比较A/D完整动作与历史轨迹；不重新抽样，不能当成另一批新确认场景。原执行脚本另行完整保留。此次仅调整发布入口及复现路径，按用户要求未运行更新后的包装入口或重跑实验。
 
-## 文件与来源
+## 证据边界
 
-- [完整实验报告](B_solver/results/q3_seven_route_probe_01/REPORT.md)：阶段成本、全部退步案例及证据限制。
-- [逐场配对结果](B_solver/results/q3_seven_route_probe_01/pairs.csv) 与 [汇总](B_solver/results/q3_seven_route_probe_01/summary.json)。
-- `B_solver/results/q3_seven_route_probe_01/traces/`：64 份完整轨迹；`verification.json` 保留原落盘验证及轨迹哈希。
-- `B_solver/results/q3_stop16_pilot_01/`：仅打包本次复现所需的 32 个物理场景和原版 A 轨迹。筛选后的 manifest 保留原来源 manifest 的 SHA-256；没有包含或宣传旧 stop16 候选结果。
-- `B_solver/*.py`、`B_solver/directional/*.py`：按原实验指纹保留的完整模块集合，包括未在 Q3 路径使用的历史模块；没有把其他模块变更合入仓库原位置。此集合用于确保 `source_hashes` 可原样复核。
-- 两个 `experiments/*.py` 保留原实验字节；旧报告中的绝对路径是历史来源，当前复现使用本 README 命令。
-- `package_manifest.json`：本发布目录文件的 SHA-256，排除 manifest 自身和 `runs/`。
+旧32场用于开发，新增32场在策略固定后首次使用；全部场景在该轮执行前冻结，没有筛选输赢或混入手工压力案例。只能将新增32场称为该候选在本地生成器上的首次确认，不能将混合64场全部当作独立留出集。
 
-证据类型：`execution_backend=LOCAL_DEV`、`execution_purpose=FRAMEWORK_INTEGRATION`、`production_eligible=false`。32 场均完成 A/B 配对，64 次全部全清且审计通过；这不证明所有新场景都改善，也不支持模型冻结。
+证据为 `LOCAL_DEV / FRAMEWORK_INTEGRATION`、`production_eligible=false`。全清实测不等于所有未来场景均能在限时内完成，也不是官方测试成绩。依赖使用版本下限而非完整环境锁；跨环境复现须以脚本检查为准。
