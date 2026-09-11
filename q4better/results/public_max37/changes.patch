@@ -1,0 +1,199 @@
+diff --git a/B_solver/geometry.py b/B_solver/geometry.py
+index 6691ad0..689f737 100644
+--- a/B_solver/geometry.py
++++ b/B_solver/geometry.py
+@@ -390,12 +390,15 @@ def sample_poly(poly, count, rng):
+     return (1-u[:, None])*a + (u*(1-v))[:, None]*b[k] + (u*v)[:, None]*c[k]
+ 
+ 
+-def coverage(mixed=False, ring=1130.):
++def coverage(mixed=False, ring=1130., *, version='legacy45'):
++    if version not in ('legacy45', 'certified37') or (not mixed and version != 'legacy45'):
++        raise ValueError('Invalid discovery coverage version')
+     if not mixed:
+         a = np.arange(6) * np.pi / 3
+         return np.vstack(([0., 0.], ring * np.c_[np.cos(a), np.sin(a)]))
+     return np.array([(x, y) for x in range(-2100, 2101, 700) for y in range(-2100, 2101, 700)
+-                     if x*x + y*y <= 2800**2], dtype=float)
++                     if x*x + y*y <= 2800**2 and
++                     (version == 'legacy45' or abs(x)+abs(y) <= 2800)], dtype=float)
+ 
+ 
+ def route(points, start):
+diff --git a/B_solver/reporting/discovery_report.py b/B_solver/reporting/discovery_report.py
+index 505b2ba..620dc51 100644
+--- a/B_solver/reporting/discovery_report.py
++++ b/B_solver/reporting/discovery_report.py
+@@ -68,12 +68,18 @@ def audit_trace(trace, row, scene, config):
+     time_before, position, channel = 0., (0., 0.), 1
+     first_index, clear_times, discovery = {}, [], []
+     measure_count = switch_count = clear_count = 0
++    public_complete_index = None
++    version = config.get('discovery_coverage', 'legacy45')
++    require(version in ('legacy45', 'certified37'), 'Unknown coverage version')
++    nodes = NODES if version == 'legacy45' else {p for p in NODES if abs(p[0])+abs(p[1]) <= 2800}
+     for index, action in enumerate(actions):
+         response = action['response']
+         after = response['virtual_time_s']
+         if response.get('accepted') is not True or not math.isfinite(after) or after < time_before:
+             failures.append(f'action[{index}]: rejected/nonfinite/reversed time')
+         if action['path'] in ('/measure', '/clear'):
++            if public_complete_index is not None:
++                failures.append('action after public maximum completion')
+             point, c = tuple(action['position']), action['channel']
+             require(len(point) == 2 and all(math.isfinite(x) for x in point), 'Invalid action position')
+             travel = math.dist(position, point)
+@@ -118,13 +124,30 @@ def audit_trace(trace, row, scene, config):
+                         failures.append(f'action[{index}]: repeated/non-source clear')
+                     cleared.add(c)
+                     clear_times.append(after)
++                    if config.get('stop_after_public_max_clear') and len(cleared) == 16:
++                        public_complete_index = index
++                    if config.get('stop_after_public_max_clear') and len(cleared) > 16:
++                        failures.append('public source maximum contradicted')
+             position = point
+         time_before = after
+-    for group in groups:
+-        if group['channels'] != group['expected']:
++    for i, group in enumerate(groups):
++        expected = group['expected']
++        # Only the final interrupted sweep can be incomplete, with real 16-clear evidence.
++        if (public_complete_index is not None and i == len(groups)-1
++                and actions[public_complete_index-1]['path'] == '/measure'
++                and actions[public_complete_index-1]['stage'] == 'discovery'
++                and actions[public_complete_index-1]['response'].get('measure_result') == 'near'):
++            expected = expected[:len(group['channels'])]
++        if group['channels'] != expected:
+             failures.append(f'node {group["point"]}: missing/repeated/channel-order mismatch')
+-    if len(groups) != 45 or {g['point'] for g in groups} != NODES:
+-        failures.append('45-node set/count mismatch')
++    visited = [g['point'] for g in groups]
++    if len(visited) != len(set(visited)) or not set(visited) <= nodes:
++        failures.append('duplicate or unknown coverage node')
++    if public_complete_index is None and (len(groups) != len(nodes) or set(visited) != nodes):
++        failures.append('selected coverage node set/count mismatch')
++    if public_complete_index is not None and (actions[-1]['response'].get('exit_reason') != 'user_exit'
++            or public_complete_index != len(actions)-2 or len(cleared) != 16):
++        failures.append('invalid public-max exit evidence')
+     if actions[-1]['path'] != '/exit':
+         failures.append('missing exit')
+     if set(first) != set(source) or cleared != set(source):
+@@ -146,7 +169,8 @@ def audit_trace(trace, row, scene, config):
+             if c not in source:
+                 failures.append('certificate on non-source channel')
+                 continue
+-            point = [Fraction(source[c]['x_um'], 1000000), Fraction(source[c]['y_um'], 1000000)]
++            point = ([Fraction(source[c]['x_um'], 1000000), Fraction(source[c]['y_um'], 1000000)]
++                     if 'x_um' in source[c] else [Fraction(source[c]['x']), Fraction(source[c]['y'])])
+             if not point_in_convex_polygon_exact(point, event['polygon']):
+                 failures.append(f'channel {c}: true source outside stored certificate polygon')
+             containment += 1
+diff --git a/B_solver/solver.py b/B_solver/solver.py
+index 811a0a4..1dc05dd 100644
+--- a/B_solver/solver.py
++++ b/B_solver/solver.py
+@@ -8,6 +8,8 @@ from geometry import disk, wedge, intersect_disk, mec, diameter, coverage, route
+ from particles import Hypotheses
+ from simulator import Client, LocalSimulator
+ 
++PUBLIC_MAX_SOURCES = 16
++
+ 
+ class Solver:
+     def __init__(self, client, mixed=False, policy='P3', device='cpu', particles=16384, use_negative=True, schedule=True, diagnostic=None):
+@@ -15,6 +17,14 @@ class Solver:
+         self.device, self.particles, self.use_negative = device, particles, use_negative
+         self.schedule = schedule
+         self.diagnostic = diagnostic or {}
++        self.stop_after_public_max_clear = self.diagnostic.get('stop_after_public_max_clear', False)
++        self.discovery_coverage = self.diagnostic.get('discovery_coverage', 'legacy45')
++        if type(self.stop_after_public_max_clear) is not bool:
++            raise ValueError('stop_after_public_max_clear must be boolean')
++        if self.discovery_coverage not in ('legacy45', 'certified37'):
++            raise ValueError('Unknown discovery_coverage')
++        if (self.stop_after_public_max_clear or self.discovery_coverage != 'legacy45') and (not mixed or policy != 'P4'):
++            raise ValueError('Public-max and coverage experiments require mixed Q4/P4')
+         self.clearance_point = self.diagnostic.get('clearance_point', 'mec_center')
+         if self.clearance_point not in ('mec_center', 'nccp', 'segment_entry'):
+             raise ValueError('clearance_point must be mec_center, nccp or segment_entry')
+@@ -31,6 +41,13 @@ class Solver:
+         self.history = {c: [] for c in range(1,21)}
+         self.observations, self.fallbacks, self.certified = 0, 0, 0
+ 
++    def public_max_complete(self):
++        if self.stop_after_public_max_clear and len(self.cleared) > PUBLIC_MAX_SOURCES:
++            raise RuntimeError('Successful channels exceed the public source maximum')
++        if self.stop_after_public_max_clear and len(self.cleared) == PUBLIC_MAX_SOURCES and self.tracks:
++            raise RuntimeError('Uncleared observed source contradicts the public source maximum')
++        return self.stop_after_public_max_clear and len(self.cleared) == PUBLIC_MAX_SOURCES
++
+     def target_trace(self, c):
+         return self.trace.setdefault(c, dict(channel=int(c), first_seen_position=None, first_seen_time=None,
+             num_direction_obs=0, num_no_signal_obs=0, num_near_obs=0, geometry_history=[],
+@@ -124,10 +141,14 @@ class Solver:
+         return success
+ 
+     def clear(self, c, p, certified=False):
++        if self.public_max_complete():
++            raise RuntimeError('Clear attempted after public-max completion')
+         log = self.target_trace(c)
+         log['movement_distance'] += float(np.linalg.norm(p-self.api.position))
+         before = self.api.virtual_time
+         response = self.api.action('/clear', p, int(c))
++        if response.get('accepted') is not True:
++            raise RuntimeError('Rejected clear response')
+         log['clear_attempts'] += 1
+         log['clear_time'] += self.api.virtual_time-before
+         if response['clear_result'] == 'success':
+@@ -141,6 +162,8 @@ class Solver:
+         return False
+ 
+     def measure(self, c, p):
++        if self.public_max_complete():
++            raise RuntimeError('Measure attempted after public-max completion')
+         p = np.asarray(p)
+         log = self.target_trace(c)
+         log['movement_distance'] += float(np.linalg.norm(p-self.api.position))
+@@ -220,8 +243,8 @@ class Solver:
+     def run(self):
+         start = time.perf_counter()
+         self.api.action('/enter')
+-        nodes = list(route(coverage(self.mixed), self.api.position))
+-        while nodes or self.tracks:
++        nodes = list(route(coverage(self.mixed, version=self.discovery_coverage), self.api.position))
++        while (nodes or self.tracks) and not self.public_max_complete():
+             # Candidate clearing/localization costs compete with the next discovery sweep.
+             choices = []
+             for c, track in self.tracks.items():
+@@ -233,6 +256,8 @@ class Solver:
+                 explore = float('inf')
+             if local[1] is not None and (not nodes or local[0] <= explore):
+                 self.localize(local[1], one_step=self.policy in ('P3','P4'))
++                if self.public_max_complete():
++                    break
+                 if nodes and self.discovery_route == 'refresh_after_localize':
+                     from discovery import refresh_remaining_route
+                     nodes = refresh_remaining_route(nodes, self.api.position)
+@@ -250,8 +275,12 @@ class Solver:
+                 if c in self.cleared:
+                     continue
+                 self.measure(c, p)
++                if self.public_max_complete():
++                    break
+                 if c in self.tracks and self.policy in ('P0','P1','P2'):
+                     self.localize(c)
++            if self.public_max_complete():
++                break
+             if nodes and self.policy in ('P3','P4'):
+                 nodes = list(route(np.asarray(nodes), self.api.position))
+         self.api.action('/exit')
+@@ -259,7 +288,8 @@ class Solver:
+                     virtual_time_s=self.api.virtual_time,
+                     mean_time_per_source_s=self.api.virtual_time/max(1,len(self.cleared)),
+                     runtime_s=time.perf_counter()-start, localization_observations=self.observations,
+-                    optical_fallbacks=self.fallbacks, certified_clears=self.certified)
++                    optical_fallbacks=self.fallbacks, certified_clears=self.certified,
++                    completion_reason='public_max_cleared' if self.public_max_complete() else 'coverage_exhausted')
+ 
+ 
+ def main():
