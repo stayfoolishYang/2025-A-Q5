@@ -1,0 +1,2757 @@
+{
+  "scope": "Read-only extreme-case diagnosis, selection is post hoc; not new independent runs.",
+  "formal_runs": 0,
+  "solver_runs": 0,
+  "cohort": "holdout128",
+  "cases": [
+    {
+      "seed": 42,
+      "derivation_index": 74,
+      "seed_hex": "97df4e83caeb2c8026f3bf5caa59d6a91d23e925151e2dcd770f13cc2ec475e5",
+      "selected_for": [
+        "largest_total_regression"
+      ],
+      "total_delta_s_per_source": 71.54318492307698,
+      "last_discovery_delta_s": 1157.3900040000008,
+      "first_divergence_action_index": 42,
+      "last_shared_action": {
+        "path": "/clear",
+        "stage": "certified_clear",
+        "position": [
+          -279.1783279641393,
+          340.0178177229426
+        ],
+        "channel": 6,
+        "response": {
+          "accepted": true,
+          "virtual_time_s": 491.204066,
+          "clear_result": "success"
+        },
+        "travel_m": 541.0203286606979,
+        "travel_s": 108.20406600000001,
+        "switch_s": 0,
+        "measure_s": 0,
+        "clear_s": 5,
+        "total_s": 113.20406600000001,
+        "actions": 1
+      },
+      "baseline_next": {
+        "path": "/measure",
+        "stage": "active_localization",
+        "position": [
+          -218.64742064772838,
+          -793.4017825325534
+        ],
+        "channel": 15,
+        "response": {
+          "accepted": true,
+          "virtual_time_s": 724.211025,
+          "measure_result": "no_signal"
+        },
+        "travel_m": 1135.0347928516887,
+        "travel_s": 227.00695899999994,
+        "switch_s": 1,
+        "measure_s": 5,
+        "clear_s": 0,
+        "total_s": 233.00695899999994,
+        "actions": 1
+      },
+      "refresh_next": {
+        "path": "/measure",
+        "stage": "discovery",
+        "position": [
+          0.0,
+          700.0
+        ],
+        "channel": 19,
+        "response": {
+          "accepted": true,
+          "virtual_time_s": 587.314485,
+          "measure_result": "no_signal"
+        },
+        "travel_m": 455.5520940153882,
+        "travel_s": 91.11041899999998,
+        "switch_s": 0,
+        "measure_s": 5,
+        "clear_s": 0,
+        "total_s": 96.11041899999998,
+        "actions": 1
+      },
+      "variants": [
+        {
+          "variant": "P4_diagnostic_v1_grid_v1",
+          "row": {
+            "seed": 42,
+            "seed_hex": "97df4e83caeb2c8026f3bf5caa59d6a91d23e925151e2dcd770f13cc2ec475e5",
+            "stress": "sha256_discovery_design",
+            "problem": 4,
+            "variant": "P4_diagnostic_v1_grid_v1",
+            "run_status": "FULL_CLEAR",
+            "engine_end_reason": "user_exit",
+            "total": 13,
+            "cleared": 13,
+            "clear_rate": 1.0,
+            "error": "",
+            "mean_time_per_source": 848.0770843076923,
+            "virtual_time_s": 11025.002096,
+            "distance": 39670.010471324276,
+            "runtime": 1.6696637999993982,
+            "device": "cpu",
+            "fallback_count": 0,
+            "grid_points": 0,
+            "clear_attempts": 13,
+            "optical_clear_attempts": 0,
+            "diagnostic_count": 0,
+            "detect_count": 512,
+            "switch_count": 466,
+            "config_hash": "dbc2410062cd54ef42aab2386c7e3f91784cf9bdb9913a67cd28fcbd825c381c",
+            "scene_hash": "3f17ad3fe0491491f627a45f99a209782e6723f2d17aa0af40ef5ae3b0878456",
+            "source_hash": "12c407c5d4d7924e0f973f40b0b6bf28e1705a21d1dc975f7dce7445a7b00a33",
+            "directional_count": 10,
+            "evidence": "recovered_practice_engine_local",
+            "grid_version": "grid_v1",
+            "clearance_point": "mec_center",
+            "polygon_certified_count": 13,
+            "near_certified_count": 0,
+            "polygon_clear_travel_m": 3066.2376569993207,
+            "polygon_clear_mec_travel_m": 3066.2376569993207,
+            "same_state_clear_saving_m": 0.0,
+            "polygon_zero_move_count": 0,
+            "nccp_fallback_count": 0,
+            "max_clearance_vertex_distance": 18.541668746636702,
+            "certificate_audit_violations": 0,
+            "stage_discovery_s": 9028.549262000002,
+            "stage_active_localization_s": 1318.205301999999,
+            "stage_diagnostic_s": 0.0,
+            "stage_optical_fallback_s": 0.0,
+            "stage_certified_clear_s": 678.2475319999992,
+            "stage_sum_error_s": 0.0
+          },
+          "stages": {
+            "discovery": {
+              "travel_m": 30512.746300762705,
+              "travel_s": 6102.549262000002,
+              "switch_s": 456.0,
+              "measure_s": 2470.0,
+              "clear_s": 0.0,
+              "total_s": 9028.549262000002,
+              "actions": 494
+            },
+            "active_localization": {
+              "travel_m": 6091.026513562231,
+              "travel_s": 1218.205301999999,
+              "switch_s": 10.0,
+              "measure_s": 90.0,
+              "clear_s": 0.0,
+              "total_s": 1318.205301999999,
+              "actions": 18
+            },
+            "diagnostic": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "optical_fallback": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "certified_clear": {
+              "travel_m": 3066.2376569993207,
+              "travel_s": 613.2475319999992,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 65.0,
+              "total_s": 678.2475319999992,
+              "actions": 13
+            }
+          },
+          "trace_path": "J:\\2026B_experiments\\discovery_20260911\\holdout128\\q4\\traces\\P4_diagnostic_v1_grid_v1_0042.json.gz",
+          "trace_sha256": "93cef38b0c3aac036e1a06504e61fc7942c4aa948226c27c95ec609fedf3d1a3",
+          "last_source": {
+            "channel": 13,
+            "action_index": 458,
+            "time_s": 9335.594862,
+            "position": [
+              2100.0,
+              -700.0
+            ]
+          },
+          "target_times": [
+            {
+              "channel": 1,
+              "first_seen": 8638.604963,
+              "clear_time": 107.3054030000003
+            },
+            {
+              "channel": 2,
+              "first_seen": 7062.679624,
+              "clear_time": 149.5254359999999
+            },
+            {
+              "channel": 3,
+              "first_seen": 282.0,
+              "clear_time": 148.62377500000002
+            },
+            {
+              "channel": 4,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 5,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 6,
+              "first_seen": 35.0,
+              "clear_time": 113.20406600000001
+            },
+            {
+              "channel": 7,
+              "first_seen": 306.0,
+              "clear_time": 10.05724599999985
+            },
+            {
+              "channel": 8,
+              "first_seen": 6875.679624,
+              "clear_time": 11.062218999999459
+            },
+            {
+              "channel": 9,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 10,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 11,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 12,
+              "first_seen": 336.0,
+              "clear_time": 10.597471999999925
+            },
+            {
+              "channel": 13,
+              "first_seen": 9335.594862,
+              "clear_time": 22.900870999999825
+            },
+            {
+              "channel": 14,
+              "first_seen": 83.0,
+              "clear_time": 10.024116999999933
+            },
+            {
+              "channel": 15,
+              "first_seen": 89.0,
+              "clear_time": 11.377782000000025
+            },
+            {
+              "channel": 16,
+              "first_seen": 933.01717,
+              "clear_time": 50.98644300000001
+            },
+            {
+              "channel": 17,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 18,
+              "first_seen": 1330.666485,
+              "clear_time": 17.424669999999878
+            },
+            {
+              "channel": 19,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 20,
+              "first_seen": 957.01717,
+              "clear_time": 15.158032000000048
+            }
+          ]
+        },
+        {
+          "variant": "P4_diagnostic_v1_grid_v1_refresh",
+          "row": {
+            "seed": 42,
+            "seed_hex": "97df4e83caeb2c8026f3bf5caa59d6a91d23e925151e2dcd770f13cc2ec475e5",
+            "stress": "sha256_discovery_design",
+            "problem": 4,
+            "variant": "P4_diagnostic_v1_grid_v1_refresh",
+            "run_status": "FULL_CLEAR",
+            "engine_end_reason": "user_exit",
+            "total": 13,
+            "cleared": 13,
+            "clear_rate": 1.0,
+            "error": "",
+            "mean_time_per_source": 919.6202692307693,
+            "virtual_time_s": 11955.0635,
+            "distance": 39800.31747350765,
+            "runtime": 2.020044600001711,
+            "device": "cpu",
+            "fallback_count": 0,
+            "grid_points": 0,
+            "clear_attempts": 13,
+            "optical_clear_attempts": 0,
+            "diagnostic_count": 5,
+            "detect_count": 662,
+            "switch_count": 620,
+            "config_hash": "c016182ec3774b8fefcfe9bdfd3edeab4368bb2b74068722d851af24e8174cac",
+            "scene_hash": "3f17ad3fe0491491f627a45f99a209782e6723f2d17aa0af40ef5ae3b0878456",
+            "source_hash": "12c407c5d4d7924e0f973f40b0b6bf28e1705a21d1dc975f7dce7445a7b00a33",
+            "directional_count": 10,
+            "evidence": "recovered_practice_engine_local",
+            "grid_version": "grid_v1",
+            "clearance_point": "mec_center",
+            "polygon_certified_count": 13,
+            "near_certified_count": 0,
+            "polygon_clear_travel_m": 2697.90549653383,
+            "polygon_clear_mec_travel_m": 2697.90549653383,
+            "same_state_clear_saving_m": 0.0,
+            "polygon_zero_move_count": 0,
+            "nccp_fallback_count": 0,
+            "max_clearance_vertex_distance": 16.46428930258079,
+            "certificate_audit_violations": 0,
+            "stage_discovery_s": 9800.444070000001,
+            "stage_active_localization_s": 1178.6385930000024,
+            "stage_diagnostic_s": 371.3997360000012,
+            "stage_optical_fallback_s": 0.0,
+            "stage_certified_clear_s": 604.5811009999959,
+            "stage_sum_error_s": 1.8189894035458565e-12
+          },
+          "stages": {
+            "discovery": {
+              "travel_m": 29782.22034014849,
+              "travel_s": 5956.4440700000005,
+              "switch_s": 609.0,
+              "measure_s": 3235.0,
+              "clear_s": 0.0,
+              "total_s": 9800.444070000001,
+              "actions": 647
+            },
+            "active_localization": {
+              "travel_m": 5598.192962050105,
+              "travel_s": 1119.6385930000024,
+              "switch_s": 9.0,
+              "measure_s": 50.0,
+              "clear_s": 0.0,
+              "total_s": 1178.6385930000024,
+              "actions": 10
+            },
+            "diagnostic": {
+              "travel_m": 1721.998674775221,
+              "travel_s": 344.3997360000012,
+              "switch_s": 2.0,
+              "measure_s": 25.0,
+              "clear_s": 0.0,
+              "total_s": 371.3997360000012,
+              "actions": 5
+            },
+            "optical_fallback": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "certified_clear": {
+              "travel_m": 2697.9054965338305,
+              "travel_s": 539.5811009999959,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 65.0,
+              "total_s": 604.5811009999959,
+              "actions": 13
+            }
+          },
+          "trace_path": "J:\\2026B_experiments\\discovery_20260911\\holdout128\\q4\\traces\\P4_diagnostic_v1_grid_v1_refresh_0042.json.gz",
+          "trace_sha256": "19d7dcec26fe97bb29f6fd47282b0cef22bc00dd53e8951469c4ad1e33aa09ab",
+          "last_source": {
+            "channel": 1,
+            "action_index": 617,
+            "time_s": 10492.984866,
+            "position": [
+              1400.0,
+              -1400.0
+            ]
+          },
+          "target_times": [
+            {
+              "channel": 1,
+              "first_seen": 10492.984866,
+              "clear_time": 107.30540299999848
+            },
+            {
+              "channel": 2,
+              "first_seen": 1922.304384,
+              "clear_time": 108.8950420000001
+            },
+            {
+              "channel": 3,
+              "first_seen": 282.0,
+              "clear_time": 7.115723999999318
+            },
+            {
+              "channel": 4,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 5,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 6,
+              "first_seen": 35.0,
+              "clear_time": 113.20406600000001
+            },
+            {
+              "channel": 7,
+              "first_seen": 306.0,
+              "clear_time": 10.756642999998803
+            },
+            {
+              "channel": 8,
+              "first_seen": 1699.304384,
+              "clear_time": 29.611421999999948
+            },
+            {
+              "channel": 9,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 10,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 11,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 12,
+              "first_seen": 336.0,
+              "clear_time": 25.57524099999955
+            },
+            {
+              "channel": 13,
+              "first_seen": 2663.001195,
+              "clear_time": 11.791337999999087
+            },
+            {
+              "channel": 14,
+              "first_seen": 83.0,
+              "clear_time": 11.468386999999893
+            },
+            {
+              "channel": 15,
+              "first_seen": 89.0,
+              "clear_time": 25.409083999999893
+            },
+            {
+              "channel": 16,
+              "first_seen": 7242.032965,
+              "clear_time": 10.089325999999346
+            },
+            {
+              "channel": 17,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 18,
+              "first_seen": 6680.414051,
+              "clear_time": 22.317747000000963
+            },
+            {
+              "channel": 19,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 20,
+              "first_seen": 7266.032965,
+              "clear_time": 121.0416780000005
+            }
+          ]
+        },
+        {
+          "variant": "P4_diagnostic_v1_grid_v1_unknown",
+          "row": {
+            "seed": 42,
+            "seed_hex": "97df4e83caeb2c8026f3bf5caa59d6a91d23e925151e2dcd770f13cc2ec475e5",
+            "stress": "sha256_discovery_design",
+            "problem": 4,
+            "variant": "P4_diagnostic_v1_grid_v1_unknown",
+            "run_status": "FULL_CLEAR",
+            "engine_end_reason": "user_exit",
+            "total": 13,
+            "cleared": 13,
+            "clear_rate": 1.0,
+            "error": "",
+            "mean_time_per_source": 847.8463150769231,
+            "virtual_time_s": 11022.002096,
+            "distance": 39670.010471324276,
+            "runtime": 1.5840781000006245,
+            "device": "cpu",
+            "fallback_count": 0,
+            "grid_points": 0,
+            "clear_attempts": 13,
+            "optical_clear_attempts": 0,
+            "diagnostic_count": 0,
+            "detect_count": 512,
+            "switch_count": 463,
+            "config_hash": "1c1f474d09cf74b3e2613393a85ead559e23f6ab533715c54b651678b902c82b",
+            "scene_hash": "3f17ad3fe0491491f627a45f99a209782e6723f2d17aa0af40ef5ae3b0878456",
+            "source_hash": "12c407c5d4d7924e0f973f40b0b6bf28e1705a21d1dc975f7dce7445a7b00a33",
+            "directional_count": 10,
+            "evidence": "recovered_practice_engine_local",
+            "grid_version": "grid_v1",
+            "clearance_point": "mec_center",
+            "polygon_certified_count": 13,
+            "near_certified_count": 0,
+            "polygon_clear_travel_m": 3066.2376569993207,
+            "polygon_clear_mec_travel_m": 3066.2376569993207,
+            "same_state_clear_saving_m": 0.0,
+            "polygon_zero_move_count": 0,
+            "nccp_fallback_count": 0,
+            "max_clearance_vertex_distance": 18.541668746636702,
+            "certificate_audit_violations": 0,
+            "stage_discovery_s": 9029.549262000002,
+            "stage_active_localization_s": 1314.205301999999,
+            "stage_diagnostic_s": 0.0,
+            "stage_optical_fallback_s": 0.0,
+            "stage_certified_clear_s": 678.2475319999992,
+            "stage_sum_error_s": 0.0
+          },
+          "stages": {
+            "discovery": {
+              "travel_m": 30512.746300762705,
+              "travel_s": 6102.549262000002,
+              "switch_s": 457.0,
+              "measure_s": 2470.0,
+              "clear_s": 0.0,
+              "total_s": 9029.549262000002,
+              "actions": 494
+            },
+            "active_localization": {
+              "travel_m": 6091.026513562231,
+              "travel_s": 1218.205301999999,
+              "switch_s": 6.0,
+              "measure_s": 90.0,
+              "clear_s": 0.0,
+              "total_s": 1314.205301999999,
+              "actions": 18
+            },
+            "diagnostic": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "optical_fallback": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "certified_clear": {
+              "travel_m": 3066.2376569993207,
+              "travel_s": 613.2475319999992,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 65.0,
+              "total_s": 678.2475319999992,
+              "actions": 13
+            }
+          },
+          "trace_path": "J:\\2026B_experiments\\discovery_20260911\\holdout128\\q4\\traces\\P4_diagnostic_v1_grid_v1_unknown_0042.json.gz",
+          "trace_sha256": "c29eaffce66146d57e41ff3d9e41e96fd9355e18fa42d7b40b6c10da2546fc16",
+          "last_source": {
+            "channel": 13,
+            "action_index": 456,
+            "time_s": 9321.594862,
+            "position": [
+              2100.0,
+              -700.0
+            ]
+          },
+          "target_times": [
+            {
+              "channel": 1,
+              "first_seen": 8636.604963,
+              "clear_time": 107.3054030000003
+            },
+            {
+              "channel": 2,
+              "first_seen": 7059.679624,
+              "clear_time": 149.5254359999999
+            },
+            {
+              "channel": 3,
+              "first_seen": 282.0,
+              "clear_time": 148.62377500000002
+            },
+            {
+              "channel": 4,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 5,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 6,
+              "first_seen": 35.0,
+              "clear_time": 113.20406600000001
+            },
+            {
+              "channel": 7,
+              "first_seen": 300.0,
+              "clear_time": 10.05724599999985
+            },
+            {
+              "channel": 8,
+              "first_seen": 6872.679624,
+              "clear_time": 11.062218999999459
+            },
+            {
+              "channel": 9,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 10,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 11,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 12,
+              "first_seen": 330.0,
+              "clear_time": 10.597471999999925
+            },
+            {
+              "channel": 13,
+              "first_seen": 9321.594862,
+              "clear_time": 22.900870999999825
+            },
+            {
+              "channel": 14,
+              "first_seen": 83.0,
+              "clear_time": 10.024116999999933
+            },
+            {
+              "channel": 15,
+              "first_seen": 89.0,
+              "clear_time": 11.377782000000025
+            },
+            {
+              "channel": 16,
+              "first_seen": 908.01717,
+              "clear_time": 50.98644300000001
+            },
+            {
+              "channel": 17,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 18,
+              "first_seen": 1310.666485,
+              "clear_time": 17.424669999999878
+            },
+            {
+              "channel": 19,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 20,
+              "first_seen": 932.01717,
+              "clear_time": 15.158032000000048
+            }
+          ]
+        },
+        {
+          "variant": "P4_diagnostic_v1_grid_v1_refresh_unknown",
+          "row": {
+            "seed": 42,
+            "seed_hex": "97df4e83caeb2c8026f3bf5caa59d6a91d23e925151e2dcd770f13cc2ec475e5",
+            "stress": "sha256_discovery_design",
+            "problem": 4,
+            "variant": "P4_diagnostic_v1_grid_v1_refresh_unknown",
+            "run_status": "FULL_CLEAR",
+            "engine_end_reason": "user_exit",
+            "total": 13,
+            "cleared": 13,
+            "clear_rate": 1.0,
+            "error": "",
+            "mean_time_per_source": 919.5433461538462,
+            "virtual_time_s": 11954.0635,
+            "distance": 39800.31747350765,
+            "runtime": 2.039592699999048,
+            "device": "cpu",
+            "fallback_count": 0,
+            "grid_points": 0,
+            "clear_attempts": 13,
+            "optical_clear_attempts": 0,
+            "diagnostic_count": 5,
+            "detect_count": 662,
+            "switch_count": 619,
+            "config_hash": "115f6b83ca0895b97018e3b1694859065b4185026584c2df3cf860b5d07484de",
+            "scene_hash": "3f17ad3fe0491491f627a45f99a209782e6723f2d17aa0af40ef5ae3b0878456",
+            "source_hash": "12c407c5d4d7924e0f973f40b0b6bf28e1705a21d1dc975f7dce7445a7b00a33",
+            "directional_count": 10,
+            "evidence": "recovered_practice_engine_local",
+            "grid_version": "grid_v1",
+            "clearance_point": "mec_center",
+            "polygon_certified_count": 13,
+            "near_certified_count": 0,
+            "polygon_clear_travel_m": 2697.90549653383,
+            "polygon_clear_mec_travel_m": 2697.90549653383,
+            "same_state_clear_saving_m": 0.0,
+            "polygon_zero_move_count": 0,
+            "nccp_fallback_count": 0,
+            "max_clearance_vertex_distance": 16.46428930258079,
+            "certificate_audit_violations": 0,
+            "stage_discovery_s": 9800.444070000001,
+            "stage_active_localization_s": 1177.6385930000024,
+            "stage_diagnostic_s": 371.3997360000012,
+            "stage_optical_fallback_s": 0.0,
+            "stage_certified_clear_s": 604.5811009999959,
+            "stage_sum_error_s": 1.8189894035458565e-12
+          },
+          "stages": {
+            "discovery": {
+              "travel_m": 29782.22034014849,
+              "travel_s": 5956.4440700000005,
+              "switch_s": 609.0,
+              "measure_s": 3235.0,
+              "clear_s": 0.0,
+              "total_s": 9800.444070000001,
+              "actions": 647
+            },
+            "active_localization": {
+              "travel_m": 5598.192962050105,
+              "travel_s": 1119.6385930000024,
+              "switch_s": 8.0,
+              "measure_s": 50.0,
+              "clear_s": 0.0,
+              "total_s": 1177.6385930000024,
+              "actions": 10
+            },
+            "diagnostic": {
+              "travel_m": 1721.998674775221,
+              "travel_s": 344.3997360000012,
+              "switch_s": 2.0,
+              "measure_s": 25.0,
+              "clear_s": 0.0,
+              "total_s": 371.3997360000012,
+              "actions": 5
+            },
+            "optical_fallback": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "certified_clear": {
+              "travel_m": 2697.9054965338305,
+              "travel_s": 539.5811009999959,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 65.0,
+              "total_s": 604.5811009999959,
+              "actions": 13
+            }
+          },
+          "trace_path": "J:\\2026B_experiments\\discovery_20260911\\holdout128\\q4\\traces\\P4_diagnostic_v1_grid_v1_refresh_unknown_0042.json.gz",
+          "trace_sha256": "4c07f77e6aa253bf0e3c1ecb4a1a60830f8a2f284dc7d8c590d463e10da88276",
+          "last_source": {
+            "channel": 1,
+            "action_index": 617,
+            "time_s": 10492.984866,
+            "position": [
+              1400.0,
+              -1400.0
+            ]
+          },
+          "target_times": [
+            {
+              "channel": 1,
+              "first_seen": 10492.984866,
+              "clear_time": 107.30540299999848
+            },
+            {
+              "channel": 2,
+              "first_seen": 1922.304384,
+              "clear_time": 108.8950420000001
+            },
+            {
+              "channel": 3,
+              "first_seen": 282.0,
+              "clear_time": 7.115723999999318
+            },
+            {
+              "channel": 4,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 5,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 6,
+              "first_seen": 35.0,
+              "clear_time": 113.20406600000001
+            },
+            {
+              "channel": 7,
+              "first_seen": 300.0,
+              "clear_time": 10.756642999998803
+            },
+            {
+              "channel": 8,
+              "first_seen": 1687.304384,
+              "clear_time": 29.611421999999948
+            },
+            {
+              "channel": 9,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 10,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 11,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 12,
+              "first_seen": 330.0,
+              "clear_time": 25.57524099999955
+            },
+            {
+              "channel": 13,
+              "first_seen": 2639.001195,
+              "clear_time": 11.791337999999087
+            },
+            {
+              "channel": 14,
+              "first_seen": 83.0,
+              "clear_time": 11.468386999999893
+            },
+            {
+              "channel": 15,
+              "first_seen": 89.0,
+              "clear_time": 25.409083999999893
+            },
+            {
+              "channel": 16,
+              "first_seen": 7224.032965,
+              "clear_time": 10.089325999999346
+            },
+            {
+              "channel": 17,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 18,
+              "first_seen": 6644.414051,
+              "clear_time": 22.317747000000963
+            },
+            {
+              "channel": 19,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 20,
+              "first_seen": 7242.032965,
+              "clear_time": 121.0416780000005
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 107,
+      "derivation_index": 139,
+      "seed_hex": "0c1c4d048c67393f73ccffd5bd2da334ec905e944ad8d63a64d4705b0d80496a",
+      "selected_for": [
+        "largest_last_discovery_delay"
+      ],
+      "total_delta_s_per_source": -67.18749791666664,
+      "last_discovery_delta_s": 3373.1489679999995,
+      "first_divergence_action_index": 84,
+      "last_shared_action": {
+        "path": "/measure",
+        "stage": "discovery",
+        "position": [
+          -1400.0,
+          -700.0
+        ],
+        "channel": 20,
+        "response": {
+          "accepted": true,
+          "virtual_time_s": 1257.440598,
+          "measure_result": "no_signal"
+        },
+        "travel_m": 0.0,
+        "travel_s": 0.0,
+        "switch_s": 1,
+        "measure_s": 5,
+        "clear_s": 0,
+        "total_s": 6.0,
+        "actions": 1
+      },
+      "baseline_next": {
+        "path": "/measure",
+        "stage": "discovery",
+        "position": [
+          -1400.0,
+          -1400.0
+        ],
+        "channel": 20,
+        "response": {
+          "accepted": true,
+          "virtual_time_s": 1402.440598,
+          "measure_result": "no_signal"
+        },
+        "travel_m": 700.0,
+        "travel_s": 140.0,
+        "switch_s": 0,
+        "measure_s": 5,
+        "clear_s": 0,
+        "total_s": 145.0,
+        "actions": 1
+      },
+      "refresh_next": {
+        "path": "/measure",
+        "stage": "discovery",
+        "position": [
+          -1400.0,
+          0.0
+        ],
+        "channel": 20,
+        "response": {
+          "accepted": true,
+          "virtual_time_s": 1402.440598,
+          "measure_result": "no_signal"
+        },
+        "travel_m": 700.0,
+        "travel_s": 140.0,
+        "switch_s": 0,
+        "measure_s": 5,
+        "clear_s": 0,
+        "total_s": 145.0,
+        "actions": 1
+      },
+      "variants": [
+        {
+          "variant": "P4_diagnostic_v1_grid_v1",
+          "row": {
+            "seed": 107,
+            "seed_hex": "0c1c4d048c67393f73ccffd5bd2da334ec905e944ad8d63a64d4705b0d80496a",
+            "stress": "sha256_discovery_design",
+            "problem": 4,
+            "variant": "P4_diagnostic_v1_grid_v1",
+            "run_status": "FULL_CLEAR",
+            "engine_end_reason": "user_exit",
+            "total": 12,
+            "cleared": 12,
+            "clear_rate": 1.0,
+            "error": "",
+            "mean_time_per_source": 929.9745498333333,
+            "virtual_time_s": 11159.694598,
+            "distance": 39208.47297206254,
+            "runtime": 1.0867749000026379,
+            "device": "cpu",
+            "fallback_count": 0,
+            "grid_points": 0,
+            "clear_attempts": 12,
+            "optical_clear_attempts": 0,
+            "diagnostic_count": 0,
+            "detect_count": 550,
+            "switch_count": 508,
+            "config_hash": "dbc2410062cd54ef42aab2386c7e3f91784cf9bdb9913a67cd28fcbd825c381c",
+            "scene_hash": "14a96abed79d550588647bdea186368e23982359c76a935b89e9f8a30ed87b91",
+            "source_hash": "12c407c5d4d7924e0f973f40b0b6bf28e1705a21d1dc975f7dce7445a7b00a33",
+            "directional_count": 5,
+            "evidence": "recovered_practice_engine_local",
+            "grid_version": "grid_v1",
+            "clearance_point": "mec_center",
+            "polygon_certified_count": 12,
+            "near_certified_count": 0,
+            "polygon_clear_travel_m": 2948.9245544414857,
+            "polygon_clear_mec_travel_m": 2948.9245544414857,
+            "same_state_clear_saving_m": 0.0,
+            "polygon_zero_move_count": 0,
+            "nccp_fallback_count": 0,
+            "max_clearance_vertex_distance": 17.968663500468626,
+            "certificate_audit_violations": 0,
+            "stage_discovery_s": 9527.157589999999,
+            "stage_active_localization_s": 982.7520959999996,
+            "stage_diagnostic_s": 0.0,
+            "stage_optical_fallback_s": 0.0,
+            "stage_certified_clear_s": 649.7849120000005,
+            "stage_sum_error_s": 0.0
+          },
+          "stages": {
+            "discovery": {
+              "travel_m": 31690.78794206066,
+              "travel_s": 6338.15759,
+              "switch_s": 499.0,
+              "measure_s": 2690.0,
+              "clear_s": 0.0,
+              "total_s": 9527.157589999999,
+              "actions": 538
+            },
+            "active_localization": {
+              "travel_m": 4568.7604755603925,
+              "travel_s": 913.7520959999996,
+              "switch_s": 9.0,
+              "measure_s": 60.0,
+              "clear_s": 0.0,
+              "total_s": 982.7520959999996,
+              "actions": 12
+            },
+            "diagnostic": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "optical_fallback": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "certified_clear": {
+              "travel_m": 2948.924554441486,
+              "travel_s": 589.7849120000005,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 60.0,
+              "total_s": 649.7849120000005,
+              "actions": 12
+            }
+          },
+          "trace_path": "J:\\2026B_experiments\\discovery_20260911\\holdout128\\q4\\traces\\P4_diagnostic_v1_grid_v1_0107.json.gz",
+          "trace_sha256": "af11723573bb6a59664f57f8d267cb384847c68d39dec9fe67443b391555ff10",
+          "last_source": {
+            "channel": 12,
+            "action_index": 289,
+            "time_s": 4497.430497,
+            "position": [
+              -700.0,
+              2100.0
+            ]
+          },
+          "target_times": [
+            {
+              "channel": 1,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 2,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 3,
+              "first_seen": 17.0,
+              "clear_time": 14.117700000000013
+            },
+            {
+              "channel": 4,
+              "first_seen": 23.0,
+              "clear_time": 154.4478650000001
+            },
+            {
+              "channel": 5,
+              "first_seen": 29.0,
+              "clear_time": 158.12973599999987
+            },
+            {
+              "channel": 6,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 7,
+              "first_seen": 1667.440598,
+              "clear_time": 98.72568700000011
+            },
+            {
+              "channel": 8,
+              "first_seen": 47.0,
+              "clear_time": 11.290610000000015
+            },
+            {
+              "channel": 9,
+              "first_seen": 877.694498,
+              "clear_time": 65.62798099999986
+            },
+            {
+              "channel": 10,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 11,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 12,
+              "first_seen": 4497.430497,
+              "clear_time": 11.250001999999768
+            },
+            {
+              "channel": 13,
+              "first_seen": 77.0,
+              "clear_time": 11.074549000000047
+            },
+            {
+              "channel": 14,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 15,
+              "first_seen": 89.0,
+              "clear_time": 69.849556
+            },
+            {
+              "channel": 16,
+              "first_seen": 360.0,
+              "clear_time": 14.055209000000104
+            },
+            {
+              "channel": 17,
+              "first_seen": 101.0,
+              "clear_time": 30.861163000000488
+            },
+            {
+              "channel": 18,
+              "first_seen": 107.0,
+              "clear_time": 10.35485400000016
+            },
+            {
+              "channel": 19,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 20,
+              "first_seen": null,
+              "clear_time": 0.0
+            }
+          ]
+        },
+        {
+          "variant": "P4_diagnostic_v1_grid_v1_refresh",
+          "row": {
+            "seed": 107,
+            "seed_hex": "0c1c4d048c67393f73ccffd5bd2da334ec905e944ad8d63a64d4705b0d80496a",
+            "stress": "sha256_discovery_design",
+            "problem": 4,
+            "variant": "P4_diagnostic_v1_grid_v1_refresh",
+            "run_status": "FULL_CLEAR",
+            "engine_end_reason": "user_exit",
+            "total": 12,
+            "cleared": 12,
+            "clear_rate": 1.0,
+            "error": "",
+            "mean_time_per_source": 862.7870519166667,
+            "virtual_time_s": 10353.444623,
+            "distance": 37337.223103224445,
+            "runtime": 1.488987899996573,
+            "device": "cpu",
+            "fallback_count": 0,
+            "grid_points": 0,
+            "clear_attempts": 12,
+            "optical_clear_attempts": 0,
+            "diagnostic_count": 0,
+            "detect_count": 478,
+            "switch_count": 436,
+            "config_hash": "c016182ec3774b8fefcfe9bdfd3edeab4368bb2b74068722d851af24e8174cac",
+            "scene_hash": "14a96abed79d550588647bdea186368e23982359c76a935b89e9f8a30ed87b91",
+            "source_hash": "12c407c5d4d7924e0f973f40b0b6bf28e1705a21d1dc975f7dce7445a7b00a33",
+            "directional_count": 5,
+            "evidence": "recovered_practice_engine_local",
+            "grid_version": "grid_v1",
+            "clearance_point": "mec_center",
+            "polygon_certified_count": 12,
+            "near_certified_count": 0,
+            "polygon_clear_travel_m": 1815.38518099591,
+            "polygon_clear_mec_travel_m": 1815.38518099591,
+            "same_state_clear_saving_m": 0.0,
+            "polygon_zero_move_count": 0,
+            "nccp_fallback_count": 0,
+            "max_clearance_vertex_distance": 19.45193734117246,
+            "certificate_audit_violations": 0,
+            "stage_discovery_s": 8767.491608,
+            "stage_active_localization_s": 1162.875979,
+            "stage_diagnostic_s": 0.0,
+            "stage_optical_fallback_s": 0.0,
+            "stage_certified_clear_s": 423.07703600000013,
+            "stage_sum_error_s": 1.8189894035458565e-12
+          },
+          "stages": {
+            "discovery": {
+              "travel_m": 30107.45803329149,
+              "travel_s": 6021.491607999999,
+              "switch_s": 426.0,
+              "measure_s": 2320.0,
+              "clear_s": 0.0,
+              "total_s": 8767.491608,
+              "actions": 464
+            },
+            "active_localization": {
+              "travel_m": 5414.379888937044,
+              "travel_s": 1082.875979,
+              "switch_s": 10.0,
+              "measure_s": 70.0,
+              "clear_s": 0.0,
+              "total_s": 1162.875979,
+              "actions": 14
+            },
+            "diagnostic": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "optical_fallback": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "certified_clear": {
+              "travel_m": 1815.38518099591,
+              "travel_s": 363.07703600000013,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 60.0,
+              "total_s": 423.07703600000013,
+              "actions": 12
+            }
+          },
+          "trace_path": "J:\\2026B_experiments\\discovery_20260911\\holdout128\\q4\\traces\\P4_diagnostic_v1_grid_v1_refresh_0107.json.gz",
+          "trace_sha256": "84d5681ad5a8ccc2e15a78b5fa9805cb8b4874f47c8454020e87ddd6d8258967",
+          "last_source": {
+            "channel": 7,
+            "action_index": 394,
+            "time_s": 7870.579465,
+            "position": [
+              -700.0,
+              -2100.0
+            ]
+          },
+          "target_times": [
+            {
+              "channel": 1,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 2,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 3,
+              "first_seen": 17.0,
+              "clear_time": 14.117700000000013
+            },
+            {
+              "channel": 4,
+              "first_seen": 23.0,
+              "clear_time": 10.660509999999704
+            },
+            {
+              "channel": 5,
+              "first_seen": 29.0,
+              "clear_time": 164.404364
+            },
+            {
+              "channel": 6,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 7,
+              "first_seen": 7870.579465,
+              "clear_time": 10.918825000000652
+            },
+            {
+              "channel": 8,
+              "first_seen": 47.0,
+              "clear_time": 29.828487000000223
+            },
+            {
+              "channel": 9,
+              "first_seen": 877.694498,
+              "clear_time": 65.62798099999986
+            },
+            {
+              "channel": 10,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 11,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 12,
+              "first_seen": 1920.440598,
+              "clear_time": 14.271472999999787
+            },
+            {
+              "channel": 13,
+              "first_seen": 77.0,
+              "clear_time": 11.074549000000047
+            },
+            {
+              "channel": 14,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 15,
+              "first_seen": 89.0,
+              "clear_time": 69.849556
+            },
+            {
+              "channel": 16,
+              "first_seen": 360.0,
+              "clear_time": 14.055209000000104
+            },
+            {
+              "channel": 17,
+              "first_seen": 101.0,
+              "clear_time": 7.101591999999982
+            },
+            {
+              "channel": 18,
+              "first_seen": 107.0,
+              "clear_time": 11.166789999999764
+            },
+            {
+              "channel": 19,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 20,
+              "first_seen": null,
+              "clear_time": 0.0
+            }
+          ]
+        },
+        {
+          "variant": "P4_diagnostic_v1_grid_v1_unknown",
+          "row": {
+            "seed": 107,
+            "seed_hex": "0c1c4d048c67393f73ccffd5bd2da334ec905e944ad8d63a64d4705b0d80496a",
+            "stress": "sha256_discovery_design",
+            "problem": 4,
+            "variant": "P4_diagnostic_v1_grid_v1_unknown",
+            "run_status": "FULL_CLEAR",
+            "engine_end_reason": "user_exit",
+            "total": 12,
+            "cleared": 12,
+            "clear_rate": 1.0,
+            "error": "",
+            "mean_time_per_source": 929.9745498333333,
+            "virtual_time_s": 11159.694598,
+            "distance": 39208.47297206254,
+            "runtime": 1.0710249999974621,
+            "device": "cpu",
+            "fallback_count": 0,
+            "grid_points": 0,
+            "clear_attempts": 12,
+            "optical_clear_attempts": 0,
+            "diagnostic_count": 0,
+            "detect_count": 550,
+            "switch_count": 508,
+            "config_hash": "1c1f474d09cf74b3e2613393a85ead559e23f6ab533715c54b651678b902c82b",
+            "scene_hash": "14a96abed79d550588647bdea186368e23982359c76a935b89e9f8a30ed87b91",
+            "source_hash": "12c407c5d4d7924e0f973f40b0b6bf28e1705a21d1dc975f7dce7445a7b00a33",
+            "directional_count": 5,
+            "evidence": "recovered_practice_engine_local",
+            "grid_version": "grid_v1",
+            "clearance_point": "mec_center",
+            "polygon_certified_count": 12,
+            "near_certified_count": 0,
+            "polygon_clear_travel_m": 2948.9245544414857,
+            "polygon_clear_mec_travel_m": 2948.9245544414857,
+            "same_state_clear_saving_m": 0.0,
+            "polygon_zero_move_count": 0,
+            "nccp_fallback_count": 0,
+            "max_clearance_vertex_distance": 17.968663500468626,
+            "certificate_audit_violations": 0,
+            "stage_discovery_s": 9527.157589999999,
+            "stage_active_localization_s": 982.7520959999996,
+            "stage_diagnostic_s": 0.0,
+            "stage_optical_fallback_s": 0.0,
+            "stage_certified_clear_s": 649.7849120000005,
+            "stage_sum_error_s": 0.0
+          },
+          "stages": {
+            "discovery": {
+              "travel_m": 31690.78794206066,
+              "travel_s": 6338.15759,
+              "switch_s": 499.0,
+              "measure_s": 2690.0,
+              "clear_s": 0.0,
+              "total_s": 9527.157589999999,
+              "actions": 538
+            },
+            "active_localization": {
+              "travel_m": 4568.7604755603925,
+              "travel_s": 913.7520959999996,
+              "switch_s": 9.0,
+              "measure_s": 60.0,
+              "clear_s": 0.0,
+              "total_s": 982.7520959999996,
+              "actions": 12
+            },
+            "diagnostic": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "optical_fallback": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "certified_clear": {
+              "travel_m": 2948.924554441486,
+              "travel_s": 589.7849120000005,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 60.0,
+              "total_s": 649.7849120000005,
+              "actions": 12
+            }
+          },
+          "trace_path": "J:\\2026B_experiments\\discovery_20260911\\holdout128\\q4\\traces\\P4_diagnostic_v1_grid_v1_unknown_0107.json.gz",
+          "trace_sha256": "ef8e0885dfaa6320ce59a7baf813c02af41ba2d1b87df1783a34ddf71fe49398",
+          "last_source": {
+            "channel": 12,
+            "action_index": 285,
+            "time_s": 4473.430497,
+            "position": [
+              -700.0,
+              2100.0
+            ]
+          },
+          "target_times": [
+            {
+              "channel": 1,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 2,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 3,
+              "first_seen": 17.0,
+              "clear_time": 14.117700000000013
+            },
+            {
+              "channel": 4,
+              "first_seen": 23.0,
+              "clear_time": 154.4478650000001
+            },
+            {
+              "channel": 5,
+              "first_seen": 29.0,
+              "clear_time": 158.12973599999987
+            },
+            {
+              "channel": 6,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 7,
+              "first_seen": 1655.440598,
+              "clear_time": 98.72568700000011
+            },
+            {
+              "channel": 8,
+              "first_seen": 47.0,
+              "clear_time": 11.290610000000015
+            },
+            {
+              "channel": 9,
+              "first_seen": 859.694498,
+              "clear_time": 65.62798099999986
+            },
+            {
+              "channel": 10,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 11,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 12,
+              "first_seen": 4473.430497,
+              "clear_time": 11.250001999999768
+            },
+            {
+              "channel": 13,
+              "first_seen": 77.0,
+              "clear_time": 11.074549000000047
+            },
+            {
+              "channel": 14,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 15,
+              "first_seen": 89.0,
+              "clear_time": 69.849556
+            },
+            {
+              "channel": 16,
+              "first_seen": 324.0,
+              "clear_time": 14.055209000000104
+            },
+            {
+              "channel": 17,
+              "first_seen": 101.0,
+              "clear_time": 30.861163000000488
+            },
+            {
+              "channel": 18,
+              "first_seen": 107.0,
+              "clear_time": 10.35485400000016
+            },
+            {
+              "channel": 19,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 20,
+              "first_seen": null,
+              "clear_time": 0.0
+            }
+          ]
+        },
+        {
+          "variant": "P4_diagnostic_v1_grid_v1_refresh_unknown",
+          "row": {
+            "seed": 107,
+            "seed_hex": "0c1c4d048c67393f73ccffd5bd2da334ec905e944ad8d63a64d4705b0d80496a",
+            "stress": "sha256_discovery_design",
+            "problem": 4,
+            "variant": "P4_diagnostic_v1_grid_v1_refresh_unknown",
+            "run_status": "FULL_CLEAR",
+            "engine_end_reason": "user_exit",
+            "total": 12,
+            "cleared": 12,
+            "clear_rate": 1.0,
+            "error": "",
+            "mean_time_per_source": 862.5370519166667,
+            "virtual_time_s": 10350.444623,
+            "distance": 37337.223103224445,
+            "runtime": 1.4982632000028389,
+            "device": "cpu",
+            "fallback_count": 0,
+            "grid_points": 0,
+            "clear_attempts": 12,
+            "optical_clear_attempts": 0,
+            "diagnostic_count": 0,
+            "detect_count": 478,
+            "switch_count": 433,
+            "config_hash": "115f6b83ca0895b97018e3b1694859065b4185026584c2df3cf860b5d07484de",
+            "scene_hash": "14a96abed79d550588647bdea186368e23982359c76a935b89e9f8a30ed87b91",
+            "source_hash": "12c407c5d4d7924e0f973f40b0b6bf28e1705a21d1dc975f7dce7445a7b00a33",
+            "directional_count": 5,
+            "evidence": "recovered_practice_engine_local",
+            "grid_version": "grid_v1",
+            "clearance_point": "mec_center",
+            "polygon_certified_count": 12,
+            "near_certified_count": 0,
+            "polygon_clear_travel_m": 1815.38518099591,
+            "polygon_clear_mec_travel_m": 1815.38518099591,
+            "same_state_clear_saving_m": 0.0,
+            "polygon_zero_move_count": 0,
+            "nccp_fallback_count": 0,
+            "max_clearance_vertex_distance": 19.45193734117246,
+            "certificate_audit_violations": 0,
+            "stage_discovery_s": 8767.491608,
+            "stage_active_localization_s": 1159.875979,
+            "stage_diagnostic_s": 0.0,
+            "stage_optical_fallback_s": 0.0,
+            "stage_certified_clear_s": 423.07703600000013,
+            "stage_sum_error_s": 1.8189894035458565e-12
+          },
+          "stages": {
+            "discovery": {
+              "travel_m": 30107.45803329149,
+              "travel_s": 6021.491607999999,
+              "switch_s": 426.0,
+              "measure_s": 2320.0,
+              "clear_s": 0.0,
+              "total_s": 8767.491608,
+              "actions": 464
+            },
+            "active_localization": {
+              "travel_m": 5414.379888937044,
+              "travel_s": 1082.875979,
+              "switch_s": 7.0,
+              "measure_s": 70.0,
+              "clear_s": 0.0,
+              "total_s": 1159.875979,
+              "actions": 14
+            },
+            "diagnostic": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "optical_fallback": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "certified_clear": {
+              "travel_m": 1815.38518099591,
+              "travel_s": 363.07703600000013,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 60.0,
+              "total_s": 423.07703600000013,
+              "actions": 12
+            }
+          },
+          "trace_path": "J:\\2026B_experiments\\discovery_20260911\\holdout128\\q4\\traces\\P4_diagnostic_v1_grid_v1_refresh_unknown_0107.json.gz",
+          "trace_sha256": "f66b47df41f68815db87c614113816a3c67fbd97afa93951eb67ec0340a8e0a9",
+          "last_source": {
+            "channel": 7,
+            "action_index": 394,
+            "time_s": 7868.579465,
+            "position": [
+              -700.0,
+              -2100.0
+            ]
+          },
+          "target_times": [
+            {
+              "channel": 1,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 2,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 3,
+              "first_seen": 17.0,
+              "clear_time": 14.117700000000013
+            },
+            {
+              "channel": 4,
+              "first_seen": 23.0,
+              "clear_time": 10.660509999999704
+            },
+            {
+              "channel": 5,
+              "first_seen": 29.0,
+              "clear_time": 164.404364
+            },
+            {
+              "channel": 6,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 7,
+              "first_seen": 7868.579465,
+              "clear_time": 10.918825000000652
+            },
+            {
+              "channel": 8,
+              "first_seen": 47.0,
+              "clear_time": 29.828487000000223
+            },
+            {
+              "channel": 9,
+              "first_seen": 859.694498,
+              "clear_time": 65.62798099999986
+            },
+            {
+              "channel": 10,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 11,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 12,
+              "first_seen": 1902.440598,
+              "clear_time": 14.271472999999787
+            },
+            {
+              "channel": 13,
+              "first_seen": 77.0,
+              "clear_time": 11.074549000000047
+            },
+            {
+              "channel": 14,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 15,
+              "first_seen": 89.0,
+              "clear_time": 69.849556
+            },
+            {
+              "channel": 16,
+              "first_seen": 324.0,
+              "clear_time": 14.055209000000104
+            },
+            {
+              "channel": 17,
+              "first_seen": 101.0,
+              "clear_time": 7.101591999999982
+            },
+            {
+              "channel": 18,
+              "first_seen": 107.0,
+              "clear_time": 11.166789999999764
+            },
+            {
+              "channel": 19,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 20,
+              "first_seen": null,
+              "clear_time": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 66,
+      "derivation_index": 98,
+      "seed_hex": "a39fecb54be432fecfe5970f1e5ab8d8b3fe35532153e119dc0f9141aa2cfe45",
+      "selected_for": [
+        "largest_total_gain"
+      ],
+      "total_delta_s_per_source": -160.40626825000004,
+      "last_discovery_delta_s": -4412.264573,
+      "first_divergence_action_index": 44,
+      "last_shared_action": {
+        "path": "/clear",
+        "stage": "certified_clear",
+        "position": [
+          -175.34438182428653,
+          718.6005146453442
+        ],
+        "channel": 3,
+        "response": {
+          "accepted": true,
+          "virtual_time_s": 573.714697,
+          "clear_result": "success"
+        },
+        "travel_m": 27.485130325545388,
+        "travel_s": 5.497026000000005,
+        "switch_s": 0,
+        "measure_s": 0,
+        "clear_s": 5,
+        "total_s": 10.497026000000005,
+        "actions": 1
+      },
+      "baseline_next": {
+        "path": "/measure",
+        "stage": "active_localization",
+        "position": [
+          -219.5483037652313,
+          743.9771277950256
+        ],
+        "channel": 7,
+        "response": {
+          "accepted": true,
+          "virtual_time_s": 589.908733,
+          "measure_result": "direction",
+          "svd_deg": 71.62
+        },
+        "travel_m": 50.97017961425799,
+        "travel_s": 10.194035999999983,
+        "switch_s": 1,
+        "measure_s": 5,
+        "clear_s": 0,
+        "total_s": 16.194035999999983,
+        "actions": 1
+      },
+      "refresh_next": {
+        "path": "/measure",
+        "stage": "discovery",
+        "position": [
+          0.0,
+          700.0
+        ],
+        "channel": 1,
+        "response": {
+          "accepted": true,
+          "virtual_time_s": 614.980335,
+          "measure_result": "no_signal"
+        },
+        "travel_m": 176.32819225073695,
+        "travel_s": 35.26563799999997,
+        "switch_s": 1,
+        "measure_s": 5,
+        "clear_s": 0,
+        "total_s": 41.26563799999997,
+        "actions": 1
+      },
+      "variants": [
+        {
+          "variant": "P4_diagnostic_v1_grid_v1",
+          "row": {
+            "seed": 66,
+            "seed_hex": "a39fecb54be432fecfe5970f1e5ab8d8b3fe35532153e119dc0f9141aa2cfe45",
+            "stress": "sha256_discovery_design",
+            "problem": 4,
+            "variant": "P4_diagnostic_v1_grid_v1",
+            "run_status": "FULL_CLEAR",
+            "engine_end_reason": "user_exit",
+            "total": 16,
+            "cleared": 16,
+            "clear_rate": 1.0,
+            "error": "",
+            "mean_time_per_source": 744.759993375,
+            "virtual_time_s": 11916.159894,
+            "distance": 45985.79947482824,
+            "runtime": 2.268364499999734,
+            "device": "cpu",
+            "fallback_count": 0,
+            "grid_points": 0,
+            "clear_attempts": 16,
+            "optical_clear_attempts": 0,
+            "diagnostic_count": 5,
+            "detect_count": 448,
+            "switch_count": 399,
+            "config_hash": "dbc2410062cd54ef42aab2386c7e3f91784cf9bdb9913a67cd28fcbd825c381c",
+            "scene_hash": "4327a9acc4b03b07e4790c0758528cf3e018bb54a87914f7dc0fb0899d112f3e",
+            "source_hash": "12c407c5d4d7924e0f973f40b0b6bf28e1705a21d1dc975f7dce7445a7b00a33",
+            "directional_count": 7,
+            "evidence": "recovered_practice_engine_local",
+            "grid_version": "grid_v1",
+            "clearance_point": "mec_center",
+            "polygon_certified_count": 14,
+            "near_certified_count": 2,
+            "polygon_clear_travel_m": 3813.4986870033113,
+            "polygon_clear_mec_travel_m": 3813.4986870033113,
+            "same_state_clear_saving_m": 0.0,
+            "polygon_zero_move_count": 0,
+            "nccp_fallback_count": 0,
+            "max_clearance_vertex_distance": 19.769979784514728,
+            "certificate_audit_violations": 0,
+            "stage_discovery_s": 9295.027945000002,
+            "stage_active_localization_s": 1460.2717819999993,
+            "stage_diagnostic_s": 318.16042900000014,
+            "stage_optical_fallback_s": 0.0,
+            "stage_certified_clear_s": 842.6997379999983,
+            "stage_sum_error_s": 1.8189894035458565e-12
+          },
+          "stages": {
+            "discovery": {
+              "travel_m": 33895.13973001598,
+              "travel_s": 6779.027945000003,
+              "switch_s": 386.0,
+              "measure_s": 2130.0,
+              "clear_s": 0.0,
+              "total_s": 9295.027945000002,
+              "actions": 426
+            },
+            "active_localization": {
+              "travel_m": 6821.358916441669,
+              "travel_s": 1364.2717819999993,
+              "switch_s": 11.0,
+              "measure_s": 85.0,
+              "clear_s": 0.0,
+              "total_s": 1460.2717819999993,
+              "actions": 17
+            },
+            "diagnostic": {
+              "travel_m": 1455.8021413672957,
+              "travel_s": 291.16042900000014,
+              "switch_s": 2.0,
+              "measure_s": 25.0,
+              "clear_s": 0.0,
+              "total_s": 318.16042900000014,
+              "actions": 5
+            },
+            "optical_fallback": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "certified_clear": {
+              "travel_m": 3813.4986870033113,
+              "travel_s": 762.6997379999983,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 80.0,
+              "total_s": 842.6997379999983,
+              "actions": 16
+            }
+          },
+          "trace_path": "J:\\2026B_experiments\\discovery_20260911\\holdout128\\q4\\traces\\P4_diagnostic_v1_grid_v1_0066.json.gz",
+          "trace_sha256": "d87a9bfe42408157df69a0c3b458f56f26c89efceb9d97382740624e9ec3628e",
+          "last_source": {
+            "channel": 9,
+            "action_index": 378,
+            "time_s": 8631.246902,
+            "position": [
+              700.0,
+              -700.0
+            ]
+          },
+          "target_times": [
+            {
+              "channel": 1,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 2,
+              "first_seen": 276.0,
+              "clear_time": 135.01222099999995
+            },
+            {
+              "channel": 3,
+              "first_seen": 17.0,
+              "clear_time": 10.497026000000005
+            },
+            {
+              "channel": 4,
+              "first_seen": 23.0,
+              "clear_time": 138.39546799999994
+            },
+            {
+              "channel": 5,
+              "first_seen": 29.0,
+              "clear_time": 147.7245069999999
+            },
+            {
+              "channel": 6,
+              "first_seen": 35.0,
+              "clear_time": 10.579463000000032
+            },
+            {
+              "channel": 7,
+              "first_seen": 41.0,
+              "clear_time": 25.065539000000058
+            },
+            {
+              "channel": 8,
+              "first_seen": 2003.641677,
+              "clear_time": 126.19601999999986
+            },
+            {
+              "channel": 9,
+              "first_seen": 8631.246902,
+              "clear_time": 5.0
+            },
+            {
+              "channel": 10,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 11,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 12,
+              "first_seen": 4792.275064,
+              "clear_time": 11.24599599999965
+            },
+            {
+              "channel": 13,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 14,
+              "first_seen": 6179.54215,
+              "clear_time": 30.8863850000007
+            },
+            {
+              "channel": 15,
+              "first_seen": 354.0,
+              "clear_time": 13.614249999999856
+            },
+            {
+              "channel": 16,
+              "first_seen": 8619.246902,
+              "clear_time": 130.99168499999905
+            },
+            {
+              "channel": 17,
+              "first_seen": 5980.54215,
+              "clear_time": 13.355255999999827
+            },
+            {
+              "channel": 18,
+              "first_seen": 5558.54215,
+              "clear_time": 11.100652000000082
+            },
+            {
+              "channel": 19,
+              "first_seen": 5926.54215,
+              "clear_time": 5.0
+            },
+            {
+              "channel": 20,
+              "first_seen": 119.0,
+              "clear_time": 28.0352699999994
+            }
+          ]
+        },
+        {
+          "variant": "P4_diagnostic_v1_grid_v1_refresh",
+          "row": {
+            "seed": 66,
+            "seed_hex": "a39fecb54be432fecfe5970f1e5ab8d8b3fe35532153e119dc0f9141aa2cfe45",
+            "stress": "sha256_discovery_design",
+            "problem": 4,
+            "variant": "P4_diagnostic_v1_grid_v1_refresh",
+            "run_status": "FULL_CLEAR",
+            "engine_end_reason": "user_exit",
+            "total": 16,
+            "cleared": 16,
+            "clear_rate": 1.0,
+            "error": "",
+            "mean_time_per_source": 584.353725125,
+            "virtual_time_s": 9349.659602,
+            "distance": 35538.29801059037,
+            "runtime": 2.1357067999997525,
+            "device": "cpu",
+            "fallback_count": 0,
+            "grid_points": 0,
+            "clear_attempts": 16,
+            "optical_clear_attempts": 0,
+            "diagnostic_count": 0,
+            "detect_count": 367,
+            "switch_count": 327,
+            "config_hash": "c016182ec3774b8fefcfe9bdfd3edeab4368bb2b74068722d851af24e8174cac",
+            "scene_hash": "4327a9acc4b03b07e4790c0758528cf3e018bb54a87914f7dc0fb0899d112f3e",
+            "source_hash": "12c407c5d4d7924e0f973f40b0b6bf28e1705a21d1dc975f7dce7445a7b00a33",
+            "directional_count": 7,
+            "evidence": "recovered_practice_engine_local",
+            "grid_version": "grid_v1",
+            "clearance_point": "mec_center",
+            "polygon_certified_count": 16,
+            "near_certified_count": 0,
+            "polygon_clear_travel_m": 3880.32911852968,
+            "polygon_clear_mec_travel_m": 3880.32911852968,
+            "same_state_clear_saving_m": 0.0,
+            "polygon_zero_move_count": 0,
+            "nccp_fallback_count": 0,
+            "max_clearance_vertex_distance": 18.124370707562058,
+            "certificate_audit_violations": 0,
+            "stage_discovery_s": 7215.2083619999985,
+            "stage_active_localization_s": 1278.3854150000006,
+            "stage_diagnostic_s": 0.0,
+            "stage_optical_fallback_s": 0.0,
+            "stage_certified_clear_s": 856.0658249999998,
+            "stage_sum_error_s": 1.8189894035458565e-12
+          },
+          "stages": {
+            "discovery": {
+              "travel_m": 25636.041812156396,
+              "travel_s": 5127.208361999999,
+              "switch_s": 318.0,
+              "measure_s": 1770.0,
+              "clear_s": 0.0,
+              "total_s": 7215.2083619999985,
+              "actions": 354
+            },
+            "active_localization": {
+              "travel_m": 6021.927079904298,
+              "travel_s": 1204.3854150000006,
+              "switch_s": 9.0,
+              "measure_s": 65.0,
+              "clear_s": 0.0,
+              "total_s": 1278.3854150000006,
+              "actions": 13
+            },
+            "diagnostic": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "optical_fallback": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "certified_clear": {
+              "travel_m": 3880.32911852968,
+              "travel_s": 776.0658249999998,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 80.0,
+              "total_s": 856.0658249999998,
+              "actions": 16
+            }
+          },
+          "trace_path": "J:\\2026B_experiments\\discovery_20260911\\holdout128\\q4\\traces\\P4_diagnostic_v1_grid_v1_refresh_0066.json.gz",
+          "trace_sha256": "150a95aece7314e80f8fb2c0a51ffaa8905edac81a4d468803d7564a8258b45f",
+          "last_source": {
+            "channel": 8,
+            "action_index": 221,
+            "time_s": 4218.982329,
+            "position": [
+              -700.0,
+              -1400.0
+            ]
+          },
+          "target_times": [
+            {
+              "channel": 1,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 2,
+              "first_seen": 276.0,
+              "clear_time": 77.56531799999993
+            },
+            {
+              "channel": 3,
+              "first_seen": 17.0,
+              "clear_time": 10.497026000000005
+            },
+            {
+              "channel": 4,
+              "first_seen": 23.0,
+              "clear_time": 145.139185
+            },
+            {
+              "channel": 5,
+              "first_seen": 29.0,
+              "clear_time": 9.901920000000018
+            },
+            {
+              "channel": 6,
+              "first_seen": 35.0,
+              "clear_time": 10.579462999999919
+            },
+            {
+              "channel": 7,
+              "first_seen": 41.0,
+              "clear_time": 10.64075099999991
+            },
+            {
+              "channel": 8,
+              "first_seen": 4218.982329,
+              "clear_time": 14.35899899999913
+            },
+            {
+              "channel": 9,
+              "first_seen": 1066.048904,
+              "clear_time": 101.24156100000073
+            },
+            {
+              "channel": 10,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 11,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 12,
+              "first_seen": 674.980335,
+              "clear_time": 11.652091999999811
+            },
+            {
+              "channel": 13,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 14,
+              "first_seen": 2248.827009,
+              "clear_time": 90.77058399999987
+            },
+            {
+              "channel": 15,
+              "first_seen": 354.0,
+              "clear_time": 124.5309140000004
+            },
+            {
+              "channel": 16,
+              "first_seen": 1108.048904,
+              "clear_time": 11.72543399999995
+            },
+            {
+              "channel": 17,
+              "first_seen": 704.980335,
+              "clear_time": 149.61472200000026
+            },
+            {
+              "channel": 18,
+              "first_seen": 2266.827009,
+              "clear_time": 67.00615100000005
+            },
+            {
+              "channel": 19,
+              "first_seen": 716.980335,
+              "clear_time": 10.86010699999997
+            },
+            {
+              "channel": 20,
+              "first_seen": 119.0,
+              "clear_time": 9.981597999999849
+            }
+          ]
+        },
+        {
+          "variant": "P4_diagnostic_v1_grid_v1_unknown",
+          "row": {
+            "seed": 66,
+            "seed_hex": "a39fecb54be432fecfe5970f1e5ab8d8b3fe35532153e119dc0f9141aa2cfe45",
+            "stress": "sha256_discovery_design",
+            "problem": 4,
+            "variant": "P4_diagnostic_v1_grid_v1_unknown",
+            "run_status": "FULL_CLEAR",
+            "engine_end_reason": "user_exit",
+            "total": 16,
+            "cleared": 16,
+            "clear_rate": 1.0,
+            "error": "",
+            "mean_time_per_source": 744.697493375,
+            "virtual_time_s": 11915.159894,
+            "distance": 45985.79947482824,
+            "runtime": 2.2483811999991303,
+            "device": "cpu",
+            "fallback_count": 0,
+            "grid_points": 0,
+            "clear_attempts": 16,
+            "optical_clear_attempts": 0,
+            "diagnostic_count": 5,
+            "detect_count": 448,
+            "switch_count": 398,
+            "config_hash": "1c1f474d09cf74b3e2613393a85ead559e23f6ab533715c54b651678b902c82b",
+            "scene_hash": "4327a9acc4b03b07e4790c0758528cf3e018bb54a87914f7dc0fb0899d112f3e",
+            "source_hash": "12c407c5d4d7924e0f973f40b0b6bf28e1705a21d1dc975f7dce7445a7b00a33",
+            "directional_count": 7,
+            "evidence": "recovered_practice_engine_local",
+            "grid_version": "grid_v1",
+            "clearance_point": "mec_center",
+            "polygon_certified_count": 14,
+            "near_certified_count": 2,
+            "polygon_clear_travel_m": 3813.4986870033113,
+            "polygon_clear_mec_travel_m": 3813.4986870033113,
+            "same_state_clear_saving_m": 0.0,
+            "polygon_zero_move_count": 0,
+            "nccp_fallback_count": 0,
+            "max_clearance_vertex_distance": 19.769979784514728,
+            "certificate_audit_violations": 0,
+            "stage_discovery_s": 9295.027945000002,
+            "stage_active_localization_s": 1459.2717819999993,
+            "stage_diagnostic_s": 318.16042900000014,
+            "stage_optical_fallback_s": 0.0,
+            "stage_certified_clear_s": 842.6997379999983,
+            "stage_sum_error_s": 1.8189894035458565e-12
+          },
+          "stages": {
+            "discovery": {
+              "travel_m": 33895.13973001598,
+              "travel_s": 6779.027945000003,
+              "switch_s": 386.0,
+              "measure_s": 2130.0,
+              "clear_s": 0.0,
+              "total_s": 9295.027945000002,
+              "actions": 426
+            },
+            "active_localization": {
+              "travel_m": 6821.358916441669,
+              "travel_s": 1364.2717819999993,
+              "switch_s": 10.0,
+              "measure_s": 85.0,
+              "clear_s": 0.0,
+              "total_s": 1459.2717819999993,
+              "actions": 17
+            },
+            "diagnostic": {
+              "travel_m": 1455.8021413672957,
+              "travel_s": 291.16042900000014,
+              "switch_s": 2.0,
+              "measure_s": 25.0,
+              "clear_s": 0.0,
+              "total_s": 318.16042900000014,
+              "actions": 5
+            },
+            "optical_fallback": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "certified_clear": {
+              "travel_m": 3813.4986870033113,
+              "travel_s": 762.6997379999983,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 80.0,
+              "total_s": 842.6997379999983,
+              "actions": 16
+            }
+          },
+          "trace_path": "J:\\2026B_experiments\\discovery_20260911\\holdout128\\q4\\traces\\P4_diagnostic_v1_grid_v1_unknown_0066.json.gz",
+          "trace_sha256": "eb8ba648735e3908b4eac5fbe625fa43dc782ecca043151ef76325fdb5cd65c4",
+          "last_source": {
+            "channel": 9,
+            "action_index": 378,
+            "time_s": 8631.246902,
+            "position": [
+              700.0,
+              -700.0
+            ]
+          },
+          "target_times": [
+            {
+              "channel": 1,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 2,
+              "first_seen": 276.0,
+              "clear_time": 135.01222099999995
+            },
+            {
+              "channel": 3,
+              "first_seen": 17.0,
+              "clear_time": 10.497026000000005
+            },
+            {
+              "channel": 4,
+              "first_seen": 23.0,
+              "clear_time": 138.39546799999994
+            },
+            {
+              "channel": 5,
+              "first_seen": 29.0,
+              "clear_time": 147.7245069999999
+            },
+            {
+              "channel": 6,
+              "first_seen": 35.0,
+              "clear_time": 10.579463000000032
+            },
+            {
+              "channel": 7,
+              "first_seen": 41.0,
+              "clear_time": 25.065539000000058
+            },
+            {
+              "channel": 8,
+              "first_seen": 1991.641677,
+              "clear_time": 126.19601999999986
+            },
+            {
+              "channel": 9,
+              "first_seen": 8631.246902,
+              "clear_time": 5.0
+            },
+            {
+              "channel": 10,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 11,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 12,
+              "first_seen": 4786.275064,
+              "clear_time": 11.24599599999965
+            },
+            {
+              "channel": 13,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 14,
+              "first_seen": 6173.54215,
+              "clear_time": 30.8863850000007
+            },
+            {
+              "channel": 15,
+              "first_seen": 324.0,
+              "clear_time": 13.614249999999856
+            },
+            {
+              "channel": 16,
+              "first_seen": 8619.246902,
+              "clear_time": 130.99168499999905
+            },
+            {
+              "channel": 17,
+              "first_seen": 5974.54215,
+              "clear_time": 13.355255999999827
+            },
+            {
+              "channel": 18,
+              "first_seen": 5552.54215,
+              "clear_time": 11.100652000000082
+            },
+            {
+              "channel": 19,
+              "first_seen": 5980.54215,
+              "clear_time": 5.0
+            },
+            {
+              "channel": 20,
+              "first_seen": 119.0,
+              "clear_time": 28.0352699999994
+            }
+          ]
+        },
+        {
+          "variant": "P4_diagnostic_v1_grid_v1_refresh_unknown",
+          "row": {
+            "seed": 66,
+            "seed_hex": "a39fecb54be432fecfe5970f1e5ab8d8b3fe35532153e119dc0f9141aa2cfe45",
+            "stress": "sha256_discovery_design",
+            "problem": 4,
+            "variant": "P4_diagnostic_v1_grid_v1_refresh_unknown",
+            "run_status": "FULL_CLEAR",
+            "engine_end_reason": "user_exit",
+            "total": 16,
+            "cleared": 16,
+            "clear_rate": 1.0,
+            "error": "",
+            "mean_time_per_source": 584.416225125,
+            "virtual_time_s": 9350.659602,
+            "distance": 35538.29801059037,
+            "runtime": 1.9612215000015567,
+            "device": "cpu",
+            "fallback_count": 0,
+            "grid_points": 0,
+            "clear_attempts": 16,
+            "optical_clear_attempts": 0,
+            "diagnostic_count": 0,
+            "detect_count": 367,
+            "switch_count": 328,
+            "config_hash": "115f6b83ca0895b97018e3b1694859065b4185026584c2df3cf860b5d07484de",
+            "scene_hash": "4327a9acc4b03b07e4790c0758528cf3e018bb54a87914f7dc0fb0899d112f3e",
+            "source_hash": "12c407c5d4d7924e0f973f40b0b6bf28e1705a21d1dc975f7dce7445a7b00a33",
+            "directional_count": 7,
+            "evidence": "recovered_practice_engine_local",
+            "grid_version": "grid_v1",
+            "clearance_point": "mec_center",
+            "polygon_certified_count": 16,
+            "near_certified_count": 0,
+            "polygon_clear_travel_m": 3880.32911852968,
+            "polygon_clear_mec_travel_m": 3880.32911852968,
+            "same_state_clear_saving_m": 0.0,
+            "polygon_zero_move_count": 0,
+            "nccp_fallback_count": 0,
+            "max_clearance_vertex_distance": 18.124370707562058,
+            "certificate_audit_violations": 0,
+            "stage_discovery_s": 7216.2083619999985,
+            "stage_active_localization_s": 1278.3854150000006,
+            "stage_diagnostic_s": 0.0,
+            "stage_optical_fallback_s": 0.0,
+            "stage_certified_clear_s": 856.0658249999998,
+            "stage_sum_error_s": 1.8189894035458565e-12
+          },
+          "stages": {
+            "discovery": {
+              "travel_m": 25636.041812156396,
+              "travel_s": 5127.208361999999,
+              "switch_s": 319.0,
+              "measure_s": 1770.0,
+              "clear_s": 0.0,
+              "total_s": 7216.2083619999985,
+              "actions": 354
+            },
+            "active_localization": {
+              "travel_m": 6021.927079904298,
+              "travel_s": 1204.3854150000006,
+              "switch_s": 9.0,
+              "measure_s": 65.0,
+              "clear_s": 0.0,
+              "total_s": 1278.3854150000006,
+              "actions": 13
+            },
+            "diagnostic": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "optical_fallback": {
+              "travel_m": 0.0,
+              "travel_s": 0.0,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 0.0,
+              "total_s": 0.0,
+              "actions": 0
+            },
+            "certified_clear": {
+              "travel_m": 3880.32911852968,
+              "travel_s": 776.0658249999998,
+              "switch_s": 0.0,
+              "measure_s": 0.0,
+              "clear_s": 80.0,
+              "total_s": 856.0658249999998,
+              "actions": 16
+            }
+          },
+          "trace_path": "J:\\2026B_experiments\\discovery_20260911\\holdout128\\q4\\traces\\P4_diagnostic_v1_grid_v1_refresh_unknown_0066.json.gz",
+          "trace_sha256": "0dc80bf8faa2a80f0415b7f8a13522e72a3d3af0cd88645813e9ddf3c6041e11",
+          "last_source": {
+            "channel": 8,
+            "action_index": 221,
+            "time_s": 4218.982329,
+            "position": [
+              -700.0,
+              -1400.0
+            ]
+          },
+          "target_times": [
+            {
+              "channel": 1,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 2,
+              "first_seen": 276.0,
+              "clear_time": 77.56531799999993
+            },
+            {
+              "channel": 3,
+              "first_seen": 17.0,
+              "clear_time": 10.497026000000005
+            },
+            {
+              "channel": 4,
+              "first_seen": 23.0,
+              "clear_time": 145.139185
+            },
+            {
+              "channel": 5,
+              "first_seen": 29.0,
+              "clear_time": 9.901920000000018
+            },
+            {
+              "channel": 6,
+              "first_seen": 35.0,
+              "clear_time": 10.579462999999919
+            },
+            {
+              "channel": 7,
+              "first_seen": 41.0,
+              "clear_time": 10.64075099999991
+            },
+            {
+              "channel": 8,
+              "first_seen": 4218.982329,
+              "clear_time": 14.35899899999913
+            },
+            {
+              "channel": 9,
+              "first_seen": 1048.048904,
+              "clear_time": 101.24156100000073
+            },
+            {
+              "channel": 10,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 11,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 12,
+              "first_seen": 644.980335,
+              "clear_time": 11.652091999999811
+            },
+            {
+              "channel": 13,
+              "first_seen": null,
+              "clear_time": 0.0
+            },
+            {
+              "channel": 14,
+              "first_seen": 2224.827009,
+              "clear_time": 90.77058399999987
+            },
+            {
+              "channel": 15,
+              "first_seen": 324.0,
+              "clear_time": 124.5309140000004
+            },
+            {
+              "channel": 16,
+              "first_seen": 1078.048904,
+              "clear_time": 11.72543399999995
+            },
+            {
+              "channel": 17,
+              "first_seen": 668.980335,
+              "clear_time": 149.61472200000026
+            },
+            {
+              "channel": 18,
+              "first_seen": 2230.827009,
+              "clear_time": 67.00615100000005
+            },
+            {
+              "channel": 19,
+              "first_seen": 680.980335,
+              "clear_time": 10.86010699999997
+            },
+            {
+              "channel": 20,
+              "first_seen": 119.0,
+              "clear_time": 9.981597999999849
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
