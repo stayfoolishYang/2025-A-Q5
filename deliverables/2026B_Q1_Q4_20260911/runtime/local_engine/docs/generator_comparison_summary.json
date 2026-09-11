@@ -1,0 +1,313 @@
+{
+  "status": "PASS_GENERATOR_FIELDS_WITH_RUNTIME_SUBSTITUTIONS",
+  "executable_sha256": "2373b9e7af83735a04309e2983eb433ec46faf7e0b8494410ce7fded2a297c27",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.35-x86_64-with-glibc2.39",
+  "elapsed_seconds": 4.812,
+  "seeds": 518,
+  "normal_cases": 1036,
+  "jammers_compared": 13502,
+  "hmac_message_and_digest_pairs_compared": 72672,
+  "differences": [],
+  "full_native_generator_return": true,
+  "original_scenario_validation_executed": true,
+  "original_selected_functions_byte_identical": true,
+  "native_exe_started": false,
+  "native_Go_standard_library_JSON_executed": false,
+  "original_Go_HMAC_implementation_executed": false,
+  "formal_competition_scenes_verified": false,
+  "Windows_GUI_and_HTTP_verified": false,
+  "map_salt_checks": 12,
+  "native_rejection_probes": 10,
+  "scope": "complete original GeneratePractice and scenario validation paths, with enumerated runtime/standard-library substitutions",
+  "seed_design": "6 byte patterns + 256 one-bit basis seeds + 256 deterministic SHA256 seeds",
+  "count_histogram": {
+    "Q3:10": 70,
+    "Q3:11": 74,
+    "Q3:12": 69,
+    "Q3:13": 85,
+    "Q3:14": 73,
+    "Q3:15": 70,
+    "Q3:16": 77,
+    "Q4:10": 70,
+    "Q4:11": 74,
+    "Q4:12": 69,
+    "Q4:13": 85,
+    "Q4:14": 73,
+    "Q4:15": 70,
+    "Q4:16": 77
+  },
+  "Q4_directional_count_histogram": {
+    "1": 28,
+    "2": 35,
+    "3": 44,
+    "4": 48,
+    "5": 51,
+    "6": 30,
+    "7": 48,
+    "8": 35,
+    "9": 48,
+    "10": 50,
+    "11": 36,
+    "12": 24,
+    "13": 20,
+    "14": 11,
+    "15": 4,
+    "16": 6
+  },
+  "all_directional_example": {
+    "case_id": "seed007_q4",
+    "seed_hex": "0000000000000000000000000000000000000000000000000000000000000002",
+    "count": 10
+  },
+  "original_functions": [
+    {
+      "name": "jammers/client/internal/scenario.GeneratePractice",
+      "address": "0x1404eeda0",
+      "size": 4736
+    },
+    {
+      "name": "jammers/client/internal/scenario.(*counterSource).next",
+      "address": "0x1404f0020",
+      "size": 640
+    },
+    {
+      "name": "jammers/client/internal/scenario.(*counterSource).uintN",
+      "address": "0x1404f02a0",
+      "size": 224
+    },
+    {
+      "name": "jammers/client/internal/scenario.(*counterSource).shuffle",
+      "address": "0x1404f0380",
+      "size": 224
+    },
+    {
+      "name": "jammers/client/internal/scenario.ParseAndValidate",
+      "address": "0x1404f0460",
+      "size": 2016
+    },
+    {
+      "name": "jammers/client/internal/scenario.Scenario.Validate",
+      "address": "0x1404f0c40",
+      "size": 160
+    },
+    {
+      "name": "jammers/client/internal/scenario.requireEOF",
+      "address": "0x1404f0ce0",
+      "size": 352
+    },
+    {
+      "name": "jammers/client/internal/scenario.Scenario.validate",
+      "address": "0x1404f0e40",
+      "size": 2944
+    },
+    {
+      "name": "jammers/client/internal/scenario.insideJammerDisk",
+      "address": "0x1404f19c0",
+      "size": 480
+    },
+    {
+      "name": "jammers/client/internal/scenario.(*Scenario).Validate",
+      "address": "0x1404f1ba0",
+      "size": 288
+    },
+    {
+      "name": "math.Sincos",
+      "address": "0x1400e1980",
+      "size": 704
+    },
+    {
+      "name": "type:.eq.SM28K4M16SSS",
+      "address": "0x1404f1d40",
+      "size": 352
+    },
+    {
+      "name": "type:.eq.SM80SM16",
+      "address": "0x1404f1ea0",
+      "size": 192
+    }
+  ],
+  "runtime_substitutions": [
+    {
+      "name": "runtime.newobject",
+      "address": "0x1400221c0"
+    },
+    {
+      "name": "runtime.mallocgcSmallScanNoHeaderSC2",
+      "address": "0x140022ac0"
+    },
+    {
+      "name": "runtime.mallocgcSmallScanNoHeaderSC5",
+      "address": "0x140023580"
+    },
+    {
+      "name": "runtime.mallocgcSmallNoScanSC3",
+      "address": "0x140024680"
+    },
+    {
+      "name": "runtime.makemap_small",
+      "address": "0x140084fc0"
+    },
+    {
+      "name": "runtime.mapaccess1_faststr",
+      "address": "0x14000c940"
+    },
+    {
+      "name": "runtime.mapassign_faststr",
+      "address": "0x14000cc40"
+    },
+    {
+      "name": "runtime.mapaccess1_fast64",
+      "address": "0x14000be40"
+    },
+    {
+      "name": "runtime.mapassign_fast64",
+      "address": "0x14000c0e0"
+    },
+    {
+      "name": "runtime.makeslice",
+      "address": "0x140088f20"
+    },
+    {
+      "name": "runtime.growslice",
+      "address": "0x140089000"
+    },
+    {
+      "name": "runtime.memmove",
+      "address": "0x14008e820"
+    },
+    {
+      "name": "runtime.slicebytetostring",
+      "address": "0x14006aee0"
+    },
+    {
+      "name": "runtime.convT",
+      "address": "0x14001e5c0"
+    },
+    {
+      "name": "runtime.convT64",
+      "address": "0x140084820"
+    },
+    {
+      "name": "runtime.rand",
+      "address": "0x140087ae0"
+    },
+    {
+      "name": "runtime.memequal",
+      "address": "0x14000e700"
+    },
+    {
+      "name": "runtime.wbMove",
+      "address": "0x1400260e0"
+    },
+    {
+      "name": "sort.Ints",
+      "address": "0x1402956a0"
+    },
+    {
+      "name": "fmt.Sprintf",
+      "address": "0x140133d00"
+    },
+    {
+      "name": "fmt.errorf",
+      "address": "0x140130da0"
+    },
+    {
+      "name": "crypto/hmac.New",
+      "address": "0x140281ba0"
+    },
+    {
+      "name": "math/big.(*Int).mul",
+      "address": "0x1401ca6c0"
+    },
+    {
+      "name": "math/big.(*Int).Add",
+      "address": "0x1401ca2a0"
+    },
+    {
+      "name": "math/big.(*Int).Cmp",
+      "address": "0x1401cbe80"
+    },
+    {
+      "name": "encoding/json/v2.Marshal",
+      "address": "0x140165f00"
+    },
+    {
+      "name": "encoding/json.NewDecoder",
+      "address": "0x1401a4fc0"
+    },
+    {
+      "name": "encoding/json.(*Decoder).DisallowUnknownFields",
+      "address": "0x1401a5200"
+    },
+    {
+      "name": "encoding/json.(*Decoder).Decode",
+      "address": "0x1401a5300"
+    },
+    {
+      "name": "errors.Is",
+      "address": "0x140097760"
+    },
+    {
+      "name": "crypto/sha256.Sum256",
+      "address": "0x14020ddc0"
+    },
+    {
+      "name": "runtime.gopanic",
+      "address": "0x140086b60"
+    },
+    {
+      "name": "runtime.panicBounds",
+      "address": "0x14008e480"
+    },
+    {
+      "name": "runtime.morestack_noctxt",
+      "address": "0x14008c640"
+    },
+    {
+      "name": "runtime.panicwrap",
+      "address": "0x14001c900"
+    },
+    {
+      "name": "shim.hmac.Write",
+      "address": "0x140001480"
+    },
+    {
+      "name": "shim.hmac.Sum",
+      "address": "0x1400014a0"
+    }
+  ],
+  "observed_runtime_calls": {
+    "crypto/hmac.New": 72672,
+    "crypto/sha256.Sum256": 1036,
+    "encoding/json.(*Decoder).Decode": 2072,
+    "encoding/json.(*Decoder).DisallowUnknownFields": 1036,
+    "encoding/json.NewDecoder": 1036,
+    "encoding/json/v2.Marshal": 2072,
+    "errors.Is": 1036,
+    "fmt.Sprintf": 45201,
+    "math/big.(*Int).Add": 27004,
+    "math/big.(*Int).Cmp": 27004,
+    "math/big.(*Int).mul": 81012,
+    "runtime.convT": 2072,
+    "runtime.convT64": 45201,
+    "runtime.growslice": 220606,
+    "runtime.makemap_small": 1036,
+    "runtime.makeslice": 3108,
+    "runtime.mallocgcSmallNoScanSC3": 72672,
+    "runtime.mallocgcSmallScanNoHeaderSC2": 3108,
+    "runtime.mallocgcSmallScanNoHeaderSC5": 2072,
+    "runtime.mapaccess1_fast64": 13502,
+    "runtime.mapaccess1_faststr": 72672,
+    "runtime.mapassign_fast64": 3659,
+    "runtime.mapassign_faststr": 72672,
+    "runtime.memequal": 16576,
+    "runtime.memmove": 75262,
+    "runtime.newobject": 5731,
+    "runtime.rand": 1036,
+    "runtime.slicebytetostring": 2072,
+    "shim.hmac.Sum": 72672,
+    "shim.hmac.Write": 72672,
+    "sort.Ints": 1036
+  }
+}

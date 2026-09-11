@@ -1,0 +1,9 @@
+Initial engine self-test observation, transcribed from this task's tool output (not a redirected raw log).
+Command: python -m unittest discover -s tests -p 'test_*.py'
+Working directory: D:\桌面\2026国赛\b模拟器\Jammers-Offline-Windows
+Ran 56 tests in 3.481s. FAILED (errors=1); other 55 passed.
+Failing test: test_paths_methods_media_and_size (test_offline.HTTPTests)
+Location: tests/test_offline.py line 303, asserting http(path)[0] == 404; getresponse() -> _read_status() -> socket.recv_into().
+Exception: ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
+Engine source was not modified. A later complete repeat passed all 56 tests in 3.703s; actual redirected repeat output is engine_tests_repeat.txt.
+Cause of the first transient connection abort was not proven. It was not removed from the evidence record.

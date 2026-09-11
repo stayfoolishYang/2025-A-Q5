@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>无线电干扰源环境模拟器 · 离线版</title>
+<link rel="stylesheet" href="/native.css"><link rel="stylesheet" href="/style.css">
+<script src="/ui-flow.js" defer></script><script src="/app.js" defer></script>
+</head><body><div class="app-shell density-balanced">
+<aside class="sidebar"><div class="sidebar-brand"><img class="product-logo" src="/logo.png" alt=""><span>干扰源模拟器</span></div>
+<nav class="sidebar-nav" aria-label="主导航">
+<div class="nav-group"><p class="nav-group-label">测试</p><button class="nav-item active" data-page="practice" title="演练测试"><b>◎</b><span>演练测试</span></button></div>
+<div class="nav-group"><p class="nav-group-label">正式测试</p><button class="nav-item" data-page="formal3" title="问题3正式测试"><b>◇</b><span>问题3正式测试</span></button><button class="nav-item" data-page="formal4" title="问题4正式测试"><b>◈</b><span>问题4正式测试</span></button></div>
+<div class="nav-group"><p class="nav-group-label">其他</p><button class="nav-item" data-page="settings" title="本地设置"><b>⚙</b><span>本地设置</span></button><button class="nav-item" data-page="scenario" title="场景调试"><b>▦</b><span>场景调试</span></button><button class="nav-item" data-page="about" title="关于"><b>ⓘ</b><span>关于</span></button></div>
+</nav><div class="sidebar-version">Linux 服务版 1.2.0</div></aside>
+<div class="workspace"><header class="workspace-header"><div><p class="workspace-product">无线电干扰源环境模拟器</p><p class="offline-subtitle">本地运行 · 演练测试与正式测试分开管理</p></div><div class="header-state"><span class="local-status">● 离线可用</span><span class="team-label">机器人 <strong id="header-robot">offline-bot</strong></span></div></header>
+<div class="workspace-content"><div class="announcement-bar"><span>离线正式测试用于本地评测；每个问题每轮 3 次机会，结果仅保存在本机。</span><button id="resume" class="text-button" hidden>返回当前测试 →</button></div>
+<main class="workspace-main" id="workspace-main"><div id="notification" class="notice" role="status" hidden></div>
+<section id="practice-page" class="page practice-page"><div class="page-heading"><div><p class="eyebrow">测试</p><h1>演练测试</h1></div><span class="preflight-state" id="practice-preflight">正在检查本地接口</span></div><div id="practice-modules"></div></section>
+<section id="formal-page" class="page formal-page" hidden><div class="page-heading"><div><p class="eyebrow">正式测试 · 离线评测</p><h1 id="formal-title">问题3正式测试</h1></div><span class="preflight-state" id="formal-preflight"></span></div><div id="formal-module"></div><p class="page-footnote">启动成功即占用一次机会，中止不退回。正式模式不展示案例总数、类型、种子和位置。</p></section>
+<section id="run-page" class="page test-run-page" hidden>
+<div class="page-heading test-run-heading"><h1 class="run-title"><span id="run-problem" class="run-title-problem">问题3</span><span id="run-mode">演练</span><span class="run-title-kind">测试</span></h1><span id="run-phase" class="state-text"></span></div>
+<div id="countdown-panel" class="run-countdown" hidden><div><h2>测试即将开始</h2><p>请准备运行机器狗程序，倒计时结束后开放接口。</p></div><strong id="countdown-value">5</strong><span>秒</span></div>
+<div class="test-run-toolbar"><div class="run-identity"><span>测试案例编码</span><strong id="case-code">—</strong></div><div class="run-metric"><span id="real-label">测试窗口剩余</span><strong id="real-clock">25:00</strong></div><div class="run-metric"><span>虚拟世界用时</span><strong id="virtual-clock">00:00:00</strong></div><div class="run-port"><span>机器狗接口</span><strong id="port-status">未开放</strong></div><button id="abort" class="danger-button">中止测试</button><button id="return-module" class="secondary-button run-return-button" hidden>关闭并返回模块</button></div>
+<div class="run-details"><code id="endpoint">http://127.0.0.1:2026</code><span id="program-clock">等待 /enter</span><span id="position">x 0.00 / y 0.00 / CH 1</span><span id="cleared">已清除 0 个</span></div>
+<div id="package-result" class="log-package-result" hidden><span>✓</span><div class="log-package-copy"><h2>本地行为日志已保存</h2><p id="end-reason"></p><p id="practice-counts"></p><p class="log-package-name" id="package-name"></p></div><a id="export-package" class="secondary-button" download>导出行为日志</a></div>
+<div class="live-feed-heading"><div><h2>指令与反馈</h2><p id="event-hint">显示最近 1000 条，完整动作保存在本地日志中。</p></div><label class="follow-label"><input id="follow-log" type="checkbox" checked>跟随最新</label><button id="show-scene" class="text-button" hidden>查看演练场景</button></div>
+<div class="data-table-wrap live-feed-table" id="live-feed"><table class="data-table"><thead><tr><th>序号</th><th>指令</th><th>请求 ID</th><th>位置 / 频道</th><th>反馈</th><th>虚拟秒</th></tr></thead><tbody id="event-rows"></tbody></table><div id="event-empty" class="local-empty">等待机器狗调用 /enter</div></div>
+</section>
+<section id="settings-page" class="page" hidden><div class="page-heading"><div><p class="eyebrow">其他</p><h1>本地设置</h1></div></div>
+<form id="settings-form" class="settings-form">
+<div class="settings-band"><div><h2>机器人编号</h2><p>与机器狗请求中的 robot_id 完全一致；无需登录。</p></div><input id="robot-id" aria-label="机器人编号" maxlength="64" value="offline-bot"></div>
+<div class="settings-band"><div><h2>机器狗接口端口</h2><p>仅在空闲时修改。空闲时预留，测试时开放，结束后关闭。</p></div><input id="robot-port" aria-label="机器狗接口端口" type="number" min="1" max="65535" value="2026"></div>
+<div class="settings-band"><div><h2>指令与反馈显示数量</h2><p>100–5000 条，默认 1000 条；不限制磁盘日志中的动作总数。</p></div><input id="event-limit" aria-label="显示数量" type="number" min="100" max="5000" value="1000"></div>
+<div class="settings-band"><div><h2>演练场景种子</h2><p>留空时每局随机；文本先转为 SHA-256 种子，再调用原版演练生成器。</p></div><input id="practice-seed" aria-label="演练场景种子" maxlength="256" placeholder="留空：每次随机"></div>
+<div class="settings-actions"><button id="save-settings" class="primary-button" type="submit">保存设置</button><span id="settings-message" role="status"></span></div></form>
+<div class="settings-band batch-band"><div><h2>本地评测轮次</h2><p id="batch-info"></p><p>新建一轮可重新进行每题 3 次本地正式测试，已有历史记录保留。</p></div><button id="new-batch" class="secondary-button">新建本地评测轮次</button></div></section>
+<section id="scenario-page" class="page" hidden><div class="page-heading"><div><p class="eyebrow">演练专用</p><h1>场景调试</h1></div><span id="scene-mode" class="state-text">当前使用自动生成场景</span></div>
+<div class="scene-toolbar"><label>问题 <select id="scene-problem"><option value="3">问题3</option><option value="4">问题4</option></select></label><label>种子 <input id="scene-seed" value="offline-2026" maxlength="256"></label><button id="generate" class="secondary-button">生成场景</button><label class="secondary-button file-label">导入 JSON<input id="import-scene" type="file" accept=".json,application/json" hidden></label><button id="download-scene" class="secondary-button">保存 JSON</button></div>
+<textarea id="scene-editor" aria-label="场景 JSON" spellcheck="false" placeholder="生成或导入场景，再点击应用到演练。"></textarea><div class="scene-toolbar"><button id="use-scene" class="primary-button">应用到演练</button><button id="reset-scene" class="secondary-button">恢复自动生成</button><span id="custom-note"></span></div><p class="page-footnote">自定义场景只用于对应问题的演练。正式模式始终使用独立的新场景，不接受指定种子或导入场景。</p></section>
+<section id="about-page" class="page" hidden><div class="page-heading"><div><p class="eyebrow">关于</p><h1>Jammers Linux 服务版 1.2.0</h1></div></div><div class="about-panel">
+<h2>四个入口，两种流程</h2><p>问题3、问题4均提供演练测试和正式测试。演练不限次数，结束后可查看案例；正式每题每轮 3 次机会，开始和中止需两次确认，结束后不公开场景真值。</p>
+<h2>服务器接口</h2><p>机器狗串行调用 <code>/enter</code>、<code>/measure</code>、<code>/clear</code>、<code>/exit</code>。默认地址为 <code>http://127.0.0.1:2026</code>。移动 5 m/s，测量 5 秒，测向换频道 1 秒；清除成功 5 秒，失败 3 秒，清除不切换测向频道。</p>
+<h2>离线运行</h2><p>没有登录、远程校时、正式场景下载或上传。记录保存在本机 runs 文件夹。界面使用原版提取的样式与图标资源，操作逻辑和仿真后端独立实现。仍需 Python 3.10+，或在 Windows 打包环境生成 EXE。</p>
+<h2>验证范围</h2><p>核心规则、HTTP 接口及模式流程可用包内测试复跑。当前环境未完成原 Windows EXE 的逐动作差分测试；原版场景种子映射、官方加密日志格式及服务端评分没有复刻。此处正式测试是本地评测，导出包不是官方日志。</p><p>上次运行若异常中断，本地历史会显示“运行中断”；不会恢复旧局，已使用的正式机会仍保留。</p></div></section>
+</main></div></div></div>
+<dialog id="confirmation" aria-labelledby="confirm-title" aria-describedby="confirm-message"><div class="dialog-header"><span id="confirm-icon">◇</span><h2 id="confirm-title"></h2></div><p id="confirm-message"></p><div class="dialog-actions"><button id="confirm-cancel" class="secondary-button">取消</button><button id="confirm-next" class="primary-button">继续</button></div></dialog>
+<dialog id="scene-preview" aria-labelledby="preview-title"><div class="dialog-header"><h2 id="preview-title">演练场景复盘</h2></div><canvas id="map" width="640" height="420" aria-label="演练场景与机器人轨迹"></canvas><p id="preview-counts"></p><div class="dialog-actions"><a id="export-scene" class="secondary-button" href="/api/export/scenario" download>导出场景 JSON</a><button id="close-preview" class="primary-button">关闭</button></div></dialog>
+</body></html>

@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "platform": "linux",
+  "checks": [
+    "two_isolated_instances_ready",
+    "documented_timing_via_actual_shell_entrypoint",
+    "remote_bind_auth_and_exact_native_generation",
+    "cli_import_sdk_four_actions_and_log_export",
+    "instance_histories_do_not_mix",
+    "sigterm_finishes_active_run_and_persists_logs",
+    "restart_retains_history_and_starts_idle",
+    "all_servers_stop_cleanly_and_do_not_log_token"
+  ],
+  "timing_seconds": [
+    0,
+    105.0,
+    111.0,
+    194.0,
+    199.0,
+    199.0
+  ],
+  "listening_address_tested": "0.0.0.0",
+  "client_connection_address": "127.0.0.1",
+  "official_services_contacted": false,
+  "limits": [
+    "No connection from another physical machine was tested.",
+    "Docker and a running systemd user manager were not available."
+  ]
+}
