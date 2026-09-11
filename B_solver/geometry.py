@@ -105,6 +105,156 @@ def mec(poly):
     return c, float(np.max(np.linalg.norm(poly - c, axis=1))) + 1e-8
 
 
+def nearest_certified_clear_point(poly, current, clearance_radius=19.999,
+                                  mec_center=None, mec_radius=None):
+    """Project the current position onto the intersection of vertex-centred disks.
+
+    The supplied MEC certificate must be valid with radius <= clearance_radius.
+    If neither centre nor radius is supplied, ``mec`` supplies that certificate.
+    An optimum is the current point, a radial projection onto one boundary, or
+    an intersection of two boundaries. We enumerate those candidates and retain
+    only positions certified against every vertex. A valid MEC centre remains
+    the fallback and a strict upper bound on the returned travel distance.
+
+    Boundary constructions can round outward. Such candidates are moved towards
+    the known feasible centre, with increasing representable inward steps. The
+    guard used to consider candidates NEVER enlarges the certification radius:
+    returned points pass FP64 norm checks AND exact binary-rational squared-
+    distance checks. Near-degenerate cases may therefore return the MEC centre
+    rather than an uncertifiable numerical approximation to the optimum.
+    """
+    from fractions import Fraction
+
+    vertices = np.asarray(poly, dtype=np.float64)
+    position = np.asarray(current, dtype=np.float64)
+    radius = float(clearance_radius)
+    if vertices.ndim != 2 or vertices.shape[1] != 2 or not len(vertices):
+        raise ValueError('Expected a non-empty polygon with shape (n, 2)')
+    if position.shape != (2,) or not np.isfinite(position).all():
+        raise ValueError('Current position must be a finite 2-D point')
+    if not np.isfinite(vertices).all() or not math.isfinite(radius) or radius < 0:
+        raise ValueError('Polygon and nonnegative clearance radius must be finite')
+    vertices = np.unique(vertices, axis=0)
+    if (mec_center is None) != (mec_radius is None):
+        raise ValueError('MEC centre and radius must be supplied together')
+    if mec_center is None:
+        mec_center, mec_radius = mec(vertices)
+    center = np.asarray(mec_center, dtype=np.float64)
+    certificate_radius = float(mec_radius)
+    if center.shape != (2,) or not np.isfinite(center).all():
+        raise ValueError('MEC centre must be a finite 2-D point')
+    if not math.isfinite(certificate_radius) or not 0 <= certificate_radius <= radius:
+        raise ValueError('MEC certificate radius must be nonnegative and <= clearance radius')
+
+    def rational_point(point):
+        return tuple(Fraction(float(value)) for value in point)
+
+    exact_vertices = [rational_point(vertex) for vertex in vertices]
+    exact_position = rational_point(position)
+    exact_radius_squared = Fraction(radius)**2
+
+    def squared_distance(a, b):
+        return (a[0]-b[0])**2 + (a[1]-b[1])**2
+
+    def max_distance(point):
+        return float(np.linalg.norm(vertices-point, axis=1).max())
+
+    def certified(point, bound=radius, exact_bound=exact_radius_squared):
+        if not np.isfinite(point).all() or max_distance(point) > bound:
+            return False
+        exact = rational_point(point)
+        return all(squared_distance(exact, vertex) <= exact_bound for vertex in exact_vertices)
+
+    if not certified(center, certificate_radius, Fraction(certificate_radius)**2):
+        raise ValueError('Invalid MEC certificate: its circle does not contain every vertex')
+    center_distance = float(np.linalg.norm(center-position))
+    exact_center_distance_squared = squared_distance(rational_point(center), exact_position)
+    if not math.isfinite(center_distance):
+        raise ValueError('Travel distance is not finite')
+
+    candidate_count = 0
+    adjusted_count = 0
+
+    def metadata(point, mode, adjustment=0., fallback=False):
+        return {
+            'mode': mode, 'fallback': bool(fallback),
+            'max_vertex_distance': max_distance(point),
+            'distance_to_current': float(np.linalg.norm(point-position)),
+            'mec_distance': center_distance, 'clearance_radius': radius,
+            'mec_certificate_radius': certificate_radius,
+            'candidate_count': candidate_count, 'adjusted_candidate_count': adjusted_count,
+            'numerical_adjustment_m': float(adjustment),
+            'certification': 'FP64 norms and exact binary-rational squared distances',
+        }
+
+    if certified(position):
+        return position.copy(), metadata(position, 'already_certified')
+
+    # This guard only keeps slightly outside candidates available for inward
+    # repair. All returned values still use the strict certified() predicate.
+    scale = max(1., radius, float(np.abs(vertices).max()), float(np.abs(position).max()),
+                float(np.abs(center).max()))
+    construction_guard = 128*np.finfo(np.float64).eps*scale
+    candidates = []
+    for vertex in vertices:
+        delta = position-vertex
+        length = float(np.linalg.norm(delta))
+        if length > 0:
+            candidates.append((vertex+(radius/length)*delta, 'radial_projection'))
+    for i, a in enumerate(vertices):
+        for b in vertices[i+1:]:
+            delta = b-a
+            distance = float(np.linalg.norm(delta))
+            if distance == 0 or distance > 2*radius:
+                continue
+            half = distance/2
+            height = math.sqrt(max(0., (radius-half)*(radius+half)))
+            midpoint = a+delta/2
+            perpendicular = np.array([-delta[1], delta[0]])/distance
+            candidates.append((midpoint+height*perpendicular, 'circle_intersection'))
+            if height > 0:
+                candidates.append((midpoint-height*perpendicular, 'circle_intersection'))
+    candidate_count = len(candidates)
+    candidates.sort(key=lambda item: (float(np.linalg.norm(item[0]-position)),
+                                       item[1], float(item[0][0]), float(item[0][1])))
+    best, best_mode, best_adjustment = center.copy(), 'mec_fallback', 0.
+    best_distance = center_distance
+
+    for candidate, mode in candidates:
+        if float(np.linalg.norm(candidate-position)) > best_distance+construction_guard:
+            continue
+        if max_distance(candidate) > radius+construction_guard:
+            continue
+        repaired = candidate
+        if not certified(repaired):
+            # At a true singleton intersection only the endpoint may certify.
+            # Geometric increase handles very small slack without cancellation-
+            # prone formulas dividing by (radius - MEC radius).
+            for exponent in range(-48, 1, 4):
+                fraction = 2.**exponent
+                repaired = center.copy() if fraction == 1. else candidate+fraction*(center-candidate)
+                if certified(repaired):
+                    break
+            else:
+                repaired = center.copy()
+            adjusted_count += 1
+        distance = float(np.linalg.norm(repaired-position))
+        if distance >= best_distance:
+            continue
+        exact_distance = squared_distance(rational_point(repaired), exact_position)
+        if exact_distance > exact_center_distance_squared:
+            continue
+        best, best_mode = repaired.copy(), mode
+        best_distance = distance
+        best_adjustment = float(np.linalg.norm(repaired-candidate))
+
+    # Keeping the check at the public boundary protects later refactors of the
+    # candidate constructor from silently weakening the clearance certificate.
+    if not certified(best) or float(np.linalg.norm(best-position)) > center_distance:
+        best, best_mode, best_adjustment = center.copy(), 'mec_fallback', 0.
+    return best, metadata(best, best_mode, best_adjustment, best_mode == 'mec_fallback')
+
+
 def contains(poly, points, tolerance=1e-7):
     points = np.atleast_2d(points)
     edges = np.roll(poly, -1, axis=0) - poly

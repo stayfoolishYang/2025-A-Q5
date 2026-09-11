@@ -219,6 +219,7 @@ def run_single(out, sim_root, seed, problem, variant, device):
     if not status:
         status = 'FULL_CLEAR' if total == cleared else 'PARTIAL_CLEAR' if cleared else 'ZERO_CLEAR'
     traces = list(solver.trace.values())
+    clearance_events = [event for target in traces for event in target.get('certified_clearance_events', [])]
     rec = manifest['seeds'][seed]
     row = dict(seed=seed, seed_hex=rec['seed_hex'], stress=rec['family'], problem=problem,
         variant=variant, run_status=status, engine_end_reason=engine.end_reason,
@@ -232,11 +233,24 @@ def run_single(out, sim_root, seed, problem, variant, device):
         source_hash=digest(manifest['source_hashes']),
         directional_count=sum(j['kind']=='directional' for j in raw['jammers']),
         evidence='recovered_practice_engine_local', grid_version=manifest['grid_version'])
+    row.update(clearance_point=config.get('clearance_point', 'mec_center'),
+        polygon_certified_count=len(clearance_events),
+        near_certified_count=solver.certified-sum(bool(e.get('success')) for e in clearance_events),
+        polygon_clear_travel_m=sum(e['travel_m'] for e in clearance_events),
+        polygon_clear_mec_travel_m=sum(e['mec_travel_m'] for e in clearance_events),
+        same_state_clear_saving_m=sum(e['same_state_saving_m'] for e in clearance_events),
+        polygon_zero_move_count=sum(e['zero_move'] for e in clearance_events),
+        nccp_fallback_count=sum(bool(e['selection'].get('fallback')) for e in clearance_events),
+        max_clearance_vertex_distance=max((e['max_vertex_distance'] for e in clearance_events), default=0.),
+        certificate_audit_violations=sum(e['max_vertex_distance'] > e['clearance_radius'] or
+                                       e['travel_m'] > e['mec_travel_m'] for e in clearance_events))
     for stage, costs in api.stages.items():
         row['stage_'+stage+'_s'] = costs['total_s']
     row['stage_sum_error_s'] = abs(sum(v['total_s'] for v in api.stages.values())-api.virtual_time)
     if row['stage_sum_error_s'] > 1e-5:
         row.update(error='Stage ledger does not sum to total', run_status='EXCEPTION')
+    if row['certificate_audit_violations']:
+        row.update(error='Clearance certificate audit failed', run_status='EXCEPTION')
     folder = out/f'q{problem}'
     trace = folder/'traces'/f'{variant}_{seed:04d}.json.gz'
     trace.parent.mkdir(parents=True, exist_ok=True)

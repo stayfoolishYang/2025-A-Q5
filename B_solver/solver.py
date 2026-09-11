@@ -15,6 +15,9 @@ class Solver:
         self.device, self.particles, self.use_negative = device, particles, use_negative
         self.schedule = schedule
         self.diagnostic = diagnostic or {}
+        self.clearance_point = self.diagnostic.get('clearance_point', 'mec_center')
+        if self.clearance_point not in ('mec_center', 'nccp'):
+            raise ValueError('clearance_point must be mec_center or nccp')
         self.trace = {}
         self.tracks, self.cleared = {}, set()
         self.history = {c: [] for c in range(1,21)}
@@ -26,6 +29,42 @@ class Solver:
             candidate_choices=[], movement_distance=0., fallback_trigger_reason=[], diagnostic_count=0,
             diagnostic_decisions=[], optical_grid_points=0, optical_clear_attempts=0,
             clear_attempts=0, clear_time=0., success=False))
+
+    def clear_certified_polygon(self, c, center, radius):
+        """Change only the final certified landing point; preserve the trigger.
+
+        The measured saving is relative to the MEC center at THIS state. A new
+        landing point can alter future actions, so it is not a whole-run bound.
+        Near-observation clears use their original zero-movement path instead.
+        """
+        poly = self.tracks[c]['poly']
+        start = np.asarray(self.api.position, dtype=float).copy()
+        center = np.asarray(center, dtype=float)
+        limit = 19.999
+        if not np.isfinite(radius) or radius > limit:
+            raise RuntimeError('Polygon clearance requires the existing MEC certificate')
+        if self.clearance_point == 'nccp':
+            from geometry import nearest_certified_clear_point
+            point, selection = nearest_certified_clear_point(
+                poly, start, clearance_radius=limit, mec_center=center, mec_radius=radius)
+        else:
+            point, selection = center, {'mode': 'mec_center', 'fallback': False}
+        point = np.asarray(point, dtype=float)
+        worst = float(np.max(np.linalg.norm(poly-point, axis=1)))
+        distance = float(np.linalg.norm(point-start))
+        mec_distance = float(np.linalg.norm(center-start))
+        if not np.isfinite(point).all() or worst > limit or distance > mec_distance:
+            raise RuntimeError('Clearance landing point failed strict distance audit')
+        before = self.api.virtual_time
+        event = dict(selector=self.clearance_point, start=start.tolist(), polygon=poly.tolist(),
+                     mec_center=center.tolist(), mec_radius=float(radius), point=point.tolist(),
+                     clearance_radius=limit, max_vertex_distance=worst, travel_m=distance,
+                     mec_travel_m=mec_distance, same_state_saving_m=mec_distance-distance,
+                     zero_move=bool(distance == 0.), selection=selection, time_before=before)
+        self.target_trace(c).setdefault('certified_clearance_events', []).append(event)
+        success = self.clear(c, point, certified=True)
+        event.update(success=bool(success), time_after=self.api.virtual_time)
+        return success
 
     def clear(self, c, p, certified=False):
         log = self.target_trace(c)
@@ -85,7 +124,7 @@ class Solver:
             track = self.tracks[c]
             center, radius = mec(track['poly'])
             if radius <= 19.999:
-                self.clear(c, center, certified=True)
+                self.clear_certified_polygon(c, center, radius)
                 return
             if self.policy == 'P0' or track['n'] >= 8 or track['negatives'] >= 3:
                 log = self.target_trace(c)

@@ -15,6 +15,9 @@ original_recover=recovery.recover
 
 
 def tagged_recover(solver, channel, config):
+    # Importing the audit module must not break ordinary, untagged clients.
+    if not hasattr(solver.api, 'stage'):
+        return original_recover(solver, channel, config)
     previous=solver.api.stage
     solver.api.stage='diagnostic'
     try:return original_recover(solver,channel,config)

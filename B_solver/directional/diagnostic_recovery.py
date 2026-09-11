@@ -81,15 +81,15 @@ def choose(poly, particles, current, channel, target_channel, config, history=()
 
 
 def recover(solver, channel, config):
+    from geometry import mec
     log = solver.target_trace(channel)
     for _ in range(config.get('max_steps', 3)):
         if channel not in solver.tracks:
             return True
         track = solver.tracks[channel]
-        from geometry import mec
         center, radius = mec(track['poly'])
         if radius <= 19.999:
-            return solver.clear(channel, center, certified=True)
+            return solver.clear_certified_polygon(channel, center, radius)
         p = track['hyp'].p if track['hyp'] is not None else np.empty((0,5))
         # Deterministic cap only for planning; retained full hypothesis history is untouched.
         p = p[np.linspace(0,len(p)-1,min(len(p),1024)).astype(int)] if len(p) else p
@@ -108,5 +108,5 @@ def recover(solver, channel, config):
     if channel in solver.tracks:
         center, radius = mec(solver.tracks[channel]['poly'])
         if radius <= 19.999:
-            return solver.clear(channel, center, certified=True)
+            return solver.clear_certified_polygon(channel, center, radius)
     return channel not in solver.tracks

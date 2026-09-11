@@ -1,4 +1,10 @@
-# B题最新状态：还原演练引擎逐种子评测已完成
+# B题最新状态：NCCP候选已接入，准备本地配对实验
+
+2026-09-11：已先同步晨检提交`19ecfcc`。按用户新方案实现最近保证清除点（NCCP），保持原MEC触发条件和默认策略；61项检查通过，当前尚未产生候选配对成绩。实验原始文件使用`J:/2026B_experiments/nccp_20260911`，先开发100种子的400次对照，再审计后开展预先冻结的256种子留出复核。见 [NCCP说明](NCCP.md) 和 [配对计划](experiments/NCCP_PLAN.md)。
+
+下面是上一轮已完成的冻结结果；不应把其900.17秒/源当作NCCP成绩。
+
+## 上一轮：还原演练引擎逐种子评测已完成
 
 **Q4晨检已整理：** [图表与519例交互检查](results/recovered/q4_morning_review/index.html)、[给GPT的结论稿](results/recovered/q4_morning_review/README.md)、[四个关键案例逐动作审计](results/recovered/q4_morning_review/CASE_NOTES.md)。原始配对CSV、重点轨迹和来源哈希随包保留；本轮整理没有新增求解器运行。
 
