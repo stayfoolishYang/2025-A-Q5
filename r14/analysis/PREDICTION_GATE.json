@@ -1,0 +1,30 @@
+{
+  "complete": true,
+  "cohorts": {
+    "development": {
+      "scenes": 128,
+      "relative_top1_lift": 1.053572456268106,
+      "mrr_difference": 0.2066590617428522,
+      "mrr_difference_ci95": [
+        0.18471063296523604,
+        0.22869744614614065
+      ],
+      "passes": true
+    },
+    "holdout": {
+      "scenes": 256,
+      "relative_top1_lift": 1.0248330717809249,
+      "mrr_difference": 0.2055757011404797,
+      "mrr_difference_ci95": [
+        0.18820332414249233,
+        0.22239666420153612
+      ],
+      "passes": true
+    }
+  },
+  "phase_A_pass": true,
+  "aggregation": "equal scene weight; state averages within scene; paired bootstrap by scene",
+  "ranking": "descending expected_new; stable R12-order ties; fallback R12 order with geometry probability",
+  "uniform": "analytical random ranking; spatial constant probability equals geometry node average",
+  "official_calls": 0
+}
