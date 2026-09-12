@@ -1,0 +1,155 @@
+{
+  "schema_version": "scenario-v1",
+  "ruleset_version": "rules-v1",
+  "problem_no": 4,
+  "source": "practice_generated",
+  "dataset_version": null,
+  "generator_version": "practice-gen-v1",
+  "generator_seed_hex": "7eec5002f8976756c0d162a66375076d5563097a40117d24a6d3f13afa92645c",
+  "noise_seed_hex": "bdd326102cf574b4",
+  "generation_rules": {
+    "generator_rules_version": "practice-gen-rules-v1",
+    "target_area_radius_um": 1800000000,
+    "jammer_max_radius_um": 1770000000,
+    "outer_empty_ring_um": 30000000,
+    "jammer_count_min": 10,
+    "jammer_count_max": 16,
+    "channel_min": 1,
+    "channel_max": 20,
+    "max_receive_min_um": 1000000000,
+    "max_receive_max_um": 1500000000,
+    "position_distribution": "uniform_disk_area",
+    "max_receive_distribution": "uniform_integer_um",
+    "problem4_directional_count_mode": "uniform_integer_one_to_count"
+  },
+  "simulation_rules": {
+    "simulation_rules_version": "simulation-rules-v1",
+    "target_area_radius_um": 1800000000,
+    "near_distance_um": 5000000,
+    "clear_distance_um": 20000000,
+    "move_speed_um_per_s": 5000000,
+    "channel_switch_duration_us": 1000000,
+    "measure_duration_us": 5000000,
+    "clear_success_duration_us": 5000000,
+    "clear_failure_duration_us": 3000000,
+    "max_virtual_duration_us": 360000000000,
+    "directional_beam_width_udeg": 180000000,
+    "bearing_noise_model": "spatial-bearing-v1",
+    "bearing_noise_grid_um": 150000000,
+    "bearing_error_max_udeg": 1000000
+  },
+  "jammers": [
+    {
+      "channel": 2,
+      "x_um": 1152906703,
+      "y_um": -205611153,
+      "max_receive_um": 1334027094,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 4,
+      "x_um": 154723278,
+      "y_um": 1053653869,
+      "max_receive_um": 1229894080,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 5,
+      "x_um": 1706925855,
+      "y_um": 161240983,
+      "max_receive_um": 1332896433,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 6,
+      "x_um": -650513767,
+      "y_um": -900309366,
+      "max_receive_um": 1063708724,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 8,
+      "x_um": 156873729,
+      "y_um": -1066245043,
+      "max_receive_um": 1222182767,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 10,
+      "x_um": -1061564211,
+      "y_um": 933637526,
+      "max_receive_um": 1189878841,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 11,
+      "x_um": 1206861905,
+      "y_um": 505258924,
+      "max_receive_um": 1223743315,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 12,
+      "x_um": 1235719406,
+      "y_um": 184910093,
+      "max_receive_um": 1372278579,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 13,
+      "x_um": 143531847,
+      "y_um": -556176067,
+      "max_receive_um": 1298121388,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 14,
+      "x_um": 1061109476,
+      "y_um": 1291960900,
+      "max_receive_um": 1467237081,
+      "kind": "directional",
+      "direction_udeg": 117797179
+    },
+    {
+      "channel": 15,
+      "x_um": -498858180,
+      "y_um": -1189535601,
+      "max_receive_um": 1361661059,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 17,
+      "x_um": -892485985,
+      "y_um": -1119497941,
+      "max_receive_um": 1187667907,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 18,
+      "x_um": -1290313081,
+      "y_um": 1099509238,
+      "max_receive_um": 1359393154,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 19,
+      "x_um": -1059828200,
+      "y_um": 906363018,
+      "max_receive_um": 1262416945,
+      "kind": "omni",
+      "direction_udeg": null
+    }
+  ]
+}
