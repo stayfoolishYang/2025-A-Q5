@@ -1,0 +1,22 @@
+{
+  "version": "Q1final-v2",
+  "states": 64,
+  "banks": 3,
+  "new_seed_namespace": "Q1final-v2",
+  "sobol_points": 4096,
+  "probability_fraction_within_002": 0.95,
+  "max_probability_range": 0.05,
+  "max_count_tv": 0.02,
+  "candidates": "top4 union R12 index0",
+  "candidate_gate": "Every state: union of 3 banks top3 must be contained in every bank candidates",
+  "world_gate": "192/192 constructed and exact replay",
+  "proposal_stages": [
+    65536,
+    131072,
+    262144
+  ],
+  "target_valid": 128,
+  "noise_per_position": 512,
+  "on_cap": "unavailable, no relaxed conditions",
+  "old_result": "Q1-U-v1 remains FAIL"
+}

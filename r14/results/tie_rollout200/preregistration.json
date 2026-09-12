@@ -1,0 +1,19 @@
+{
+  "config": {
+    "epsilon_probability": 0.002,
+    "max_candidates_including_R12": 8,
+    "worlds": 16,
+    "source_proposals": 128,
+    "noise_proposals": 512,
+    "sobol_power": 12,
+    "confidence_family": 0.05,
+    "confidence_alternatives": 7,
+    "risk": "empirical loss CVaR90 <=0",
+    "candidate_overflow": "whole state R12; no truncation",
+    "sampling_failure": "whole state R12; retain partial paired records",
+    "scope": "200-state calibration; not deployment or holdout confirmation"
+  },
+  "selection_rule": "50 each of frozen oracle sample groups; chosen without costs",
+  "Q1_history": "old gates stay FAIL; new tie-aware exploration explicitly authorized",
+  "official_calls": 0
+}

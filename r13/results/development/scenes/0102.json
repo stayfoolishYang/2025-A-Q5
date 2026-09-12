@@ -1,0 +1,155 @@
+{
+  "schema_version": "scenario-v1",
+  "ruleset_version": "rules-v1",
+  "problem_no": 4,
+  "source": "practice_generated",
+  "dataset_version": null,
+  "generator_version": "practice-gen-v1",
+  "generator_seed_hex": "0290b296e9296ec4b28dde4ad0dba47b5048f984c45bde6a57289a5ef4e4c580",
+  "noise_seed_hex": "10abc02ec786a38a",
+  "generation_rules": {
+    "generator_rules_version": "practice-gen-rules-v1",
+    "target_area_radius_um": 1800000000,
+    "jammer_max_radius_um": 1770000000,
+    "outer_empty_ring_um": 30000000,
+    "jammer_count_min": 10,
+    "jammer_count_max": 16,
+    "channel_min": 1,
+    "channel_max": 20,
+    "max_receive_min_um": 1000000000,
+    "max_receive_max_um": 1500000000,
+    "position_distribution": "uniform_disk_area",
+    "max_receive_distribution": "uniform_integer_um",
+    "problem4_directional_count_mode": "uniform_integer_one_to_count"
+  },
+  "simulation_rules": {
+    "simulation_rules_version": "simulation-rules-v1",
+    "target_area_radius_um": 1800000000,
+    "near_distance_um": 5000000,
+    "clear_distance_um": 20000000,
+    "move_speed_um_per_s": 5000000,
+    "channel_switch_duration_us": 1000000,
+    "measure_duration_us": 5000000,
+    "clear_success_duration_us": 5000000,
+    "clear_failure_duration_us": 3000000,
+    "max_virtual_duration_us": 360000000000,
+    "directional_beam_width_udeg": 180000000,
+    "bearing_noise_model": "spatial-bearing-v1",
+    "bearing_noise_grid_um": 150000000,
+    "bearing_error_max_udeg": 1000000
+  },
+  "jammers": [
+    {
+      "channel": 1,
+      "x_um": 667480275,
+      "y_um": 409811283,
+      "max_receive_um": 1485222535,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 2,
+      "x_um": -12793230,
+      "y_um": -244099706,
+      "max_receive_um": 1185863537,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 4,
+      "x_um": 1088464196,
+      "y_um": 225736876,
+      "max_receive_um": 1204805337,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 5,
+      "x_um": 67449173,
+      "y_um": -1297156093,
+      "max_receive_um": 1472914081,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 6,
+      "x_um": -1282240161,
+      "y_um": -177488403,
+      "max_receive_um": 1287110370,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 8,
+      "x_um": 1364103407,
+      "y_um": 987718030,
+      "max_receive_um": 1186338482,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 10,
+      "x_um": 1534471947,
+      "y_um": 840479966,
+      "max_receive_um": 1449982004,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 11,
+      "x_um": -686146066,
+      "y_um": 393354444,
+      "max_receive_um": 1042972962,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 12,
+      "x_um": 628774568,
+      "y_um": 615582385,
+      "max_receive_um": 1392826250,
+      "kind": "directional",
+      "direction_udeg": 271215906
+    },
+    {
+      "channel": 15,
+      "x_um": 147263101,
+      "y_um": 505774745,
+      "max_receive_um": 1473757722,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 17,
+      "x_um": -804247954,
+      "y_um": 1193058566,
+      "max_receive_um": 1273111551,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 18,
+      "x_um": 336127181,
+      "y_um": -1070718720,
+      "max_receive_um": 1173714132,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 19,
+      "x_um": 1465748101,
+      "y_um": -783599280,
+      "max_receive_um": 1398166406,
+      "kind": "omni",
+      "direction_udeg": null
+    },
+    {
+      "channel": 20,
+      "x_um": -1390353965,
+      "y_um": 523074649,
+      "max_receive_um": 1354225627,
+      "kind": "omni",
+      "direction_udeg": null
+    }
+  ]
+}
